@@ -1,0 +1,328 @@
+{
+	"$vuetify": {
+		"badge": "Badge",
+		"calendar": {
+			"moreEvents": "{0} more"
+		},
+		"carousel": {
+			"ariaLabel": {
+				"delimiter": "Carousel slide {0} of {1}"
+			},
+			"next": "Next visual",
+			"prev": "Previous visual"
+		},
+		"close": "Close",
+		"dataFooter": {
+			"firstPage": "First page",
+			"itemsPerPageAll": "All",
+			"itemsPerPageText": "Items per page:",
+			"lastPage": "Last page",
+			"nextPage": "Next page",
+			"pageText": "{0}-{1} of {2}",
+			"prevPage": "Previous page"
+		},
+		"dataIterator": {
+			"loadingText": "Loading items...",
+			"noResultsText": "No matching records found"
+		},
+		"dataTable": {
+			"ariaLabel": {
+				"activateAscending": "Activate to sort ascending.",
+				"activateDescending": "Activate to sort descending.",
+				"activateNone": "Activate to remove sorting.",
+				"sortAscending": "Sorted ascending.",
+				"sortDescending": "Sorted descending.",
+				"sortNone": "Not sorted."
+			},
+			"itemsPerPageText": "Rows per page:",
+			"sortBy": "Sort by"
+		},
+		"datePicker": {
+			"itemsSelected": "{0} selected",
+			"nextMonthAriaLabel": "Next month",
+			"nextYearAriaLabel": "Next year",
+			"prevMonthAriaLabel": "Previous month",
+			"prevYearAriaLabel": "Previous year"
+		},
+		"fileInput": {
+			"counter": "{0} files",
+			"counterSize": "{0} files ({1} in total)"
+		},
+		"input": {
+			"appendAction": "{0} appended action",
+			"clear": "Clear {0}",
+			"prependAction": "{0} prepended action"
+		},
+		"noDataText": "No data available",
+		"pagination": {
+			"ariaLabel": {
+				"currentPage": "Page {0}, Current page",
+				"first": "First page",
+				"last": "Last page",
+				"next": "Next page",
+				"page": "Go to page {0}",
+				"previous": "Previous page",
+				"root": "Pagination Navigation"
+			}
+		},
+		"rating": {
+			"ariaLabel": {
+				"item": "Rating {0} of {1}"
+			}
+		},
+		"timePicker": {
+			"am": "AM",
+			"pm": "PM"
+		}
+	},
+	"admin": {
+		"title": "Administration",
+		"users": {
+			"add": {
+				"title": "Add a new user",
+				"activator": "Add a new user",
+				"messages": {
+					"success": "User {name} ({email}) has been successfully created.",
+					"error": "User {name} ({email}) could not be created."
+				}
+			},
+			"block": {
+				"messages": {
+					"success": "User {name} ({email}) has been successfully blocked.",
+					"error": "User {name} ({email}) could not be blocked."
+				}
+			},
+			"delete": {
+				"title": "Delete user",
+				"message": "Are you sure you want to delete user {name} ({email})?",
+				"messages": {
+					"success": "User {name} ({email}) has been successfully deleted.",
+					"error": "User {name} ({email}) could not be deleted."
+				},
+				"confirm": "Delete user"
+			},
+			"edit": {
+				"title": "Edit user",
+				"messages": {
+					"success": "User {name} ({email}) has been successfully edited.",
+					"error": "User {name} ({email}) could not be edited."
+				}
+			},
+			"list": {
+				"title": "User management"
+			},
+			"unblock": {
+				"messages": {
+					"success": "User {name} ({email}) has been successfully unblocked.",
+					"error": "User {name} ({email}) could not be unblocked."
+				}
+			}
+		}
+	},
+	"core": {
+		"account": {
+			"verification": {
+				"title": "Account verification",
+				"redirect": "You will be redirected to the dashboard in {countdown} seconds.",
+				"messages": {
+					"success": "Your account has been successfully verified.",
+					"alreadyVerified": "Your account has already been verified.",
+					"banned": "Your account has been banned.",
+					"expired": "Your verification link has expired. New verification link has been sent to your email address.",
+					"error": "Your account could not be verified.",
+					"notFound": "Your verification link is invalid."
+				}
+			}
+		},
+		"actions": {
+			"add": "Add",
+			"cancel": "Cancel",
+			"edit": "Edit"
+		},
+		"devices": {
+			"title": "Power distribution units",
+			"add": {
+				"title": "Add a new PDU",
+				"activator": "Add PDU"
+			},
+			"edit": {
+				"title": "Edit PDU",
+				"activator": "Edit PDU"
+			},
+			"detail": {
+				"title": "PDU - {name}",
+				"info": {
+					"title": "Information about PDU"
+				},
+				"measurements": {
+					"title": "Measurements",
+					"reload": "Reload",
+					"current": "Current",
+					"voltage": "Voltage",
+					"timeRanges": {
+						"5": "Last 5 minutes",
+						"15": "Last 15 minutes",
+						"1h": "Last hour",
+						"6h": "Last 6 hours",
+						"12h": "Last 12 hours",
+						"1d": "Last day",
+						"1w": "Last week",
+						"1mo": "Last month"
+					}
+				},
+				"outputs": {
+					"messages": {
+						"success": {
+							"switchedOn": "Output #{index} ({name}) has been successfully switched on.",
+							"switchedOff": "Output #{index} ({name}) has been successfully switched off."
+						}
+					},
+					"reload": "Reload",
+					"title": "Outputs"
+				}
+			},
+			"fields": {
+				"name": "Name",
+				"macAddress": "MAC address",
+				"lastSeen": "Last seen",
+				"outputs": {
+					"title": "Outputs",
+					"alert": "Alert",
+					"alertValues": {
+						"true": "Yes",
+						"false": "No"
+					},
+					"index": "Index",
+					"name": "Name",
+					"state": "State"
+				},
+				"measurements": {
+					"current": "Current",
+					"voltage": "Voltage"
+				}
+			},
+			"form": {
+				"outputs": {
+					"title": "Outputs"
+				},
+				"messages": {
+					"emptyName": "Please enter a name for the PDU.",
+					"emptyMacAddress": "Please enter a MAC address for the PDU.",
+					"outputs": {
+						"emptyName": "Please enter a name for the output.",
+						"emptyIndex": "Please enter an index for the output."
+					}
+				}
+			},
+			"list": {
+				"title": "PDU list"
+			}
+		},
+		"error": {
+			"403": {
+				"title": "Access denied",
+				"header": "Error 403",
+				"message": "You do not have permission to view this page. Please try contact the web site administrator if you believe you should be able to view this page."
+			},
+			"404": {
+				"title": "Page not found",
+				"header": "Error 404",
+				"message": "The page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists. Please use a search engine to find what you are looking for."
+			}
+		},
+		"locales": {
+			"cs": "Czech",
+			"en": "English"
+		},
+		"messages": {
+			"localeChanged": "Localization has been successfully changed to {lang}."
+		},
+		"openApi": {
+			"title": "API documentation",
+			"messages": {
+				"error": "An error occurred during API documentation loading."
+			}
+		},
+		"password": {
+			"recovery": {
+				"title": "Password recovery",
+				"text": " Please enter your e-mail address and a password recovery email will be sent to the specified e-mail address",
+				"button": "Recover password",
+				"messages": {
+					"success": "Password recovery request has been successfully sent.",
+					"error": "An error occurred during password recovery request."
+				}
+			}
+		},
+		"profile": {
+			"title": "User profile",
+			"fields": {
+				"passwordChange": "Change password?",
+				"oldPassword": "Current password",
+				"newPassword": "New password"
+			},
+			"messages": {
+				"success": "User profile has been successfully edited.",
+				"error": "User profile could not be edited."
+			}
+		},
+		"user": {
+			"fields": {
+				"avatar": "Avatar",
+				"name": "Name",
+				"email": "E-mail address",
+				"password": "Password",
+				"role": "Role",
+				"language": "Language",
+				"state": "State"
+			},
+			"messages": {
+				"emptyEmail": "Please enter e-mail address.",
+				"emptyLanguage": "Please select user language.",
+				"emptyName": "Please enter user name.",
+				"emptyPassword": "Please enter password.",
+				"emptyRole": "Please select user role.",
+				"invalidEmail": "Please enter valid e-mail address."
+			},
+			"roles": {
+				"admin": "Administrator",
+				"normal": "Normal user"
+			},
+			"states": {
+				"blocked": "Blocked",
+				"unverified": "Unverified",
+				"verified": "Verified"
+			},
+			"verification": {
+				"resend": {
+					"text": "Your e-mail address is not verified. Some features (e.g. password recovery) may not be available.",
+					"button": "Resend verification e-mail",
+					"messages": {
+						"success": "Verification e-mail has been successfully sent.",
+						"error": "An error occurred during sending verification e-mail."
+					}
+				}
+			}
+		},
+		"sign": {
+			"in": {
+				"title": "Sign in",
+				"button": "Sign in",
+				"messages": {
+					"accountBlocked": "Your account has been blocked.",
+					"success": "You have been successfully signed in.",
+					"invalidCredentials": "Invalid e-mail or password.",
+					"error": "An error occurred while signing in."
+				}
+			},
+			"out": {
+				"title": "Sign out",
+				"message": "You have been successfully signed out."
+			}
+		},
+		"tables": {
+			"actions": "Actions"
+		},
+		"title": "SBC PDU management"
+	}
+}

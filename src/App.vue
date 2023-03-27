@@ -1,0 +1,58 @@
+<!--
+Copyright 2022-2023 Roman Ondráček
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<template :key='locale'>
+	<LoadingSpinner />
+	<v-app dark style='background-color: #f5f5f5'>
+		<router-view/>
+	</v-app>
+</template>
+
+<script lang='ts' setup>
+import {storeToRefs} from 'pinia';
+import {getActiveHead} from 'unhead';
+import {ref, watch} from 'vue';
+import {useI18n} from 'vue-i18n';
+import {toast} from 'vue3-toastify';
+
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import {useLocaleStore} from '@/store/locale';
+
+const localeStore = useLocaleStore();
+const {locale} = storeToRefs(localeStore);
+const i18n = useI18n();
+
+watch(locale, setLocale);
+
+const siteName = ref(i18n.t('core.title').toString());
+const headOptions = ref({
+	titleTemplate: '%s %separator %siteName',
+	templateParams: {
+		siteName: siteName,
+		separator: '|',
+	},
+});
+setLocale(null);
+
+function setLocale(newLocale: string | null = null): void {
+	const localeToSet = newLocale ?? locale.value;
+	i18n.locale.value = localeToSet;
+	siteName.value = i18n.t('core.title').toString();
+	getActiveHead()?.push(headOptions);
+	toast.success(i18n.t('core.messages.localeChanged', {lang: i18n.t(`core.locales.${localeToSet}`)}));
+}
+
+</script>

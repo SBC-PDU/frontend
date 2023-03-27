@@ -1,0 +1,56 @@
+<!--
+Copyright 2022-2023 Roman Ondráček
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<template>
+	<Head>
+		<title>{{ $t('core.openApi.title') }}</title>
+	</Head>
+	<v-card>
+		<v-card-title class='bg-primary'>
+			{{ $t('core.openApi.title') }}
+		</v-card-title>
+		<v-card-text>
+			<div class='swagger' id='swagger'></div>
+		</v-card-text>
+	</v-card>
+</template>
+
+<script lang='ts' setup>
+import {Head} from '@vueuse/head';
+import {SwaggerUIBundle} from 'swagger-ui-dist';
+import 'swagger-ui/dist/swagger-ui.css';
+import {useI18n} from 'vue-i18n';
+import {toast} from 'vue3-toastify';
+
+import {OpenApiService} from '@/services/OpenApiService';
+import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
+
+const i18n = useI18n();
+const loadingSpinner = useLoadingSpinnerStore();
+const service = new OpenApiService();
+
+loadingSpinner.show();
+service.getSpecification().then((spec) => {
+	SwaggerUIBundle({
+		spec: spec,
+		dom_id: '#swagger',
+	});
+	loadingSpinner.hide();
+}).catch(() => {
+	toast.error(i18n.t('core.openApi.messages.error').toString());
+	loadingSpinner.hide();
+});
+</script>
