@@ -18,7 +18,7 @@ import * as punycode from 'punycode';
 
 import BaseUrlHelper from '@/helpers/baseUrlHelper';
 import {ApiClient} from '@/services/ApiClient';
-import {Credentials, PasswordRecovery, SignInResponse} from '@/types/auth';
+import {Credentials, PasswordRecovery, PasswordSet, SignedInUser} from '@/types/auth';
 
 /**
  * Authentication service
@@ -37,15 +37,36 @@ export default class AuthenticationService extends ApiClient {
 	}
 
 	/**
+	 * Resets the password
+	 * @param {string} uuid Password reset request UUID
+	 * @param {PasswordSet} reset Password reset parameters
+	 * @returns {Promise<SignedInUser>} User info with JWT token
+	 */
+	public passwordReset(uuid: string, reset: PasswordSet): Promise<SignedInUser> {
+		return this.getClient().post(`auth/password/reset/${uuid}`, reset);
+	}
+
+	/**
+	 * Sets the password of invited user
+	 * @param {string} uuid Password set request UUID
+	 * @param {PasswordSet} set Password set parameters
+	 * @returns {Promise<SignedInUser>} User info with JWT token
+	 */
+	public passwordSet(uuid: string, set: PasswordSet): Promise<SignedInUser> {
+		return this.getClient().post(`auth/password/set/${uuid}`, set);
+	}
+
+	/**
 	 * Signs in the user
 	 * @param {Credentials} credentials User credentials
+	 * @returns {Promise<SignedInUser>} User info with JWT token
 	 */
-	public signIn(credentials: Credentials): Promise<SignInResponse> {
+	public signIn(credentials: Credentials): Promise<SignedInUser> {
 		return this.getClient().post('auth/sign/in', {
 			email: punycode.toASCII(credentials.email),
 			password: credentials.password,
-		}).then((response: AxiosResponse): SignInResponse => (
-			response.data as SignInResponse
+		}).then((response: AxiosResponse): SignedInUser => (
+			response.data as SignedInUser
 		));
 	}
 

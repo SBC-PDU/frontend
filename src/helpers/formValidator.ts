@@ -26,6 +26,7 @@ export default class FormValidator {
 	 * @param {any} value Value to check
 	 * @param {string} errorMessage Error message to return if the value is not valid
 	 * @return {boolean|string} True if the value is valid, error message otherwise
+	 * @eslint-disable-next-line @typescript-eslint/no-explicit-any
 	 */
 	public static isRequired(value: any, errorMessage: string): boolean | string {
 		return !!value || errorMessage;

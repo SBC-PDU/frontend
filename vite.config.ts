@@ -20,12 +20,19 @@ import path from 'path';
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
+import {VitePWA} from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
 		vue({
 			template: { transformAssetUrls }
+		}),
+		VitePWA({
+			registerType: 'autoUpdate',
+			devOptions: {
+				enabled: true,
+			}
 		}),
 		// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
 		vuetify({

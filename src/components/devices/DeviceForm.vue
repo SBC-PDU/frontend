@@ -19,7 +19,8 @@ limitations under the License.
 		v-model='dialog'
 		persistent
 		scrollable
-		:width='modalWidth'>
+		:width='modalWidth'
+	>
 		<template #activator='{ props }'>
 			<v-btn
 				v-if='action === "add"'
@@ -44,110 +45,106 @@ limitations under the License.
 					{{ $t('core.devices.edit.activator') }}
 				</span>
 			</v-btn>
-			<v-btn
+			<v-icon
 				v-else
 				v-bind='props'
-				variant='plain'
+				color='primary'
+				class='me-2'
 			>
-				<v-icon color='primary'>mdi-pencil-outline</v-icon>
-			</v-btn>
+				mdi-pencil-outline
+			</v-icon>
 		</template>
 		<v-form ref='form' @submit.prevent='submit'>
-			<v-card style='max-height: 90vh'>
-				<v-card-title v-if='action === "add"' class='bg-green-darken-1'>
-					{{ $t('core.devices.add.title') }}
-				</v-card-title>
-				<v-card-title v-else class='bg-primary'>
-					{{ $t('core.devices.edit.title') }}
-				</v-card-title>
-				<v-card-text class='mt-4'>
-					<v-text-field
-						v-model='device.name'
-						:label='$t("core.devices.fields.name")'
-						:rules='[
-							v => FormValidator.isRequired(v, $t("core.devices.form.messages.emptyName")),
-						]'
-						required
-					/>
-					<v-text-field
-						v-if='action === "add"'
-						v-model='device.macAddress'
-						:label='$t("core.devices.fields.macAddress")'
-						:rules='[
-							v => FormValidator.isRequired(v, $t("core.devices.form.messages.emptyMacAddress")),
-						]'
-						required
-					/>
-					<h2>{{ $t('core.devices.form.outputs.title') }}</h2>
-					<v-row v-for='(output, outputIndex) in device.outputs' :key='output.index'>
-						<v-col cols='12' sm='4'>
-							<v-text-field
-								v-model.number='output.index'
-								:label='$t("core.devices.fields.outputs.index")'
-								:rules='[
-									v => FormValidator.isRequired(v, $t("core.devices.form.messages.outputs.emptyIndex")),
-								]'
-								required
-								type='number'
-							/>
-						</v-col>
-						<v-col cols='12' sm='8'>
-							<v-text-field
-								v-model='output.name'
-								:label='$t("core.devices.fields.outputs.name")'
-								:rules='[
-									v => FormValidator.isRequired(v, $t("core.devices.form.messages.outputs.emptyName")),
-								]'
-								required
+			<Card :header-color='action === "add" ? "green-darken-1" : "primary"' style='max-height: 90vh'>
+				<template #title>
+					{{ action === "add" ? $t('core.devices.add.title') : $t('core.devices.edit.title') }}
+				</template>
+				<v-text-field
+					v-model='device.name'
+					:label='$t("core.devices.fields.name")'
+					:rules='[
+						v => FormValidator.isRequired(v, $t("core.devices.form.messages.emptyName")),
+					]'
+					required
+				/>
+				<v-text-field
+					v-if='action === "add"'
+					v-model='device.macAddress'
+					:label='$t("core.devices.fields.macAddress")'
+					:rules='[
+						v => FormValidator.isRequired(v, $t("core.devices.form.messages.emptyMacAddress")),
+					]'
+					required
+				/>
+				<h2 class='mb-4'>{{ $t('core.devices.form.outputs.title') }}</h2>
+				<v-row v-for='(output, outputIndex) in device.outputs' :key='output.index'>
+					<v-col cols='12' sm='4'>
+						<v-text-field
+							v-model.number='output.index'
+							:label='$t("core.devices.fields.outputs.index")'
+							:rules='[
+								v => FormValidator.isRequired(v, $t("core.devices.form.messages.outputs.emptyIndex")),
+							]'
+							required
+							type='number'
+						/>
+					</v-col>
+					<v-col cols='12' sm='8'>
+						<v-text-field
+							v-model='output.name'
+							:label='$t("core.devices.fields.outputs.name")'
+							:rules='[
+								v => FormValidator.isRequired(v, $t("core.devices.form.messages.outputs.emptyName")),
+							]'
+							required
+						>
+							<template v-slot:append v-if='display.smAndUp.value'>
+								<v-btn-group class='my-auto' density='compact'>
+									<v-btn
+										color='success'
+										@click='addOutput()'
+										size='small'
+									>
+										<v-icon>mdi-plus</v-icon>
+									</v-btn>
+									<v-btn
+										color='red'
+										@click='device.outputs.splice(outputIndex, 1)'
+										:disabled='device.outputs.length === 1'
+										size='small'
+									>
+										<v-icon>mdi-minus</v-icon>
+									</v-btn>
+								</v-btn-group>
+							</template>
+						</v-text-field>
+						<v-btn-group v-if='display.xs.value' class='my-auto' density='compact'>
+							<v-btn
+								color='success'
+								@click='addOutput()'
+								size='small'
 							>
-								<template v-slot:append v-if='display.smAndUp.value'>
-									<v-btn-group class='my-auto' density='compact'>
-										<v-btn
-											color='success'
-											@click='addOutput()'
-											size='small'
-										>
-											<v-icon>mdi-plus</v-icon>
-										</v-btn>
-										<v-btn
-											color='red'
-											@click='device.outputs.splice(outputIndex, 1)'
-											:disabled='device.outputs.length === 1'
-											size='small'
-										>
-											<v-icon>mdi-minus</v-icon>
-										</v-btn>
-									</v-btn-group>
-								</template>
-							</v-text-field>
-							<v-btn-group v-if='display.xs.value' class='my-auto' density='compact'>
-								<v-btn
-									color='success'
-									@click='addOutput()'
-									size='small'
-								>
-									<v-icon>mdi-plus</v-icon>
-								</v-btn>
-								<v-btn
-									color='red'
-									@click='removeOutput(outputIndex)'
-									:disabled='device.outputs.length === 1'
-									size='small'
-								>
-									<v-icon>mdi-minus</v-icon>
-								</v-btn>
-							</v-btn-group>
-						</v-col>
-					</v-row>
-					<v-btn
-						v-if='device.outputs.length === 0'
-						color='success'
-						@click='addOutput()'
-					>
-						<v-icon>mdi-plus</v-icon>
-					</v-btn>
-				</v-card-text>
-				<v-card-actions class='bg-grey-lighten-2'>
+								<v-icon>mdi-plus</v-icon>
+							</v-btn>
+							<v-btn
+								color='red'
+								@click='removeOutput(outputIndex)'
+								:disabled='device.outputs.length === 1'
+								size='small'
+							>
+								<v-icon>mdi-minus</v-icon>
+							</v-btn>
+						</v-btn-group>
+					</v-col>
+				</v-row>
+				<v-btn
+					v-if='device.outputs.length === 0'
+					color='success'
+					@click='addOutput()'
+				>
+					<v-icon>mdi-plus</v-icon>
+				</v-btn>
+				<template #actions>
 					<v-btn
 						v-if='action === "add"'
 						color='success'
@@ -171,8 +168,8 @@ limitations under the License.
 					>
 						{{ $t('core.actions.cancel') }}
 					</v-btn>
-				</v-card-actions>
-			</v-card>
+				</template>
+			</Card>
 		</v-form>
 	</v-dialog>
 </template>
@@ -181,9 +178,12 @@ limitations under the License.
 import {Ref, ref, watchEffect} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
+import {useDisplay} from 'vuetify';
 import {VForm} from 'vuetify/components';
 
+import Card from '@/components/Card.vue';
 import FormValidator from '@/helpers/formValidator';
+import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import DeviceService from '@/services/DeviceService';
 import {
 	DeviceAdd,
@@ -192,8 +192,7 @@ import {
 	DeviceOutput,
 	DeviceOutputWithMeasurements
 } from '@/types/device';
-import {ModalWindowHelper} from '@/helpers/modalWindowHelper';
-import {useDisplay} from 'vuetify';
+import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 
 interface Props {
 	/// Action to perform
@@ -203,7 +202,9 @@ interface Props {
 }
 
 const i18n = useI18n();
+const loadingSpinner = useLoadingSpinnerStore();
 const service = new DeviceService();
+
 const emit = defineEmits(['save']);
 const props = defineProps<Props>();
 const dialog = ref(false);
@@ -267,20 +268,57 @@ function removeOutput(index: number): void {
 	device.value.outputs.splice(index, 1);
 }
 
+/**
+ * Adds a new device
+ * @param {DeviceAdd} data Device to add
+ */
+async function add(data: DeviceAdd): Promise<void> {
+	await service.add(data)
+		.then(() => {
+			toast.success(i18n.t('core.devices.add.messages.success', {name: data.name}));
+		})
+		.catch(() => {
+			toast.error(i18n.t('core.devices.add.messages.error', {name: data.name}));
+		});
+	loadingSpinner.hide();
+	emit('save');
+}
+
+/**
+ * Edits a device
+ * @param {string} id Device ID
+ * @param {DeviceModify} data Device to edit
+ */
+async function edit(id: string, data: DeviceModify): Promise<void> {
+	await service.edit(id, data)
+		.then(() => {
+			toast.success(i18n.t('core.devices.edit.messages.success', {name: data.name}));
+		})
+		.catch(() => {
+			toast.error(i18n.t('core.devices.edit.messages.error', {name: data.name}));
+		});
+	loadingSpinner.hide();
+	emit('save');
+}
+
+/**
+ * Submits the form
+ */
 async function submit(): Promise<void> {
-	const {valid} = await form.value!.validate();
+	if (form.value === null) {
+		return;
+	}
+	const {valid} = await form.value.validate();
 	if (!valid) {
 		return;
 	}
 	close();
+	loadingSpinner.show();
 	if (props.action === 'add') {
-		service.add(device.value as DeviceAdd).then(() => {
-			emit('save');
-		});
+		await add(device.value as DeviceAdd);
 	} else if (props.id !== undefined) {
-		service.edit(props.id, device.value as DeviceModify).then(() => {
-			emit('save');
-		});
+		await edit(props.id, device.value as DeviceModify);
 	}
 }
+
 </script>

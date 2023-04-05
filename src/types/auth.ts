@@ -34,9 +34,17 @@ export interface PasswordRecovery {
 }
 
 /**
- * Sign in response
+ * Password set
  */
-export interface SignInResponse {
+export interface PasswordSet {
+	/// User password
+	password: string;
+}
+
+/**
+ * Signed in user - user info with JWT token
+ */
+export interface SignedInUser {
 	/// JWT token
 	token: string;
 	/// User info

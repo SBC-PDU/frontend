@@ -154,6 +154,8 @@ function getStateColor(state: AccountState): string {
 			return 'green';
 		case AccountState.Unverified:
 			return 'orange';
+		case AccountState.Invited:
+			return 'blue';
 		case AccountState.Blocked:
 			return 'red';
 	}
@@ -170,6 +172,8 @@ function getStateIcon(state: AccountState): string {
 			return 'mdi-check';
 		case AccountState.Unverified:
 			return 'mdi-help';
+		case AccountState.Invited:
+			return 'mdi-email';
 		case AccountState.Blocked:
 			return 'mdi-lock';
 	}

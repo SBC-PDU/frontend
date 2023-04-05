@@ -16,28 +16,19 @@ limitations under the License.
 
 <template>
 	<Head>
-		<title>{{ $t('core.sign.in.title') }}</title>
+		<title>{{ $t('core.password.set.title') }}</title>
 	</Head>
 	<Card>
 		<template #title>
-			{{ $t('core.sign.in.title') }}
+			{{ $t('core.password.set.title') }}
 		</template>
-		<v-form ref='form' @submit.prevent='onSubmit'>
-			<v-text-field
-				v-model='credentials.email'
-				:label='$t("core.user.fields.email")'
-				:rules='[
-					(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
-					(v: string) => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
-				]'
-				required
-				prepend-inner-icon='mdi-email'
-			/>
+		{{ $t('core.password.set.text') }}
+		<v-form @submit.prevent='submit' ref='form'>
 			<PasswordField
-				v-model='credentials.password'
-				:label='$t("core.user.fields.password")'
+				v-model='value.password'
+				:label='$t("core.user.fields.newPassword")'
 				:rules='[
-					(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
+					v => FormValidator.isRequired(v, $t("core.user.messages.emptyNewPassword")),
 				]'
 				required
 				prepend-inner-icon='mdi-key'
@@ -45,9 +36,9 @@ limitations under the License.
 			<v-btn
 				color='primary'
 				type='submit'
-				prepend-icon='mdi-login'
+				prepend-icon='mdi-account-key'
 			>
-				{{ $t('core.sign.in.button') }}
+				{{ $t('core.password.set.button') }}
 			</v-btn>
 		</v-form>
 	</Card>
@@ -58,24 +49,36 @@ import {Head} from '@vueuse/head';
 import {AxiosError} from 'axios';
 import {ref, Ref} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {useRoute, useRouter} from 'vue-router';
 import {toast} from 'vue3-toastify';
+import {useRouter} from 'vue-router';
 import {VForm} from 'vuetify/components';
+import * as uuid from 'uuid';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
 import FormValidator from '@/helpers/formValidator';
+import AuthenticationService from '@/services/AuthenticationService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {useUserStore} from '@/store/user';
-import {Credentials} from '@/types/auth';
+import {PasswordSet, SignedInUser} from '@/types/auth';
+
+const props = defineProps({
+	uuid: {
+		type: String,
+		required: true,
+		validator(value: string): boolean {
+			return uuid.validate(value) && uuid.version(value) === 4;
+		},
+	},
+});
 
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
-const route = useRoute();
 const router = useRouter();
+const service = new AuthenticationService();
 const userStore = useUserStore();
-const credentials: Ref<Credentials> = ref({
-	email: '',
+
+const value: Ref<PasswordSet> = ref({
 	password: '',
 });
 const form: Ref<typeof VForm | null> = ref(null);
@@ -83,34 +86,36 @@ const form: Ref<typeof VForm | null> = ref(null);
 /**
  * Submit the form
  */
-async function onSubmit(): Promise<void> {
+async function submit(): Promise<void> {
 	if (form.value === null) {
 		return;
 	}
-	loadingSpinner.show();
 	const {valid} = await form.value.validate();
 	if (!valid) {
 		return;
 	}
-	await userStore.signIn(credentials.value).then(() => {
-		let destination = (route?.query?.redirect as string | undefined) ?? '/';
-		if (destination.startsWith('/auth/sign/in')) {
-			destination = '/';
-		}
-		router.push(destination);
-		loadingSpinner.hide();
-		toast.success(i18n.t('core.sign.in.messages.success').toString());
-	}).catch((error: AxiosError) => {
-		loadingSpinner.hide();
-		if (error.response?.status === 400) {
-			toast.error(i18n.t('core.sign.in.messages.invalidCredentials').toString());
-			return;
-		} else if (error.response?.status === 403) {
-			toast.error(i18n.t('core.sign.in.messages.accountBlocked').toString());
-			return;
-		}
-		toast.error(i18n.t('core.sign.in.messages.error').toString());
-	});
+	loadingSpinner.show();
+	await service.passwordSet(props.uuid, value.value)
+		.then((response: SignedInUser) => {
+			loadingSpinner.hide();
+			userStore.setUserInfo(response);
+			toast.success(i18n.t('core.password.set.messages.success'));
+			router.push('/');
+		})
+		.catch((error: AxiosError) => {
+			loadingSpinner.hide();
+			switch (error.response?.status) {
+				case 404:
+					toast.error(i18n.t('core.password.set.messages.notFound'));
+					return;
+				case 410:
+					toast.error(i18n.t('core.password.set.messages.expired'));
+					return;
+				default:
+					toast.error(i18n.t('core.password.set.messages.error'));
+					return;
+			}
+		});
 }
 
 </script>

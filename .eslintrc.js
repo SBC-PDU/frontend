@@ -5,12 +5,17 @@ module.exports = {
 		node: true,
 	},
 	extends: [
+		'eslint:recommended',
+		'plugin:@typescript-eslint/recommended',
 		'plugin:vue/vue3-essential',
 		'plugin:vuetify/recommended',
-		'eslint:recommended',
 		'@vue/eslint-config-typescript',
 	],
+	plugins: [
+		'@typescript-eslint',
+	],
 	rules: {
+		'@typescript-eslint/ban-ts-comment': 'off',
 		'vue/multi-word-component-names': 'off',
 		'indent': [
 			'error',

@@ -18,22 +18,26 @@ limitations under the License.
 	<Head>
 		<title>{{ $t('core.account.verification.title') }}</title>
 	</Head>
-	<v-card>
-		<v-card-title class='bg-primary mb-4'>
+	<Card>
+		<template #title>
 			{{ $t('core.account.verification.title') }}
-		</v-card-title>
-		<v-card-text>
-			<vue-countdown
-				v-if='success'
-				:auto-start='true'
-				:time='10_000'
-				v-slot='{ seconds }'
-				@end='redirect'
-			>
-				{{ $t('core.account.verification.redirect', {countdown: seconds}) }}
-			</vue-countdown>
-		</v-card-text>
-	</v-card>
+		</template>
+		<vue-countdown
+			v-if='state === State.Success'
+			:auto-start='true'
+			:time='10_000'
+			v-slot='{ seconds }'
+			@end='redirect'
+		>
+			{{ $t('core.account.verification.redirect', {countdown: seconds}) }}
+		</vue-countdown>
+		<v-alert
+			v-else-if='state !== State.Loading'
+			type='error'
+		>
+			{{ $t(`core.account.verification.messages.${state.toString()}`) }}
+		</v-alert>
+	</Card>
 </template>
 
 <script lang='ts' setup>
@@ -45,9 +49,30 @@ import {useI18n} from 'vue-i18n';
 import {useRouter} from 'vue-router';
 import {toast} from 'vue3-toastify';
 
+import Card from '@/components/Card.vue';
 import AccountService from '@/services/AccountService';
 import {useUserStore} from '@/store/user';
-import {SignInResponse} from '@/types/auth';
+import {SignedInUser} from '@/types/auth';
+
+/**
+ * Account verification states
+ */
+enum State {
+	/// Loading
+	Loading = 'loading',
+	/// Successfully verified
+	Success = 'success',
+	/// User is banned
+	Banned = 'banned',
+	/// Verification not found
+	NotFound = 'notFound',
+	/// User is already verified
+	AlreadyVerified = 'alreadyVerified',
+	/// Expired verification
+	Expired = 'expired',
+	/// Generic error
+	Error = 'error',
+}
 
 interface Props {
 	/// Verification UUID
@@ -59,8 +84,7 @@ const router = useRouter();
 const service = new AccountService();
 const store = useUserStore();
 
-const error: Ref<string|null> = ref(null);
-const success: Ref<boolean> = ref(false);
+const state: Ref<State> = ref(State.Loading);
 const props = defineProps<Props>();
 
 function redirect(): void {
@@ -68,28 +92,32 @@ function redirect(): void {
 }
 
 function verify(): void {
-	service.verify(props.uuid).then((response: SignInResponse): void => {
-		success.value = true;
+	service.verify(props.uuid).then((response: SignedInUser): void => {
+		state.value = State.Success;
 		store.setUserInfo(response);
 		toast.success(i18n.t('core.account.verification.messages.success').toString());
 	}).catch((error: AxiosError) => {
 		switch (error.response?.status) {
 			case 400:
+				state.value = State.AlreadyVerified;
 				toast.error(i18n.t('core.account.verification.messages.alreadyVerified').toString());
 				break;
 			case 403:
+				state.value = State.Banned;
 				toast.error(i18n.t('core.account.verification.messages.banned').toString());
 				break;
 			case 404:
+				state.value = State.NotFound;
 				toast.error(i18n.t('core.account.verification.messages.notFound').toString());
 				break;
 			case 410:
+				state.value = State.Expired;
 				toast.error(i18n.t('core.account.verification.messages.expired').toString());
 				break;
 			default:
+				state.value = State.Error;
 				toast.error(i18n.t('core.account.verification.messages.error').toString());
 				break;
-
 		}
 	});
 }

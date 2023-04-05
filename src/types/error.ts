@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-import {useDisplay} from 'vuetify';
-
 /**
- * Model window helpers
+ * Error
  */
-export default class ModalWindowHelper {
-	public static getWidth(): string {
-		const display = useDisplay();
-		if (display.lgAndUp.value) {
-			return '50%';
-		}
-		if (display.md.value) {
-			return '75%';
-		}
-		return '100%';
-	}
+export interface Error {
+	/// Error code
+	code: number;
+	/// Error message
+	message: string;
+	/// Status
+	status: 'error';
 }

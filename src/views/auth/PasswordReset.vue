@@ -16,30 +16,29 @@ limitations under the License.
 
 <template>
 	<Head>
-		<title>{{ $t('core.password.recovery.title') }}</title>
+		<title>{{ $t('core.password.reset.title') }}</title>
 	</Head>
 	<Card>
 		<template #title>
-			{{ $t('core.password.recovery.title') }}
+			{{ $t('core.password.reset.title') }}
 		</template>
-		{{ $t('core.password.recovery.text') }}
-		<v-form @submit.prevent='submit' ref='form' class='mt-4'>
-			<v-text-field
-				v-model='recovery.email'
-				:label='$t("core.user.fields.email")'
+		{{ $t('core.password.reset.text') }}
+		<v-form @submit.prevent='submit' ref='form'>
+			<PasswordField
+				v-model='reset.password'
+				:label='$t("core.user.fields.newPassword")'
 				:rules='[
-					v => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
-					v => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
+					v => FormValidator.isRequired(v, $t("core.user.messages.emptyNewPassword")),
 				]'
 				required
-				prepend-inner-icon='mdi-email'
+				prepend-inner-icon='mdi-key'
 			/>
 			<v-btn
 				color='primary'
 				type='submit'
 				prepend-icon='mdi-account-key'
 			>
-				{{ $t('core.password.recovery.button') }}
+				{{ $t('core.password.reset.button') }}
 			</v-btn>
 		</v-form>
 	</Card>
@@ -47,22 +46,38 @@ limitations under the License.
 
 <script lang='ts' setup>
 import {Head} from '@vueuse/head';
+import {AxiosError} from 'axios';
 import {ref, Ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 import {useRouter} from 'vue-router';
 import {VForm} from 'vuetify/components';
+import * as uuid from 'uuid';
 
 import Card from '@/components/Card.vue';
+import PasswordField from '@/components/PasswordField.vue';
 import FormValidator from '@/helpers/formValidator';
 import AuthenticationService from '@/services/AuthenticationService';
-import {PasswordRecovery} from '@/types/auth';
+import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
+import {PasswordSet} from '@/types/auth';
+
+const props = defineProps({
+	uuid: {
+		type: String,
+		required: true,
+		validator(value: string): boolean {
+			return uuid.validate(value) && uuid.version(value) === 4;
+		},
+	},
+});
 
 const i18n = useI18n();
+const loadingSpinner = useLoadingSpinnerStore();
 const router = useRouter();
 const service = new AuthenticationService();
-const recovery: Ref<PasswordRecovery> = ref({
-	email: '',
+
+const reset: Ref<PasswordSet> = ref({
+	password: '',
 });
 const form: Ref<typeof VForm | null> = ref(null);
 
@@ -77,13 +92,27 @@ async function submit(): Promise<void> {
 	if (!valid) {
 		return;
 	}
-	service.passwordRecovery(recovery.value)
+	loadingSpinner.show();
+	await service.passwordReset(props.uuid, reset.value)
 		.then(() => {
-			router.push({name: 'SignIn'});
-			toast.success(i18n.t('core.password.recovery.messages.success'));
+			loadingSpinner.hide();
+			toast.success(i18n.t('core.password.reset.messages.success'));
+			router.push('/');
 		})
-		.catch(() => {
-			toast.error(i18n.t('core.password.recovery.messages.error'));
+		.catch((error: AxiosError) => {
+			loadingSpinner.hide();
+			switch (error.response?.status) {
+				case 404:
+					toast.error(i18n.t('core.password.reset.messages.notFound'));
+					return;
+				case 410:
+					toast.error(i18n.t('core.password.reset.messages.expired'));
+					return;
+				default:
+					toast.error(i18n.t('core.password.reset.messages.error'));
+					return;
+			}
 		});
 }
+
 </script>

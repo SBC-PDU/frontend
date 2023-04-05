@@ -15,8 +15,8 @@ limitations under the License.
 -->
 
 <template>
-	<v-card>
-		<v-card-title class='bg-grey'>
+	<Card header-color='grey'>
+		<template #title>
 			<v-icon>mdi-chart-timeline-variant</v-icon>
 			{{ $t('core.devices.detail.measurements.title') }}
 			<div class='float-end'>
@@ -43,21 +43,18 @@ limitations under the License.
 				>{{ $t('core.devices.detail.measurements.reload') }}
 				</v-btn>
 			</div>
-		</v-card-title>
-		<v-card-text>
-			<v-chart
-				v-if='loaded'
-				:autoresize='true'
-				:option='options'
-				class='chart'
-			/>
-		</v-card-text>
-	</v-card>
+		</template>
+		<v-chart
+			v-if='loaded'
+			:autoresize='true'
+			:option='options'
+			class='chart'
+		/>
+	</Card>
 </template>
 
 <script lang='ts' setup>
-import {use} from 'echarts/core';
-import {CanvasRenderer} from 'echarts/renderers';
+import {EChartsOption, SeriesOption} from 'echarts';
 import {LineChart} from 'echarts/charts';
 import {
 	DataZoomComponent,
@@ -67,13 +64,21 @@ import {
 	ToolboxComponent,
 	TooltipComponent,
 } from 'echarts/components';
-import VChart from 'vue-echarts';
-import {EChartsOption, SeriesOption} from 'echarts';
+import {use} from 'echarts/core';
+import {CanvasRenderer} from 'echarts/renderers';
 import {reactive, Ref, ref, watchEffect} from 'vue';
-import {DeviceDetail, DeviceOutputWithMeasurements, DeviceOutputMeasurement, DeviceOutputMeasurements} from '@/types/device';
-import DeviceService from '@/services/DeviceService';
+import VChart from 'vue-echarts';
 import {useI18n} from 'vue-i18n';
+
+import Card from '@/components/Card.vue';
+import DeviceService from '@/services/DeviceService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
+import {
+	DeviceDetail,
+	DeviceOutputWithMeasurements,
+	DeviceOutputMeasurement,
+	DeviceOutputMeasurements,
+} from '@/types/device';
 
 use([
 	CanvasRenderer,

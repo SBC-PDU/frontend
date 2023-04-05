@@ -143,11 +143,19 @@
 			"title": "Napájecí jednotky",
 			"add": {
 				"title": "Přidání nové napájecí jednotky",
-				"activator": "Přidat jednotku"
+				"activator": "Přidat jednotku",
+				"messages": {
+					"success": "Napájecí jednotka {name} byla úspěšně přidána.",
+					"error": "Napájecí jednotku {name} se nepodařilo přidat."
+				}
 			},
 			"edit": {
 				"title": "Úprava napájecí jednotky",
-				"activator": "Upravit jednotku"
+				"activator": "Upravit jednotku",
+				"messages": {
+					"success": "Napájecí jednotka {name} byla úspěšně upravena.",
+					"error": "Napájecí jednotku {name} se nepodařilo upravit."
+				}
 			},
 			"delete": {
 				"title": "Odstranění napájecí jednotky",
@@ -179,11 +187,19 @@
 						"1mo": "Poslední měsíc"
 					}
 				},
+				"messages": {
+					"fetchFailed": "Nepodařilo se načíst informace o napájecí jednotce {name}.",
+					"notFound": "Napájecí jednotka {name} nebyla nalezena."
+				},
 				"outputs": {
 					"messages": {
 						"success": {
 							"switchedOn": "Výstup #{index} ({name}) byl zapnut.",
 							"switchedOff": "Výstup #{index} ({name}) byl vypnut."
+						},
+						"error": {
+							"switchedOn": "Výstup #{index} ({name}) se nepodařilo zapnout.",
+							"switchedOff": "Výstup #{index} ({name}) se nepodařilo vypnout."
 						}
 					},
 					"reload": "Obnovit",
@@ -261,16 +277,37 @@
 					"success": "Požadavek pro obnovu hesla byl úspěšně odeslán",
 					"error": "Při odeslání požadavku pro obnovu hesla nastala chyba."
 				}
+			},
+			"reset": {
+				"title": "Nastavení nového hesla",
+				"text": "Zadejte prosím nové heslo pro Váš účet.",
+				"button": "Nastavit nové heslo",
+				"messages": {
+					"success": "Heslo bylo úspěšně nastaveno.",
+					"notFound": "Požadavek pro obnovu hesla nebyl nalezen.",
+					"expired": "Požadavek pro obnovu hesla již vypršel.",
+					"error": "Při nastavování hesla nastala chyba."
+				}
+			},
+			"set": {
+				"title": "Nastavení hesla",
+				"text": "Zadejte prosím heslo pro Váš účet.",
+				"button": "Nastavit heslo",
+				"messages": {
+					"success": "Heslo bylo úspěšně nastaveno.",
+					"notFound": "Požadavek pro nastavení hesla nebyl nalezen.",
+					"expired": "Požadavek pro nastavení hesla již vypršel.",
+					"error": "Při nastavování hesla nastala chyba."
+				}
 			}
 		},
 		"profile": {
 			"title": "Uživatelský profil",
 			"fields": {
-				"passwordChange": "Změnit heslo",
-				"oldPassword": "Stávající heslo",
-				"newPassword": "Nové heslo"
+				"passwordChange": "Chcete změnit vaše heslo?"
 			},
 			"messages": {
+				"incorrectCurrentPassword": "Stávající heslo není správné.",
 				"error": "Uživatelský profil se nepodařilo aktualizovat.",
 				"success": "Uživatelský profil byl úspěšně aktualizován."
 			}
@@ -281,6 +318,8 @@
 				"name": "Jméno",
 				"email": "E-mailová adresa",
 				"password": "Heslo",
+				"oldPassword": "Stávající heslo",
+				"newPassword": "Nové heslo",
 				"role": "Role",
 				"language": "Jazyk",
 				"state": "Stav"
@@ -289,6 +328,8 @@
 				"emptyName": "Zadejte prosím jméno.",
 				"emptyEmail": "Zadejte prosím e-mailovou adresu.",
 				"emptyPassword": "Zadejte prosím heslo.",
+				"emptyOldPassword": "Zadejte prosím stávající heslo.",
+				"emptyNewPassword": "Zadejte prosím nové heslo.",
 				"emptyRole": "Vyberte prosím roli.",
 				"emptyLanguage": "Vyberte prosím jazyk.",
 				"invalidEmail": "Zadejte prosím platnou e-mailovou adresu."
@@ -300,7 +341,8 @@
 			"states": {
 				"blocked": "Zablokovaný",
 				"unverified": "Neověřený",
-				"verified": "Ověřený"
+				"verified": "Ověřený",
+				"invited": "Pozvaný"
 			},
 			"verification": {
 				"resend": {

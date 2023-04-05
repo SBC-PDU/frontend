@@ -18,14 +18,12 @@ limitations under the License.
 	<Head>
 		<title>{{ $t('core.openApi.title') }}</title>
 	</Head>
-	<v-card>
-		<v-card-title class='bg-primary'>
+	<Card>
+		<template #title>
 			{{ $t('core.openApi.title') }}
-		</v-card-title>
-		<v-card-text>
-			<div class='swagger' id='swagger'></div>
-		</v-card-text>
-	</v-card>
+		</template>
+		<div class='swagger' id='swagger' />
+	</Card>
 </template>
 
 <script lang='ts' setup>
@@ -35,6 +33,7 @@ import 'swagger-ui/dist/swagger-ui.css';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 
+import Card from '@/components/Card.vue';
 import {OpenApiService} from '@/services/OpenApiService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 

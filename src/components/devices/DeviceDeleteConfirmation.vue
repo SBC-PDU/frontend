@@ -18,24 +18,24 @@ limitations under the License.
 	<v-dialog
 		v-model='dialog'
 		persistent
+		scrollable
 		:width='modalWidth'
 	>
 		<template #activator='{ props }'>
-			<v-btn
+			<v-icon
 				v-bind='props'
-				variant='plain'
+				color='error'
+				class='me-2'
 			>
-				<v-icon color='error'>mdi-trash-can-outline</v-icon>
-			</v-btn>
+				mdi-trash-can
+			</v-icon>
 		</template>
-		<v-card>
-			<v-card-title class='bg-red-darken-1'>
+		<Card header-color='red-darken-1' style='max-height: 90vh'>
+			<template #title>
 				{{ $t('core.devices.delete.title') }}
-			</v-card-title>
-			<v-card-text>
-				{{ $t('core.devices.delete.message', {name: device.name, macAddress: device.macAddress}) }}
-			</v-card-text>
-			<v-card-actions class='bg-grey-lighten-2'>
+			</template>
+			{{ $t('core.devices.delete.message', {name: device.name, macAddress: device.macAddress}) }}
+			<template #actions>
 				<v-btn
 					color='error'
 					variant='text'
@@ -50,8 +50,8 @@ limitations under the License.
 				>
 					{{ $t('core.actions.cancel') }}
 				</v-btn>
-			</v-card-actions>
-		</v-card>
+			</template>
+		</Card>
 	</v-dialog>
 </template>
 
@@ -60,7 +60,8 @@ import {ref} from 'vue';
 import {toast} from 'vue3-toastify';
 import {useI18n} from 'vue-i18n';
 
-import {ModalWindowHelper} from '@/helpers/modalWindowHelper';
+import Card from '@/components/Card.vue';
+import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import DeviceService from '@/services/DeviceService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {Device} from '@/types/device';

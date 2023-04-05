@@ -18,96 +18,59 @@ limitations under the License.
 	<Head>
 		<title>{{ $t('core.devices.detail.title', {name: device?.name}) }}</title>
 	</Head>
-	<v-card id='info' class='mb-4'>
-		<v-card-title class='bg-primary'>
-			<v-icon>mdi-information-variant</v-icon>
-			{{ $t('core.devices.detail.info.title') }}
-			<DeviceForm
-				v-if='device !== null'
-				action='edit'
-				:id='device.id'
-			/>
-		</v-card-title>
-		<v-card-text>
-			<v-table v-if='device !== null'>
-				<tbody>
-					<tr>
-						<th>{{ $t('core.devices.fields.name') }}</th>
-						<td>{{ device?.name }}</td>
-					</tr>
-					<tr>
-						<th>{{ $t('core.devices.fields.macAddress') }}</th>
-						<td>{{ device?.macAddress }}</td>
-					</tr>
-					<tr>
-						<th>{{ $t('core.devices.fields.lastSeen') }}</th>
-						<td>{{ $d(device?.lastSeen, 'long') }}</td>
-					</tr>
-				</tbody>
-			</v-table>
-		</v-card-text>
-	</v-card>
-	<v-card id='outputs' class='mb-4'>
-		<v-card-title class='bg-grey'>
-			<v-icon>mdi-power</v-icon>
-			{{ $t('core.devices.detail.outputs.title') }}
-			<v-btn
-				class='float-end'
-				color='primary'
-				prepend-icon='mdi-refresh'
-				@click='fetchData()'
-			>{{ $t('core.devices.detail.outputs.reload') }}
-			</v-btn>
-		</v-card-title>
-		<v-card-text>
-			<v-table>
-				<thead>
-					<tr>
-						<th>{{ $t('core.devices.fields.outputs.index') }}</th>
-						<th>{{ $t('core.devices.fields.outputs.name') }}</th>
-						<th>{{ $t('core.devices.fields.outputs.state') }}</th>
-						<th>{{ $t('core.devices.fields.outputs.alert') }}</th>
-						<th>{{ $t('core.devices.fields.measurements.voltage') }}</th>
-						<th>{{ $t('core.devices.fields.measurements.current') }}</th>
-					</tr>
-				</thead>
-				<tbody v-if='device !== null'>
-					<tr v-for='output in device.outputs' :key='output.index'>
-						<td>{{ output.index }}</td>
-						<td>{{ output.name }}</td>
-						<td>
-							<v-switch v-model='output.enabled' color='primary' @update:model-value='switchOutput(output)'/>
-						</td>
-						<td>
-							<v-chip :color='output.alert ? "error" : "success"'>
-								{{ $t(`core.devices.fields.outputs.alertValues.${output.alert.toString()}`) }}
-							</v-chip>
-						</td>
-						<td>{{ Number(output.voltage).toFixed(2).toString() }} V</td>
-						<td>{{ Number(output.current).toFixed(2).toString() }} mA</td>
-					</tr>
-				</tbody>
-			</v-table>
-		</v-card-text>
-	</v-card>
+	<v-alert
+		v-if='state === State.Error'
+		type='error'
+		class='mb-4'
+	>
+		{{ $t('core.devices.detail.messages.fetchFailed') }}
+	</v-alert>
+	<v-alert
+		v-if='state === State.NotFound'
+		type='error'
+		class='mb-4'
+	>
+		{{ $t('core.devices.detail.messages.notFound') }}
+	</v-alert>
+	<DeviceInfo v-if='device !== null' :device='device' @reload='fetchData(true)' />
+	<DeviceOutputs v-if='device !== null' :device='device' @reload='fetchData(false)' />
 	<DeviceMeasurementChart v-if='device !== null' :device='toRaw(device)'/>
 </template>
 
 <script lang='ts' setup>
 import {Head} from '@vueuse/head';
+import {AxiosError} from 'axios';
 import {ref, toRaw, watchEffect} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 
+import DeviceInfo from '@/components/devices/DeviceInfo.vue';
+import DeviceOutputs from '@/components/devices/DeviceOutputs.vue';
 import DeviceMeasurementChart from '@/components/devices/DeviceMeasurementChart.vue';
 import DeviceService from '@/services/DeviceService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {DeviceDetail, DeviceOutputWithMeasurements} from '@/types/device';
-import DeviceForm from '@/components/devices/DeviceForm.vue';
+import {DeviceDetail} from '@/types/device';
 
+/**
+ * Device detail props
+ */
 interface Props {
 	/// PDU ID
 	id: string;
+}
+
+/**
+ * Device detail states
+ */
+enum State {
+	/// Loading
+	Loading,
+	/// Loaded
+	Loaded,
+	/// Not found
+	NotFound,
+	/// Error
+	Error
 }
 
 const i18n = useI18n();
@@ -115,52 +78,34 @@ const loadingSpinner = useLoadingSpinnerStore();
 const service = new DeviceService();
 const props = defineProps<Props>();
 const device = ref<DeviceDetail | null>(null);
+const state = ref(State.Loading);
 
 watchEffect(async () => {
 	fetchData();
 });
 
-function fetchData(showSpinner: boolean = true): void {
+/**
+ * Fetch information about device
+ * @param {boolean} showSpinner Show loading spinner
+ */
+function fetchData(showSpinner = true): void {
+	state.value = State.Loading;
 	if (showSpinner) {
 		loadingSpinner.show();
 	}
 	service.get(props.id).then((response: DeviceDetail) => {
+		state.value = State.Loaded;
 		device.value = response;
 		loadingSpinner.hide();
-	}).catch(() => {
+	}).catch((error: AxiosError) => {
 		loadingSpinner.hide();
-		toast.error(i18n.t('core.devices.detail.messages.fetchFailed').toString());
+		if (error.response?.status === 404) {
+			state.value = State.NotFound;
+		} else {
+			toast.error(i18n.t('core.devices.detail.messages.fetchFailed').toString());
+			state.value = State.Error;
+		}
 	});
 }
 
-/**
- * Switches the output of a device
- * @param {DeviceOutputWithMeasurements} output Output to switch
- */
-function switchOutput(output: DeviceOutputWithMeasurements): Promise<void> {
-	loadingSpinner.show();
-	return service.switchOutput(props.id, output.index, output.enabled).then(() => {
-		loadingSpinner.hide();
-		setTimeout((): void => {
-			fetchData(false);
-		}, 3_000);
-		if (output.enabled) {
-			toast.success(i18n.t('core.devices.detail.outputs.messages.success.switchedOn', {
-				index: output.index,
-				name: output.name
-			}).toString());
-		} else {
-			toast.success(i18n.t('core.devices.detail.outputs.messages.success.switchedOff', {
-				index: output.index,
-				name: output.name
-			}).toString());
-		}
-	}).catch(() => {
-		loadingSpinner.hide();
-		toast.error(i18n.t('core.devices.detail.outputs.messages.switchFailed', {
-			index: output.index,
-			name: output.name
-		}).toString());
-	});
-}
 </script>

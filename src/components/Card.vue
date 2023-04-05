@@ -15,24 +15,41 @@ limitations under the License.
 -->
 
 <template>
-	<v-text-field
-		:model-value='modelValue'
-		v-bind='$attrs'
-		:append-inner-icon='showPassword ? "mdi-eye" : "mdi-eye-off"'
-		:type='showPassword ? "text": "password"'
-		@click:append-inner='showPassword = !showPassword'
-	/>
+	<v-card class='mb-4'>
+		<v-card-title :class='headerClass'>
+			<slot name='title' />
+		</v-card-title>
+		<v-card-text class='card-text'>
+			<slot />
+		</v-card-text>
+		<v-card-actions v-if='$slots.actions' :class='actionsClass'>
+			<slot name='actions' />
+		</v-card-actions>
+	</v-card>
 </template>
 
 <script lang='ts' setup>
-import {ref, Ref} from 'vue';
+import {computed} from 'vue';
 
-const showPassword: Ref<boolean> = ref(false);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const props = defineProps({
-	modelValue: {
+	actionsColor: {
 		type: String,
-		required: true,
+		default: 'grey-lighten-2',
+		required: false
 	},
+	headerColor: {
+		type: String,
+		default: 'primary',
+		required: false
+	}
 });
+const actionsClass = computed(() => `bg-${props.actionsColor}`);
+const headerClass = computed(() => `bg-${props.headerColor}`);
 </script>
+
+<style>
+.card-text {
+	padding: 1rem !important;
+}
+</style>

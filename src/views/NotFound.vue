@@ -18,13 +18,16 @@ limitations under the License.
 	<Head>
 		<title>{{ $t('core.error.404.title') }}</title>
 	</Head>
-	<h1>{{ $t('core.error.404.title') }}</h1>
-	<v-card>
-		<v-card-title>{{ $t('core.error.404.header') }}</v-card-title>
-		<v-card-text>{{ $t('core.error.404.message') }}</v-card-text>
-	</v-card>
+	<Card>
+		<template #title>
+			{{ $t('core.error.404.header') }} - {{ $t('core.error.404.title') }}
+		</template>
+		<p>{{ $t('core.error.404.message') }}</p>
+	</Card>
 </template>
 
 <script lang='ts' setup>
 import {Head} from '@vueuse/head';
+
+import Card from '@/components/Card.vue';
 </script>

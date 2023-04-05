@@ -79,7 +79,19 @@ const routes: RouteRecordRaw[] = [
 								path: 'recovery',
 								name: 'PasswordRecovery',
 								component: () => import('@/views/auth/PasswordRecovery.vue'),
-							}
+							},
+							{
+								path: 'reset/:uuid',
+								name: 'PasswordReset',
+								component: () => import('@/views/auth/PasswordReset.vue'),
+								props: true,
+							},
+							{
+								path: 'set/:uuid',
+								name: 'PasswordSet',
+								component: () => import('@/views/auth/PasswordSet.vue'),
+								props: true,
+							},
 						],
 					},
 					{
@@ -97,7 +109,6 @@ const routes: RouteRecordRaw[] = [
 			{
 				path: 'apiDocs',
 				name: 'ApiDocs',
-				//component: import.meta.env.PROD ? () => import('@/views/OpenApi.vue') : () => import('@/views/NotFound.vue'),
 				component: () => import('@/views/OpenApi.vue'),
 			},
 			{
@@ -130,19 +141,30 @@ const router = createRouter({
 	routes,
 });
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to, from, next) => {
 	const userStore = useUserStore();
-	const whitelist = ['SignIn', 'SignUp', 'NotFound', 'BadNotFound', 'ApiDocs', 'AccountVerification', 'PasswordRecovery'];
+	const whitelist = [
+		'ApiDocs',
+		'AccountVerification',
+		'BadNotFound',
+		'NotFound',
+		'PasswordRecovery',
+		'PasswordReset',
+		'PasswordSet',
+		'SignIn',
+		'SignUp',
+	];
 	if (!userStore.isLoggedIn && !whitelist.includes(to.name as string)) {
 		let query = {...to.query};
 		if (to.path !== '/' && to.name !== 'SignIn') {
 			query = {...query, redirect: to.path};
 		}
-		return {name: 'SignIn', query};
+		return next({name: 'SignIn', query});
 	}
 	if (to.name === 'SignIn' && userStore.isLoggedIn) {
-		return (to.query.redirect as string | undefined) ?? '/';
+		return next((to.query.redirect as string | undefined) ?? '/');
 	}
+	next();
 });
 
 export default router;

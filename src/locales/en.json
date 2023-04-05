@@ -143,11 +143,19 @@
 			"title": "Power distribution units",
 			"add": {
 				"title": "Add a new PDU",
-				"activator": "Add PDU"
+				"activator": "Add PDU",
+				"messages": {
+					"success": "PDU {name} has been successfully created.",
+					"error": "PDU {name} could not be created."
+				}
 			},
 			"edit": {
 				"title": "Edit PDU",
-				"activator": "Edit PDU"
+				"activator": "Edit PDU",
+				"messages": {
+					"success": "PDU {name} has been successfully edited.",
+					"error": "PDU {name} could not be edited."
+				}
 			},
 			"detail": {
 				"title": "PDU - {name}",
@@ -170,11 +178,19 @@
 						"1mo": "Last month"
 					}
 				},
+				"messages": {
+					"fetchFailed": "PDU {name} could not be fetched.",
+					"notFound": "PDU {name} could not be found."
+				},
 				"outputs": {
 					"messages": {
 						"success": {
 							"switchedOn": "Output #{index} ({name}) has been successfully switched on.",
 							"switchedOff": "Output #{index} ({name}) has been successfully switched off."
+						},
+						"error": {
+							"switchedOn": "Output #{index} ({name}) could not be switched on.",
+							"switchedOff": "Output #{index} ({name}) could not be switched off."
 						}
 					},
 					"reload": "Reload",
@@ -249,17 +265,38 @@
 				"text": " Please enter your e-mail address and a password recovery email will be sent to the specified e-mail address",
 				"button": "Recover password",
 				"messages": {
+					"incorrectCurrentPassword": "Current password is incorrect.",
 					"success": "Password recovery request has been successfully sent.",
 					"error": "An error occurred during password recovery request."
+				}
+			},
+			"reset": {
+				"title": "Password reset",
+				"text": "Please enter your new password.",
+				"button": "Reset password",
+				"messages": {
+					"success": "Password has been successfully reset.",
+					"notFound": "Password reset request could not be found.",
+					"expired": "Password reset request has expired.",
+					"error": "An error occurred during password reset."
+				}
+			},
+			"set": {
+				"title": "Set password",
+				"text": "Please enter your new password.",
+				"button": "Set password",
+				"messages": {
+					"success": "Password has been successfully set.",
+					"notFound": "Password set request could not be found.",
+					"expired": "Password set request has expired.",
+					"error": "An error occurred during password set."
 				}
 			}
 		},
 		"profile": {
 			"title": "User profile",
 			"fields": {
-				"passwordChange": "Change password?",
-				"oldPassword": "Current password",
-				"newPassword": "New password"
+				"passwordChange": "Do you want to change your password?"
 			},
 			"messages": {
 				"success": "User profile has been successfully edited.",
@@ -272,6 +309,8 @@
 				"name": "Name",
 				"email": "E-mail address",
 				"password": "Password",
+				"oldPassword": "Current password",
+				"newPassword": "New password",
 				"role": "Role",
 				"language": "Language",
 				"state": "State"
@@ -281,6 +320,8 @@
 				"emptyLanguage": "Please select user language.",
 				"emptyName": "Please enter user name.",
 				"emptyPassword": "Please enter password.",
+				"emptyOldPassword": "Please enter current password.",
+				"emptyNewPassword": "Please enter new password.",
 				"emptyRole": "Please select user role.",
 				"invalidEmail": "Please enter valid e-mail address."
 			},
@@ -291,7 +332,8 @@
 			"states": {
 				"blocked": "Blocked",
 				"unverified": "Unverified",
-				"verified": "Verified"
+				"verified": "Verified",
+				"invited": "Invited"
 			},
 			"verification": {
 				"resend": {

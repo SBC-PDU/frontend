@@ -22,6 +22,8 @@ export enum AccountState {
 	Unverified = 'unverified',
 	/// Verified e-mail address
 	Verified = 'verified',
+	/// Invited account
+	Invited = 'invited',
 	/// Blocked account
 	Blocked = 'blocked',
 }

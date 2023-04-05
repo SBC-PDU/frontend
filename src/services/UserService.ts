@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import {AxiosResponse} from 'axios';
 import * as punycode from 'punycode';
 
 import BaseUrlHelper from '@/helpers/baseUrlHelper';
@@ -61,7 +62,7 @@ export default class UserService extends ApiClient {
 	 */
 	public list(): Promise<UserInfo[]> {
 		return this.getClient().get('users')
-			.then((response: any): UserInfo[] => {
+			.then((response: AxiosResponse): UserInfo[] => {
 				const users = response.data as UserInfo[];
 				return users.map((user: UserInfo) => {
 					/// Convert email to unicode

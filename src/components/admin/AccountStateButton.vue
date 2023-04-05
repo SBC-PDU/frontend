@@ -15,22 +15,20 @@ limitations under the License.
 -->
 
 <template>
-	<v-btn
+	<v-icon
 		v-if='user.state === AccountState.Blocked'
-		size='small'
-		variant='plain'
+		color='green'
+		class='me-2'
+		icon='mdi-lock-off'
 		@click='unblockUser()'
-	>
-		<v-icon color='green' icon='mdi-lock-off'/>
-	</v-btn>
-	<v-btn
+	/>
+	<v-icon
 		v-else
-		size='small'
-		variant='plain'
+		color='red'
+		class='me-2'
+		icon='mdi-lock'
 		@click='blockUser()'
-	>
-		<v-icon color='red' icon='mdi-lock'/>
-	</v-btn>
+	/>
 </template>
 
 <script lang='ts' setup>

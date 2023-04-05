@@ -19,7 +19,7 @@ import punycode from 'punycode/';
 import BaseUrlHelper from '@/helpers/baseUrlHelper';
 import {ApiClient} from '@/services/ApiClient';
 import {AccountModify} from '@/types/account';
-import {SignInResponse} from '@/types/auth';
+import {SignedInUser} from '@/types/auth';
 import {UserInfo} from '@/types/user';
 
 /**
@@ -44,9 +44,9 @@ export default class AccountService extends ApiClient {
 	/**
 	 * Edits user account
 	 * @param {AccountModify} account Account data
-	 * @return {Promise<SignInResponse>} User data
+	 * @return {Promise<SignedInUser>} User data
 	 */
-	public edit(account: AccountModify): Promise<SignInResponse> {
+	public edit(account: AccountModify): Promise<SignedInUser> {
 		const body: AccountModify = account;
 		body.email = punycode.toASCII(account.email);
 		if (!account.changePassword) {
@@ -69,9 +69,9 @@ export default class AccountService extends ApiClient {
 	/**
 	 * Verifies user's e-mail
 	 */
-	public verify(uuid: string): Promise<SignInResponse> {
+	public verify(uuid: string): Promise<SignedInUser> {
 		return this.getClient().post(`account/verification/${uuid}`)
-			.then((response: AxiosResponse): SignInResponse => response.data as SignInResponse);
+			.then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
 	}
 
 }

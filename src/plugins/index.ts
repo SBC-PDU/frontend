@@ -26,8 +26,8 @@ import registerSentry from '@/plugins/sentry';
 
 export function registerPlugins(app: App) {
 	app
-		.use(router)
 		.use(pinia)
+		.use(router)
 		.use(i18n)
 		.use(head)
 		.use(toastify, ToastifyOptions)

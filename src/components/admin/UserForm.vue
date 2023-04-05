@@ -18,6 +18,7 @@ limitations under the License.
 	<v-dialog
 		v-model='dialog'
 		persistent
+		scrollable
 		:width='modalWidth'
 	>
 		<template #activator='{ props }'>
@@ -30,76 +31,71 @@ limitations under the License.
 			>
 				{{ $t('admin.users.add.activator') }}
 			</v-btn>
-			<v-btn
+			<v-icon
 				v-else
 				v-bind='props'
-				size='small'
-				variant='plain'
+				color='primary'
+				class='me-2'
 			>
-				<v-icon color='primary'>mdi-pencil-outline</v-icon>
-			</v-btn>
+				mdi-pencil
+			</v-icon>
 		</template>
-		<v-form ref='form' @submit.prevent='onSubmit'>
-			<v-card>
-				<v-card-title v-if='action === "add"' class='bg-green-darken-1'>
-					{{ $t('admin.users.add.title') }}
-				</v-card-title>
-				<v-card-title v-else class='bg-primary'>
-					{{ $t('admin.users.edit.title') }}
-				</v-card-title>
-				<v-card-text class='mt-4'>
-					<v-text-field
-						v-model='user.name'
-						:label='$t("core.user.fields.name")'
-						:rules='[
-							v => FormValidator.isRequired(v, $t("core.user.messages.emptyName")),
-						]'
-						required
-					/>
-					<v-text-field
-						v-model='user.email'
-						:label='$t("core.user.fields.email")'
-						:rules='[
-							v => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
-							v => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
-						]'
-						required
-					/>
-					<PasswordField
-						v-if='action === "add"'
-						v-model='user.password'
-						:label='$t("core.user.fields.password")'
-						:rules='[
-							(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
-						]'
-						required
-					/>
-					<v-select
-						v-model='user.role'
-						:items='[
-							{title: $t("core.user.roles.admin"), value: UserRole.Admin},
-							{title: $t("core.user.roles.normal"), value: UserRole.Normal},
-						]'
-						:label='$t("core.user.fields.role")'
-						:rules='[
-							v => FormValidator.isRequired(v, $t("core.user.messages.emptyRole")),
-						]'
-						required
-					/>
-					<v-select
-						v-model='user.language'
-						:items='[
-							{title: $t("core.locales.en"), value: UserLanguage.English},
-							{title: $t("core.locales.cs"), value: UserLanguage.Czech},
-						]'
-						:label='$t("core.user.fields.language")'
-						:rules='[
-							v => FormValidator.isRequired(v, $t("core.user.messages.emptyLanguage")),
-						]'
-						required
-					/>
-				</v-card-text>
-				<v-card-actions class='bg-grey-lighten-2'>
+		<v-form ref='form' @submit.prevent='submit'>
+			<Card :header-color='action === "add" ? "green-darken-1" : "primary"' style='max-height: 90vh'>
+				<template #title>
+					{{ action === "add" ? $t('admin.users.add.title') : $t('admin.users.edit.title') }}
+				</template>
+				<v-text-field
+					v-model='user.name'
+					:label='$t("core.user.fields.name")'
+					:rules='[
+						v => FormValidator.isRequired(v, $t("core.user.messages.emptyName")),
+					]'
+					required
+				/>
+				<v-text-field
+					v-model='user.email'
+					:label='$t("core.user.fields.email")'
+					:rules='[
+						v => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
+						v => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
+					]'
+					required
+				/>
+				<PasswordField
+					v-if='action === "add"'
+					v-model='user.password'
+					:label='$t("core.user.fields.password")'
+					:rules='[
+						(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
+					]'
+					required
+				/>
+				<v-select
+					v-model='user.role'
+					:items='[
+						{title: $t("core.user.roles.admin"), value: UserRole.Admin},
+						{title: $t("core.user.roles.normal"), value: UserRole.Normal},
+					]'
+					:label='$t("core.user.fields.role")'
+					:rules='[
+						v => FormValidator.isRequired(v, $t("core.user.messages.emptyRole")),
+					]'
+					required
+				/>
+				<v-select
+					v-model='user.language'
+					:items='[
+						{title: $t("core.locales.en"), value: UserLanguage.English},
+						{title: $t("core.locales.cs"), value: UserLanguage.Czech},
+					]'
+					:label='$t("core.user.fields.language")'
+					:rules='[
+						v => FormValidator.isRequired(v, $t("core.user.messages.emptyLanguage")),
+					]'
+					required
+				/>
+				<template #actions>
 					<v-btn
 						v-if='action === "add"'
 						color='success'
@@ -123,8 +119,8 @@ limitations under the License.
 					>
 						{{ $t('core.actions.cancel') }}
 					</v-btn>
-				</v-card-actions>
-			</v-card>
+				</template>
+			</Card>
 		</v-form>
 	</v-dialog>
 </template>
@@ -137,10 +133,11 @@ import {VForm} from 'vuetify/components';
 
 import PasswordField from '@/components/PasswordField.vue';
 import FormValidator from '@/helpers/formValidator';
-import {ModalWindowHelper} from '@/helpers/modalWindowHelper';
+import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import {UserInfo, UserLanguage, UserModify, UserRole} from '@/types/user';
 import UserService from '@/services/UserService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
+import Card from '@/components/Card.vue';
 
 interface Props {
 	/// Action to perform
@@ -183,15 +180,23 @@ function close(): void {
 	dialog.value = false;
 }
 
-async function onSubmit(): Promise<void> {
-	const {valid} = await form.value!.validate();
+/**
+ * Submits the form
+ */
+async function submit(): Promise<void> {
+	if (form.value === null) {
+		return;
+	}
+	const {valid} = await form.value.validate();
 	if (!valid) {
 		return;
 	}
 	close();
 	loadingSpinner.show();
 	if (props.action === 'add') {
-		service.create(user.value).then(() => {
+		const data = {...user.value};
+		delete data.password;
+		service.create(data).then(() => {
 			loadingSpinner.hide();
 			toast.success(i18n.t('admin.users.add.messages.success', {name: user.value.name, email: user.value.email}));
 		}).catch(() => {

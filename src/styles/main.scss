@@ -22,6 +22,10 @@
 );
 @import '@fontsource/roboto/latin-ext.css';
 
+a {
+	text-decoration: none;
+}
+
 .v-btn {
 	text-transform: none !important;
 }

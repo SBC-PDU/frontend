@@ -21,7 +21,7 @@ import {defineStore} from 'pinia';
 import router from '@/router';
 import AuthenticationService from '@/services/AuthenticationService';
 import {useLocaleStore} from '@/store/locale';
-import {Credentials, SignInResponse} from '@/types/auth';
+import {Credentials, SignedInUser} from '@/types/auth';
 import {AccountState, UserInfo, UserRole} from '@/types/user';
 
 /**
@@ -45,9 +45,9 @@ export const useUserStore = defineStore('user', {
 	actions: {
 		/**
 		 * Sets user info from sign in response
-		 * @param {SignInResponse} response Sign in response
+		 * @param {SignedInUser} response Sign in response
 		 */
-		setUserInfo(response: SignInResponse): void {
+		setUserInfo(response: SignedInUser): void {
 			console.warn(response);
 			const token: JwtPayload = jwtDecode(response.token);
 			this.expiration = token.exp || 0;
@@ -69,7 +69,7 @@ export const useUserStore = defineStore('user', {
 		 */
 		signIn(credentials: Credentials): Promise<void> {
 			const service = new AuthenticationService();
-			return service.signIn(credentials).then((response: SignInResponse) => this.setUserInfo(response));
+			return service.signIn(credentials).then((response: SignedInUser) => this.setUserInfo(response));
 		},
 		/**
 		 * Sign out

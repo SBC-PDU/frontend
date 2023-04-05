@@ -18,82 +18,89 @@ limitations under the License.
 	<Head>
 		<title>{{ $t('core.profile.title') }}</title>
 	</Head>
-	<v-card id='info' class='mb-4'>
-		<v-card-title class='bg-primary'>
+	<Card>
+		<template #title>
 			{{ $t('core.profile.title') }}
-		</v-card-title>
-		<v-card-text class='mt-4'>
-			<v-form ref='form' @submit.prevent='onSubmit'>
-				<v-text-field
-					v-model='user.name'
-					:label='$t("core.user.fields.name")'
-					:rules='[
-						v => FormValidator.isRequired(v, $t("core.user.messages.emptyName")),
-					]'
-					required
-				/>
-				<v-text-field
-					v-model='user.email'
-					:label='$t("core.user.fields.email")'
-					:rules='[
-						v => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
-						v => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
-					]'
-					required
-				/>
-				<v-select
-					v-model='user.language'
-					:items='[
-						{title: $t("core.locales.en"), value: UserLanguage.English},
-						{title: $t("core.locales.cs"), value: UserLanguage.Czech},
-					]'
-					:label='$t("core.user.fields.language")'
-					:rules='[
-						v => FormValidator.isRequired(v, $t("core.user.messages.emptyLanguage")),
-					]'
-					required
-				/>
-				<v-switch
-					v-model='user.changePassword'
-					:label='$t("core.profile.fields.passwordChange")'
-					color='primary'
-				/>
-				<PasswordField
-					v-if='user.changePassword'
-					v-model='user.oldPassword'
-					:label='$t("core.profile.fields.oldPassword")'
-					:rules='[
-						(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
-					]'
-					required
-				/>
-				<PasswordField
-					v-if='user.changePassword'
-					v-model='user.newPassword'
-					:label='$t("core.profile.fields.newPassword")'
-					:rules='[
-						(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
-					]'
-					required
-				/>
-				<v-btn
-					color='primary'
-					type='submit'
-				>
-					{{ $t('core.actions.edit') }}
-				</v-btn>
-			</v-form>
-		</v-card-text>
-	</v-card>
+		</template>
+		<v-form ref='form' class='mt-4' @submit.prevent='onSubmit'>
+			<v-text-field
+				v-model='user.name'
+				:label='$t("core.user.fields.name")'
+				:rules='[
+					v => FormValidator.isRequired(v, $t("core.user.messages.emptyName")),
+				]'
+				required
+				prepend-inner-icon='mdi-account'
+			/>
+			<v-text-field
+				v-model='user.email'
+				:label='$t("core.user.fields.email")'
+				:rules='[
+					v => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
+					v => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
+				]'
+				required
+				prepend-inner-icon='mdi-email'
+			/>
+			<v-select
+				v-model='user.language'
+				:items='[
+					{title: $t("core.locales.en"), value: UserLanguage.English},
+					{title: $t("core.locales.cs"), value: UserLanguage.Czech},
+				]'
+				:label='$t("core.user.fields.language")'
+				:rules='[
+					v => FormValidator.isRequired(v, $t("core.user.messages.emptyLanguage")),
+				]'
+				required
+				prepend-inner-icon='mdi-translate'
+			/>
+			<v-switch
+				v-model='user.changePassword'
+				:label='$t("core.profile.fields.passwordChange")'
+				color='primary'
+				prepend-icon='mdi-key-change'
+			/>
+			<PasswordField
+				v-if='user.changePassword'
+				v-model='user.oldPassword'
+				:label='$t("core.user.fields.oldPassword")'
+				:rules='[
+					(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyOldPassword")),
+				]'
+				required
+				prepend-inner-icon='mdi-key'
+			/>
+			<PasswordField
+				v-if='user.changePassword'
+				v-model='user.newPassword'
+				:label='$t("core.user.fields.newPassword")'
+				:rules='[
+					(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyNewPassword")),
+				]'
+				required
+				prepend-inner-icon='mdi-key'
+			/>
+			<v-btn
+				color='primary'
+				type='submit'
+				prepend-icon='mdi-content-save'
+			>
+				{{ $t('core.actions.edit') }}
+			</v-btn>
+		</v-form>
+	</Card>
 </template>
 
 <script lang='ts' setup>
 import {Head} from '@vueuse/head';
+import {AxiosError} from 'axios';
 import {useI18n} from 'vue-i18n';
 import {ref, Ref} from 'vue';
 import {toast} from 'vue3-toastify';
 import {VForm} from 'vuetify/components';
 
+import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
 import FormValidator from '@/helpers/formValidator';
 import AccountService from '@/services/AccountService';
@@ -140,7 +147,10 @@ loadData();
  * Submit form
  */
 async function onSubmit(): Promise<void> {
-	const {valid} = await form.value!.validate();
+	if (form.value === null) {
+		return;
+	}
+	const {valid} = await form.value.validate();
 	if (!valid) {
 		return;
 	}
@@ -150,8 +160,15 @@ async function onSubmit(): Promise<void> {
 		loadData();
 		loadingSpinner.hide();
 		toast.success(i18n.t('core.profile.messages.success').toString());
-	}).catch(() => {
+	}).catch((error: AxiosError) => {
 		loadingSpinner.hide();
+		if (error.response?.status === 400) {
+			const errorResponse: Error = error.response.data as Error;
+			if (errorResponse.message === 'Incorrect current password.') {
+				toast.error(i18n.t('core.profile.messages.incorrectCurrentPassword').toString());
+				return;
+			}
+		}
 		toast.error(i18n.t('core.profile.messages.error').toString());
 	});
 }
