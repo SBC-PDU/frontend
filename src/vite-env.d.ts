@@ -21,3 +21,6 @@ declare module '*.vue' {
 	const component: DefineComponent<{}, {}, any>;
 	export default component;
 }
+
+/// Git commit hash
+declare const __GIT_COMMIT_HASH__: string;

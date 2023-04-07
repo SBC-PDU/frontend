@@ -16,11 +16,15 @@
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import UnheadVite from '@unhead/addons/vite';
 import vue from '@vitejs/plugin-vue';
+import * as process from 'child_process';
 import path from 'path';
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 import {VitePWA} from 'vite-plugin-pwa';
+
+// Git commit hash
+const gitCommitHash = process.execSync('git rev-parse --short HEAD').toString().trim();
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -43,7 +47,9 @@ export default defineConfig({
 			include: [path.resolve(__dirname, 'src/locales/**')],
 		}),
 	],
-	define: { 'process.env': {} },
+	define: {
+		__GIT_COMMIT_HASH__: JSON.stringify(gitCommitHash),
+	},
 	resolve: {
 		alias: {
 			'@': fileURLToPath(new URL('./src', import.meta.url))

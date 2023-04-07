@@ -48,5 +48,6 @@ export default function registerSentry(app: App, router: Router): void {
 		// of transactions for performance monitoring.
 		// We recommend adjusting this value in production
 		tracesSampleRate: 1.0,
+		release: __GIT_COMMIT_HASH__,
 	});
 }
