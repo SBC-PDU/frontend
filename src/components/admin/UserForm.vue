@@ -185,23 +185,36 @@ const emit = defineEmits(['reload']);
 const props = defineProps<Props>();
 const dialog = ref(false);
 const form: Ref<typeof VForm | null> = ref(null);
-const defaultUser: UserModify | UserAdd = {
+const defaultUser: UserModify = {
 	name: '',
 	email: '',
 	role: UserRole.Normal,
 	language: UserLanguage.English,
-	password: '',
 };
 const modalWidth = ModalWindowHelper.getWidth();
-const user: Ref<UserModify> = ref<UserModify>(defaultUser);
+const user: Ref<UserModify | UserAdd> = ref<UserModify>(defaultUser);
 
 watchEffect(async (): Promise<void> => {
-	user.value = (props.action === 'edit' && props.initUser) ? {
-		name: props.initUser.name,
-		email: props.initUser.email,
-		role: props.initUser.role,
-		language: props.initUser.language,
-	} : {...defaultUser};
+	switch (props.action) {
+		case Action.Add:
+			user.value = {...defaultUser, password: ''} as UserAdd;
+			break;
+		case Action.Edit:
+			if (props.initUser) {
+				user.value = {
+					name: props.initUser.name,
+					email: props.initUser.email,
+					role: props.initUser.role,
+					language: props.initUser.language,
+				};
+			} else {
+				user.value = {...defaultUser};
+			}
+			break;
+		case Action.Invite:
+			user.value = {...defaultUser};
+			break;
+	}
 });
 
 /**
@@ -222,45 +235,76 @@ async function submit(): Promise<void> {
 	if (!valid) {
 		return;
 	}
-	close();
 	loadingSpinner.show();
+	switch (props.action) {
+		case Action.Add:
+			await add();
+			break;
+		case Action.Invite:
+			await invite();
+			break;
+		case Action.Edit:
+			await edit();
+			break;
+	}
+	emit('reload');
+}
+
+/**
+ * Creates a new user
+ */
+async function add(): Promise<void> {
 	const translationParams = {
 		name: user.value.name,
 		email: user.value.email,
 	};
-	switch (props.action) {
-		case Action.Add:
-			await service.create({...user.value} as UserAdd).then(() => {
-				loadingSpinner.hide();
-				toast.success(i18n.t('admin.users.add.messages.success', translationParams));
-			}).catch(() => {
-				loadingSpinner.hide();
-				toast.error(i18n.t('admin.users.add.messages.error', translationParams));
-			});
-			break;
-		case Action.Invite:
-			await service.create({...user.value}).then(() => {
-				loadingSpinner.hide();
-				toast.success(i18n.t('admin.users.invite.messages.success', {
-					name: user.value.name,
-					email: user.value.email
-				}));
-			}).catch(() => {
-				loadingSpinner.hide();
-				toast.error(i18n.t('admin.users.invite.messages.error', translationParams));
-			});
-			break;
-		case Action.Edit:
-			await service.edit(props.initUser!.id, user.value).then(() => {
-				loadingSpinner.hide();
-				toast.success(i18n.t('admin.users.edit.messages.success', translationParams));
-			}).catch(() => {
-				loadingSpinner.hide();
-				toast.error(i18n.t('admin.users.edit.messages.error', translationParams));
-			});
-			break;
+	await service.create(user.value as UserAdd).then(() => {
+		loadingSpinner.hide();
+		close();
+		toast.success(i18n.t('admin.users.add.messages.success', translationParams));
+	}).catch(() => {
+		loadingSpinner.hide();
+		toast.error(i18n.t('admin.users.add.messages.error', translationParams));
+	});
+}
+
+/**
+ * Invites the user
+ */
+async function invite(): Promise<void> {
+	const translationParams = {
+		name: user.value.name,
+		email: user.value.email,
+	};
+	await service.create(user.value).then(() => {
+		loadingSpinner.hide();
+		close();
+		toast.success(i18n.t('admin.users.invite.messages.success', translationParams));
+	}).catch(() => {
+		loadingSpinner.hide();
+		toast.error(i18n.t('admin.users.invite.messages.error', translationParams));
+	});
+}
+
+/**
+ * Edits the user
+ */
+async function edit(): Promise<void> {
+	const translationParams = {
+		name: user.value.name,
+		email: user.value.email,
+	};
+	if (props.initUser?.id === undefined) {
+		return;
 	}
-	emit('reload');
+	return await service.edit(props.initUser.id, user.value).then(() => {
+		loadingSpinner.hide();
+		close();
+		toast.success(i18n.t('admin.users.edit.messages.success', translationParams));
+	}).catch(() => {
+		loadingSpinner.hide();
+		toast.error(i18n.t('admin.users.edit.messages.error', translationParams));
+	});
 }
 
 </script>

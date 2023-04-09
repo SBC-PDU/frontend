@@ -108,10 +108,13 @@ import {AccountModify} from '@/types/account';
 import {UserInfo, UserLanguage} from '@/types/user';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {useLocaleStore} from '@/store/locale';
+import {SignedInUser} from "@/types/auth";
+import {useUserStore} from "@/store/user";
 
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
 const localeStore = useLocaleStore();
+const userStore = useUserStore();
 const service = new AccountService();
 const form: Ref<typeof VForm | null> = ref(null);
 const user: Ref<AccountModify> = ref<AccountModify>({
@@ -155,7 +158,8 @@ async function onSubmit(): Promise<void> {
 		return;
 	}
 	loadingSpinner.show();
-	service.edit(user.value).then(() => {
+	service.edit(user.value).then((response: SignedInUser) => {
+		userStore.setUserInfo(response);
 		localeStore.setLocale(user.value.language);
 		loadData();
 		loadingSpinner.hide();
