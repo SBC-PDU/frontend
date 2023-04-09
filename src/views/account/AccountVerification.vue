@@ -51,6 +51,7 @@ import {toast} from 'vue3-toastify';
 
 import Card from '@/components/Card.vue';
 import AccountService from '@/services/AccountService';
+import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {useUserStore} from '@/store/user';
 import {SignedInUser} from '@/types/auth';
 
@@ -80,6 +81,7 @@ interface Props {
 }
 
 const i18n = useI18n();
+const loadingSpinner = useLoadingSpinnerStore();
 const router = useRouter();
 const service = new AccountService();
 const store = useUserStore();
@@ -87,16 +89,25 @@ const store = useUserStore();
 const state: Ref<State> = ref(State.Loading);
 const props = defineProps<Props>();
 
+/**
+ * Redirects to the home page
+ */
 function redirect(): void {
 	router.push('/');
 }
 
+/**
+ * Verifies the account
+ */
 function verify(): void {
+	loadingSpinner.show();
 	service.verify(props.uuid).then((response: SignedInUser): void => {
 		state.value = State.Success;
 		store.setUserInfo(response);
+		loadingSpinner.hide();
 		toast.success(i18n.t('core.account.verification.messages.success').toString());
 	}).catch((error: AxiosError) => {
+		loadingSpinner.hide();
 		switch (error.response?.status) {
 			case 400:
 				state.value = State.AlreadyVerified;

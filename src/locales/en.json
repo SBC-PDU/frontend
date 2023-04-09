@@ -108,6 +108,14 @@
 					"error": "User {name} ({email}) could not be edited."
 				}
 			},
+			"invite": {
+				"title": "Invite a new user",
+				"activator": "Invite a new user",
+				"messages": {
+					"success": "User {name} ({email}) has been successfully invited.",
+					"error": "User {name} ({email}) could not be invited."
+				}
+			},
 			"list": {
 				"title": "User management"
 			},
@@ -137,6 +145,7 @@
 		"actions": {
 			"add": "Add",
 			"cancel": "Cancel",
+			"invite": "Invite",
 			"edit": "Edit"
 		},
 		"devices": {

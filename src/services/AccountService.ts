@@ -44,7 +44,7 @@ export default class AccountService extends ApiClient {
 	/**
 	 * Edits user account
 	 * @param {AccountModify} account Account data
-	 * @return {Promise<SignedInUser>} User data
+	 * @return {Promise<SignedInUser>} User data with JWT token
 	 */
 	public edit(account: AccountModify): Promise<SignedInUser> {
 		const body: AccountModify = account;
@@ -56,18 +56,22 @@ export default class AccountService extends ApiClient {
 		return this.getClient().put('account', {
 			...body,
 			baseUrl: BaseUrlHelper.get(),
-		});
+		}).then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
 	}
 
 	/**
 	 * Resends verification e-mail
 	 */
 	public resendVerificationEmail(): Promise<void> {
-		return this.getClient().post('account/verification/resend');
+		return this.getClient().post('account/verification/resend', {
+			baseUrl: BaseUrlHelper.get(),
+		});
 	}
 
 	/**
 	 * Verifies user's e-mail
+	 * @param {string} uuid Verification UUID
+	 * @return {Promise<SignedInUser>} User data with JWT token
 	 */
 	public verify(uuid: string): Promise<SignedInUser> {
 		return this.getClient().post(`account/verification/${uuid}`)

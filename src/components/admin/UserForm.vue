@@ -23,13 +23,22 @@ limitations under the License.
 	>
 		<template #activator='{ props }'>
 			<v-btn
-				v-if='action === "add"'
+				v-if='action === Action.Add'
 				v-bind='props'
 				color='green'
 				prepend-icon='mdi-plus'
 				variant='elevated'
 			>
 				{{ $t('admin.users.add.activator') }}
+			</v-btn>
+			<v-btn
+				v-if='action === Action.Invite'
+				v-bind='props'
+				color='info'
+				prepend-icon='mdi-send'
+				variant='elevated'
+			>
+				{{ $t('admin.users.invite.activator') }}
 			</v-btn>
 			<v-icon
 				v-else
@@ -41,9 +50,11 @@ limitations under the License.
 			</v-icon>
 		</template>
 		<v-form ref='form' @submit.prevent='submit'>
-			<Card :header-color='action === "add" ? "green-darken-1" : "primary"' style='max-height: 90vh'>
+			<Card :header-color='action === Action.Add ? "green-darken-1" : "primary"' style='max-height: 90vh'>
 				<template #title>
-					{{ action === "add" ? $t('admin.users.add.title') : $t('admin.users.edit.title') }}
+					<span v-if='action === Action.Add'>{{ $t('admin.users.add.title') }}</span>
+					<span v-if='action === Action.Edit'>{{ $t('admin.users.edit.title') }}</span>
+					<span v-if='action === Action.Invite'>{{ $t('admin.users.invite.title') }}</span>
 				</template>
 				<v-text-field
 					v-model='user.name'
@@ -63,7 +74,7 @@ limitations under the License.
 					required
 				/>
 				<PasswordField
-					v-if='action === "add"'
+					v-if='action === Action.Add'
 					v-model='user.password'
 					:label='$t("core.user.fields.password")'
 					:rules='[
@@ -97,7 +108,7 @@ limitations under the License.
 				/>
 				<template #actions>
 					<v-btn
-						v-if='action === "add"'
+						v-if='action === Action.Add'
 						color='success'
 						variant='text'
 						type='submit'
@@ -105,12 +116,20 @@ limitations under the License.
 						{{ $t('core.actions.add') }}
 					</v-btn>
 					<v-btn
-						v-else
+						v-if='action === Action.Edit'
 						color='primary'
 						variant='text'
 						type='submit'
 					>
 						{{ $t('core.actions.edit') }}
+					</v-btn>
+					<v-btn
+						v-if='action === Action.Invite'
+						color='primary'
+						variant='text'
+						type='submit'
+					>
+						{{ $t('core.actions.invite') }}
 					</v-btn>
 					<v-spacer/>
 					<v-btn
@@ -134,14 +153,26 @@ import {VForm} from 'vuetify/components';
 import PasswordField from '@/components/PasswordField.vue';
 import FormValidator from '@/helpers/formValidator';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
-import {UserInfo, UserLanguage, UserModify, UserRole} from '@/types/user';
+import {UserAdd, UserInfo, UserLanguage, UserModify, UserRole} from '@/types/user';
 import UserService from '@/services/UserService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import Card from '@/components/Card.vue';
 
+/**
+ * Actions to perform
+ */
+enum Action {
+	Add = 'add',
+	Edit = 'edit',
+	Invite = 'invite',
+}
+
+/**
+ * Props
+ */
 interface Props {
 	/// Action to perform
-	action: 'add' | 'edit';
+	action: Action;
 	/// User to edit
 	initUser?: UserInfo;
 }
@@ -154,7 +185,7 @@ const emit = defineEmits(['reload']);
 const props = defineProps<Props>();
 const dialog = ref(false);
 const form: Ref<typeof VForm | null> = ref(null);
-const defaultUser: UserModify = {
+const defaultUser: UserModify | UserAdd = {
 	name: '',
 	email: '',
 	role: UserRole.Normal,
@@ -193,24 +224,41 @@ async function submit(): Promise<void> {
 	}
 	close();
 	loadingSpinner.show();
-	if (props.action === 'add') {
-		const data = {...user.value};
-		delete data.password;
-		service.create(data).then(() => {
-			loadingSpinner.hide();
-			toast.success(i18n.t('admin.users.add.messages.success', {name: user.value.name, email: user.value.email}));
-		}).catch(() => {
-			loadingSpinner.hide();
-			toast.error(i18n.t('admin.users.add.messages.error', {name: user.value.name, email: user.value.email}));
-		});
-	} else {
-		service.edit(props.initUser!.id, user.value).then(() => {
-			loadingSpinner.hide();
-			toast.success(i18n.t('admin.users.edit.messages.success', {name: user.value.name, email: user.value.email}));
-		}).catch(() => {
-			loadingSpinner.hide();
-			toast.error(i18n.t('admin.users.edit.messages.error', {name: user.value.name, email: user.value.email}));
-		});
+	const translationParams = {
+		name: user.value.name,
+		email: user.value.email,
+	};
+	switch (props.action) {
+		case Action.Add:
+			await service.create({...user.value} as UserAdd).then(() => {
+				loadingSpinner.hide();
+				toast.success(i18n.t('admin.users.add.messages.success', translationParams));
+			}).catch(() => {
+				loadingSpinner.hide();
+				toast.error(i18n.t('admin.users.add.messages.error', translationParams));
+			});
+			break;
+		case Action.Invite:
+			await service.create({...user.value}).then(() => {
+				loadingSpinner.hide();
+				toast.success(i18n.t('admin.users.invite.messages.success', {
+					name: user.value.name,
+					email: user.value.email
+				}));
+			}).catch(() => {
+				loadingSpinner.hide();
+				toast.error(i18n.t('admin.users.invite.messages.error', translationParams));
+			});
+			break;
+		case Action.Edit:
+			await service.edit(props.initUser!.id, user.value).then(() => {
+				loadingSpinner.hide();
+				toast.success(i18n.t('admin.users.edit.messages.success', translationParams));
+			}).catch(() => {
+				loadingSpinner.hide();
+				toast.error(i18n.t('admin.users.edit.messages.error', translationParams));
+			});
+			break;
 	}
 	emit('reload');
 }

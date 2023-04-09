@@ -43,7 +43,8 @@ export default class AuthenticationService extends ApiClient {
 	 * @returns {Promise<SignedInUser>} User info with JWT token
 	 */
 	public passwordReset(uuid: string, reset: PasswordSet): Promise<SignedInUser> {
-		return this.getClient().post(`auth/password/reset/${uuid}`, reset);
+		return this.getClient().post(`auth/password/reset/${uuid}`, reset)
+			.then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
 	}
 
 	/**
@@ -53,7 +54,8 @@ export default class AuthenticationService extends ApiClient {
 	 * @returns {Promise<SignedInUser>} User info with JWT token
 	 */
 	public passwordSet(uuid: string, set: PasswordSet): Promise<SignedInUser> {
-		return this.getClient().post(`auth/password/set/${uuid}`, set);
+		return this.getClient().post(`auth/password/set/${uuid}`, set)
+			.then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
 	}
 
 	/**
@@ -65,9 +67,7 @@ export default class AuthenticationService extends ApiClient {
 		return this.getClient().post('auth/sign/in', {
 			email: punycode.toASCII(credentials.email),
 			password: credentials.password,
-		}).then((response: AxiosResponse): SignedInUser => (
-			response.data as SignedInUser
-		));
+		}).then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
 	}
 
 }

@@ -28,28 +28,7 @@ limitations under the License.
 		<TheSidebar/>
 		<v-main style='background-color: #f5f5f5'>
 			<v-container>
-				<div v-if='userStore.isLoggedIn'>
-					<v-alert
-						v-if='userStore.getState === AccountState.Unverified'
-						class='mb-4'
-						type='warning'
-						variant='tonal'
-					>
-						<div class='d-inline-block'>
-							{{ $t('core.user.verification.resend.text') }}
-						</div>
-						<v-btn
-							@click='resendVerificationEmail()'
-							color='warning'
-							class='float-right'
-							dense
-							prepend-icon='mdi-email-fast'
-							size='small'
-						>
-							{{ $t('core.user.verification.resend.button') }}
-						</v-btn>
-					</v-alert>
-				</div>
+				<UnverifiedAccountAlert />
 				<router-view/>
 			</v-container>
 		</v-main>
@@ -69,31 +48,14 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
-
 import LocaleSwitcher from '@/components/LocaleSwitcher.vue';
 import ProfileDropdown from '@/components/ProfileDropdown.vue';
 import TheSidebar from '@/components/TheSidebar.vue';
-import AccountService from '@/services/AccountService';
+import UnverifiedAccountAlert from '@/components/UnverifiedAccountAlert.vue';
 import {useSidebarStore} from '@/store/sidebar';
 import {useUserStore} from '@/store/user';
-import {AccountState} from '@/types/user';
 
-const accountService = new AccountService();
-const i18n = useI18n();
 const sidebarStore = useSidebarStore();
 const userStore = useUserStore();
 const currentYear = new Date().getFullYear();
-
-/**
- * Resend verification email
- */
-function resendVerificationEmail(): void {
-	accountService.resendVerificationEmail().then(() => {
-		toast.success(i18n.t('core.user.verification.resend.messages.success').toString());
-	}).catch(() => {
-		toast.error(i18n.t('core.user.verification.resend.messages.error').toString());
-	});
-}
 </script>

@@ -30,6 +30,7 @@ limitations under the License.
 					{{ $t('admin.users.list.title') }}
 				</v-toolbar-title>
 				<v-spacer/>
+				<UserForm action='invite' @reload='loadUsers'/>
 				<UserForm action='add' @reload='loadUsers'/>
 			</v-toolbar>
 		</template>

@@ -108,6 +108,14 @@
 					"error": "Uživatele {name} ({email}) se nepodařilo upravit."
 				}
 			},
+			"invite": {
+				"title": "Pozvání nového uživatele",
+				"activator": "Pozvat uživatele",
+				"messages": {
+					"success": "Uživatel {name} ({email}) byl úspěšně pozván.",
+					"error": "Uživatele {name} ({email}) se nepodařilo pozvat."
+				}
+			},
 			"list": {
 				"title": "Správa uživatelů"
 			},
@@ -137,6 +145,7 @@
 		"actions": {
 			"add": "Přidat",
 			"cancel": "Zrušit",
+			"invite": "Pozvat",
 			"edit": "Upravit"
 		},
 		"devices": {

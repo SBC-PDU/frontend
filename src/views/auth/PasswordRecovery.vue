@@ -56,9 +56,11 @@ import {VForm} from 'vuetify/components';
 import Card from '@/components/Card.vue';
 import FormValidator from '@/helpers/formValidator';
 import AuthenticationService from '@/services/AuthenticationService';
+import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {PasswordRecovery} from '@/types/auth';
 
 const i18n = useI18n();
+const loadingSpinner = useLoadingSpinnerStore();
 const router = useRouter();
 const service = new AuthenticationService();
 const recovery: Ref<PasswordRecovery> = ref({
@@ -77,12 +79,15 @@ async function submit(): Promise<void> {
 	if (!valid) {
 		return;
 	}
-	service.passwordRecovery(recovery.value)
+	loadingSpinner.show();
+	await service.passwordRecovery(recovery.value)
 		.then(() => {
-			router.push({name: 'SignIn'});
+			loadingSpinner.hide();
 			toast.success(i18n.t('core.password.recovery.messages.success'));
+			router.push({name: 'SignIn'});
 		})
 		.catch(() => {
+			loadingSpinner.hide();
 			toast.error(i18n.t('core.password.recovery.messages.error'));
 		});
 }

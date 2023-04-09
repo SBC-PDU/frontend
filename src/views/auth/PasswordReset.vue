@@ -59,7 +59,8 @@ import PasswordField from '@/components/PasswordField.vue';
 import FormValidator from '@/helpers/formValidator';
 import AuthenticationService from '@/services/AuthenticationService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {PasswordSet} from '@/types/auth';
+import {useUserStore} from '@/store/user';
+import {PasswordSet, SignedInUser} from '@/types/auth';
 
 const props = defineProps({
 	uuid: {
@@ -75,6 +76,7 @@ const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
 const router = useRouter();
 const service = new AuthenticationService();
+const userStore = useUserStore();
 
 const reset: Ref<PasswordSet> = ref({
 	password: '',
@@ -94,8 +96,9 @@ async function submit(): Promise<void> {
 	}
 	loadingSpinner.show();
 	await service.passwordReset(props.uuid, reset.value)
-		.then(() => {
+		.then((response: SignedInUser) => {
 			loadingSpinner.hide();
+			userStore.setUserInfo(response);
 			toast.success(i18n.t('core.password.reset.messages.success'));
 			router.push('/');
 		})

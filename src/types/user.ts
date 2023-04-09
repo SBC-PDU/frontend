@@ -72,8 +72,6 @@ export interface UserModify {
 	name: string;
 	/// User email
 	email: string;
-	/// User password
-	password?: string;
 	/// User role
 	role: UserRole;
 	/// User language
