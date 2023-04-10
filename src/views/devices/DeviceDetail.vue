@@ -78,7 +78,7 @@ const loadingSpinner = useLoadingSpinnerStore();
 const service = new DeviceService();
 const props = defineProps<Props>();
 const device = ref<DeviceDetail | null>(null);
-const state = ref(State.Loading);
+const state = ref<State>(State.Loading);
 
 watchEffect(async () => {
 	fetchData();

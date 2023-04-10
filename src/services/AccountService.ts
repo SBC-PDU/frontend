@@ -28,8 +28,8 @@ import {UserInfo} from '@/types/user';
 export default class AccountService extends ApiClient {
 
 	/**
-	 * Returns information about logged in user
-	 * @return {Promise<UserInfo>} Information about logged in user
+	 * Returns information about logged-in user
+	 * @return {Promise<UserInfo>} Information about logged-in user
 	 */
 	public get(): Promise<UserInfo> {
 		return this.getClient().get('account')

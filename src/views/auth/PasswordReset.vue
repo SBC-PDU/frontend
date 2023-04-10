@@ -28,7 +28,7 @@ limitations under the License.
 				v-model='reset.password'
 				:label='$t("core.user.fields.newPassword")'
 				:rules='[
-					v => FormValidator.isRequired(v, $t("core.user.messages.emptyNewPassword")),
+					(v: any) => FormValidator.isRequired(v, $t("core.user.messages.emptyNewPassword")),
 				]'
 				required
 				prepend-inner-icon='mdi-key'

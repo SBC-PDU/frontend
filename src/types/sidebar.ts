@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import {RouteLocationRaw} from 'vue-router';
+
 import {UserRole} from '@/types/user';
 
 /**
@@ -28,7 +30,7 @@ export interface SidebarLink {
 	/// Group
 	group?: string | RegExp;
 	/// Route
-	to?: string;
+	to?: RouteLocationRaw;
 	/// Href
 	href?: string;
 	/// Target

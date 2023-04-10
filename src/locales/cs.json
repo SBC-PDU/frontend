@@ -204,6 +204,9 @@
 						"1d": "Poslední den",
 						"1w": "Poslední týden",
 						"1mo": "Poslední měsíc"
+					},
+					"messages" : {
+						"error": "Nepodařilo se načíst měřené veličiny."
 					}
 				},
 				"messages": {

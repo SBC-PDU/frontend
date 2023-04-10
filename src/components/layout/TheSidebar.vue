@@ -38,7 +38,7 @@ import {storeToRefs} from 'pinia';
 import {useI18n} from 'vue-i18n';
 import {useDisplay} from 'vuetify';
 
-import SidebarItems from '@/components/SidebarItems.vue';
+import SidebarItems from '@/components/layout/sidebar/SidebarItems.vue';
 import {useSidebarStore} from '@/store/sidebar';
 import {useUserStore} from '@/store/user';
 import {SidebarLink} from '@/types/sidebar';

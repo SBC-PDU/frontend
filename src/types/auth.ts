@@ -42,7 +42,7 @@ export interface PasswordSet {
 }
 
 /**
- * Signed in user - user info with JWT token
+ * Signed-in user - user info with JWT token
  */
 export interface SignedInUser {
 	/// JWT token

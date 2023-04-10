@@ -83,10 +83,10 @@ import {storeToRefs} from 'pinia';
 import {Ref, ref, toRaw} from 'vue';
 import {useI18n} from 'vue-i18n';
 
-import AccountStateButton from '@/components/admin/AccountStateButton.vue';
-import ResendEmailButton from '@/components/admin/ResendEmailButton.vue';
-import UserDeleteConfirmation from '@/components/admin/UserDeleteConfirmation.vue';
-import UserForm from '@/components/admin/UserForm.vue';
+import AccountStateButton from '@/components/admin/user/AccountStateButton.vue';
+import ResendEmailButton from '@/components/admin/user/ResendEmailButton.vue';
+import UserDeleteConfirmation from '@/components/admin/user/UserDeleteConfirmation.vue';
+import UserForm from '@/components/admin/user/UserForm.vue';
 import UserService from '@/services/UserService';
 import {useUserStore} from '@/store/user';
 import {AccountState, UserInfo, UserLanguage, UserRole} from '@/types/user';

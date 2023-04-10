@@ -33,8 +33,8 @@ limitations under the License.
 
 <script lang='ts' setup>
 import {SidebarLink} from '@/types/sidebar';
-import SidebarGroup from '@/components/SidebarGroup.vue';
-import SidebarItem from '@/components/SidebarItem.vue';
+import SidebarGroup from '@/components/layout/sidebar/SidebarGroup.vue';
+import SidebarItem from '@/components/layout/sidebar/SidebarItem.vue';
 
 /**
  * Sidebar item component props

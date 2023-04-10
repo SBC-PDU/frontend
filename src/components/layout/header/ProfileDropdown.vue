@@ -28,7 +28,7 @@ limitations under the License.
 			</v-btn>
 		</template>
 		<v-list density='compact'>
-			<v-list-item prepend-icon='mdi-logout' @click='signOut'>
+			<v-list-item prepend-icon='mdi-logout' @click='signOut()'>
 				<v-list-item-title>{{ $t('core.sign.out.title') }}</v-list-item-title>
 			</v-list-item>
 		</v-list>

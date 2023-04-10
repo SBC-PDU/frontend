@@ -69,6 +69,7 @@ import {CanvasRenderer} from 'echarts/renderers';
 import {reactive, Ref, ref, watchEffect} from 'vue';
 import VChart from 'vue-echarts';
 import {useI18n} from 'vue-i18n';
+import {toast} from 'vue3-toastify';
 
 import Card from '@/components/Card.vue';
 import DeviceService from '@/services/DeviceService';
@@ -149,6 +150,9 @@ async function fetchData(newTimeRange: string): Promise<void> {
 		}
 		legend.value = Object.values(props.device.outputs).map((output: DeviceOutputWithMeasurements) => (`#${output.index} - ${output.name}`));
 		series.value = newSeries;
+		loadingSpinner.hide();
+	}).catch(() => {
+		toast.error(i18n.t('core.devices.detail.measurements.messages.error').toString());
 		loadingSpinner.hide();
 	});
 }

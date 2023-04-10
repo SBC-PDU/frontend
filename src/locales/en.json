@@ -195,6 +195,9 @@
 						"1d": "Last day",
 						"1w": "Last week",
 						"1mo": "Last month"
+					},
+					"messages": {
+						"error": "Measurements could not be fetched."
 					}
 				},
 				"messages": {

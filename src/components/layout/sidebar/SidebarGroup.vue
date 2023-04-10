@@ -38,13 +38,13 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import SidebarItem from '@/components/SidebarItem.vue';
+import SidebarItem from '@/components/layout/sidebar/SidebarItem.vue';
 import {SidebarLink} from '@/types/sidebar';
 
 interface Props {
 	/// Sidebar items to render
 	item: SidebarLink;
-	/// Is sub group?
+	/// Is subgroup?
 	subGroup?: boolean;
 }
 

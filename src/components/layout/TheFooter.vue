@@ -15,22 +15,20 @@ limitations under the License.
 -->
 
 <template>
-	<v-app>
-		<TheHeader />
-		<TheSidebar/>
-		<v-main style='background-color: #f5f5f5'>
-			<v-container>
-				<UnverifiedAccountAlert />
-				<router-view/>
-			</v-container>
-		</v-main>
-		<TheFooter />
-	</v-app>
+	<v-footer
+		:absolute='false'
+		app
+		color='primary'
+	>
+		<span class='mr-auto ml-auto'>
+			&copy; 2022-{{ currentYear }}
+			<a class='text-white' href='https://www.romanondracek.cz/'>
+				Roman Ondráček
+			</a>
+		</span>
+	</v-footer>
 </template>
 
 <script lang='ts' setup>
-import TheFooter from '@/components/layout/TheFooter.vue';
-import TheHeader from '@/components/layout/TheHeader.vue';
-import TheSidebar from '@/components/layout/TheSidebar.vue';
-import UnverifiedAccountAlert from '@/components/UnverifiedAccountAlert.vue';
+const currentYear = new Date().getFullYear();
 </script>

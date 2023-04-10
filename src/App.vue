@@ -28,7 +28,7 @@ import {ref, watch} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import LoadingSpinner from '@/components/layout/LoadingSpinner.vue';
 import {useLocaleStore} from '@/store/locale';
 
 const localeStore = useLocaleStore();

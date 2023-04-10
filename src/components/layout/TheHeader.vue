@@ -15,22 +15,23 @@ limitations under the License.
 -->
 
 <template>
-	<v-app>
-		<TheHeader />
-		<TheSidebar/>
-		<v-main style='background-color: #f5f5f5'>
-			<v-container>
-				<UnverifiedAccountAlert />
-				<router-view/>
-			</v-container>
-		</v-main>
-		<TheFooter />
-	</v-app>
+	<v-app-bar color='primary'>
+		<v-app-bar-nav-icon @click='sidebarStore.toggleVisibility()' />
+		<v-toolbar-title>
+			{{ $t('core.title') }}
+		</v-toolbar-title>
+		<v-spacer/>
+		<LocaleSwitcher/>
+		<ProfileDropdown v-if='userStore.isLoggedIn'/>
+	</v-app-bar>
 </template>
 
 <script lang='ts' setup>
-import TheFooter from '@/components/layout/TheFooter.vue';
-import TheHeader from '@/components/layout/TheHeader.vue';
-import TheSidebar from '@/components/layout/TheSidebar.vue';
-import UnverifiedAccountAlert from '@/components/UnverifiedAccountAlert.vue';
+import LocaleSwitcher from '@/components/layout/header/LocaleSwitcher.vue';
+import ProfileDropdown from '@/components/layout/header/ProfileDropdown.vue';
+import {useSidebarStore} from '@/store/sidebar';
+import {useUserStore} from '@/store/user';
+
+const sidebarStore = useSidebarStore();
+const userStore = useUserStore();
 </script>
