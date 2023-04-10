@@ -119,6 +119,16 @@
 			"list": {
 				"title": "Správa uživatelů"
 			},
+			"resend": {
+				"invitation": {
+					"success": "Pozvánka pro uživatele {name} ({email}) byla úspěšně odeslána.",
+					"error": "Pozvánku pro uživatele {name} ({email}) se nepodařilo odeslat."
+				},
+				"verification": {
+					"success": "Ověřovací email pro uživatele {name} ({email}) byl úspěšně odeslán.",
+					"error": "Ověřovací email pro uživatele {name} ({email}) se nepodařilo odeslat."
+				}
+			},
 			"unblock": {
 				"messages": {
 					"success": "Uživatel {name} ({email}) byl úspěšně odblokován.",
@@ -293,6 +303,7 @@
 				"button": "Nastavit nové heslo",
 				"messages": {
 					"success": "Heslo bylo úspěšně nastaveno.",
+					"banned": "Váš účet byl zablokován.",
 					"notFound": "Požadavek pro obnovu hesla nebyl nalezen.",
 					"expired": "Požadavek pro obnovu hesla již vypršel.",
 					"error": "Při nastavování hesla nastala chyba."
@@ -304,6 +315,7 @@
 				"button": "Nastavit heslo",
 				"messages": {
 					"success": "Heslo bylo úspěšně nastaveno.",
+					"banned": "Váš účet byl zablokován.",
 					"notFound": "Požadavek pro nastavení hesla nebyl nalezen.",
 					"expired": "Požadavek pro nastavení hesla již vypršel.",
 					"error": "Při nastavování hesla nastala chyba."

@@ -105,6 +105,9 @@ async function submit(): Promise<void> {
 		.catch((error: AxiosError) => {
 			loadingSpinner.hide();
 			switch (error.response?.status) {
+				case 403:
+					toast.error(i18n.t('core.password.set.messages.banned'));
+					return;
 				case 404:
 					toast.error(i18n.t('core.password.set.messages.notFound'));
 					return;

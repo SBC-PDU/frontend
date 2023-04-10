@@ -119,6 +119,16 @@
 			"list": {
 				"title": "User management"
 			},
+			"resend": {
+				"invitation": {
+					"success": "Invitation to user {name} ({email}) has been successfully resent.",
+					"error": "Invitation to user {name} ({email}) could not be resent."
+				},
+				"validation": {
+					"success": "Validation link to user {name} ({email}) has been successfully resent.",
+					"error": "Validation link to user {name} ({email}) could not be resent."
+				}
+			},
 			"unblock": {
 				"messages": {
 					"success": "User {name} ({email}) has been successfully unblocked.",
@@ -285,6 +295,7 @@
 				"button": "Reset password",
 				"messages": {
 					"success": "Password has been successfully reset.",
+					"banned": "Your account has been banned.",
 					"notFound": "Password reset request could not be found.",
 					"expired": "Password reset request has expired.",
 					"error": "An error occurred during password reset."
@@ -296,6 +307,7 @@
 				"button": "Set password",
 				"messages": {
 					"success": "Password has been successfully set.",
+					"banned": "Your account has been banned.",
 					"notFound": "Password set request could not be found.",
 					"expired": "Password set request has expired.",
 					"error": "An error occurred during password set."

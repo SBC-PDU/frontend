@@ -65,6 +65,7 @@ limitations under the License.
 				</td>
 				<td style='text-align: right;'>
 					<v-btn-group density='compact'>
+						<ResendEmailButton :user='item.raw' @change='loadUsers' />
 						<AccountStateButton v-if='userId !== item.raw.id' :user='item.raw' @change='loadUsers' />
 						<UserForm :init-user='toRaw(item.raw)' action='edit' @reload='loadUsers' />
 						<UserDeleteConfirmation :user='item.raw' @submit='loadUsers' />
@@ -83,6 +84,7 @@ import {Ref, ref, toRaw} from 'vue';
 import {useI18n} from 'vue-i18n';
 
 import AccountStateButton from '@/components/admin/AccountStateButton.vue';
+import ResendEmailButton from '@/components/admin/ResendEmailButton.vue';
 import UserDeleteConfirmation from '@/components/admin/UserDeleteConfirmation.vue';
 import UserForm from '@/components/admin/UserForm.vue';
 import UserService from '@/services/UserService';

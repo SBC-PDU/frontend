@@ -89,6 +89,16 @@ export default class UserService extends ApiClient {
 	}
 
 	/**
+	 * Resends the invitation or verification email
+	 * @param {number} id ID of user to resend email
+	 */
+	public resend(id: number): Promise<void> {
+		return this.getClient().post(`users/${id}/resend`, {
+			baseUrl: BaseUrlHelper.get(),
+		});
+	}
+
+	/**
 	 * Serializes user identity
 	 * @param {UserModify} user User entity to serialize
 	 * @return {UserModify} Serialized user entity

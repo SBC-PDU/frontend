@@ -104,12 +104,12 @@ import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
 import FormValidator from '@/helpers/formValidator';
 import AccountService from '@/services/AccountService';
-import {AccountModify} from '@/types/account';
-import {UserInfo, UserLanguage} from '@/types/user';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {useLocaleStore} from '@/store/locale';
-import {SignedInUser} from "@/types/auth";
-import {useUserStore} from "@/store/user";
+import {useUserStore} from '@/store/user';
+import {AccountModify} from '@/types/account';
+import {SignedInUser} from '@/types/auth';
+import {UserInfo, UserLanguage} from '@/types/user';
 
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
