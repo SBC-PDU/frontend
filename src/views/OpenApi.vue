@@ -28,7 +28,8 @@ limitations under the License.
 
 <script lang='ts' setup>
 import {Head} from '@vueuse/head';
-import {SwaggerUIBundle} from 'swagger-ui-dist';
+import {storeToRefs} from 'pinia';
+import {SwaggerRequest, SwaggerUIBundle} from 'swagger-ui-dist';
 import 'swagger-ui/dist/swagger-ui.css';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
@@ -36,9 +37,12 @@ import {toast} from 'vue3-toastify';
 import Card from '@/components/Card.vue';
 import {OpenApiService} from '@/services/OpenApiService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
+import {useUserStore} from '@/store/user';
 
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
+const userStore = useUserStore();
+const {token} = storeToRefs(userStore);
 const service = new OpenApiService();
 
 loadingSpinner.show();
@@ -46,6 +50,12 @@ service.getSpecification().then((spec) => {
 	SwaggerUIBundle({
 		spec: spec,
 		dom_id: '#swagger',
+		requestInterceptor: (request: SwaggerRequest) => {
+			if (token.value && !request.headers['Authorization']) {
+				request.headers['Authorization'] = `Bearer ${token.value}`;
+			}
+			return request;
+		},
 	});
 	loadingSpinner.hide();
 }).catch(() => {
