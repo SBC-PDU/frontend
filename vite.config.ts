@@ -22,7 +22,6 @@ import path from 'path';
 import {fileURLToPath, URL} from 'node:url';
 import {defineConfig, loadEnv} from 'vite';
 import vuetify, {transformAssetUrls} from 'vite-plugin-vuetify';
-import {VitePWA} from 'vite-plugin-pwa';
 
 // Git commit hash
 const gitCommitHash = child_process.execSync('git rev-parse --short HEAD').toString().trim();
@@ -34,12 +33,6 @@ export default defineConfig(({mode}) => {
 		plugins: [
 			vue({
 				template: {transformAssetUrls}
-			}),
-			VitePWA({
-				registerType: 'autoUpdate',
-				devOptions: {
-					enabled: true,
-				}
 			}),
 			// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
 			vuetify({
