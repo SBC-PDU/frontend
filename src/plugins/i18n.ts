@@ -28,6 +28,10 @@ export default createI18n<MessageSchema, Locales>({
 			short: {
 				year: 'numeric', month: 'short', day: 'numeric'
 			},
+			normal: {
+				year: 'numeric', month: 'short', day: 'numeric',
+				hour: 'numeric', minute: 'numeric',
+			},
 			long: {
 				year: 'numeric', month: 'short', day: 'numeric',
 				weekday: 'short', hour: 'numeric', minute: 'numeric', second: 'numeric'
@@ -37,12 +41,17 @@ export default createI18n<MessageSchema, Locales>({
 			short: {
 				year: 'numeric', month: 'short', day: 'numeric'
 			},
+			normal: {
+				year: 'numeric', month: 'short', day: 'numeric',
+				hour: 'numeric', minute: 'numeric',
+			},
 			long: {
 				year: 'numeric', month: 'short', day: 'numeric',
 				weekday: 'short', hour: 'numeric', minute: 'numeric', second: 'numeric'
 			}
 		}
 	},
+	locale: import.meta.env.VITE_I18N_LOCALE as Locales,
 	fallbackLocale: import.meta.env.VITE_I18N_FALLBACK_LOCALE as Locales,
 	legacy: false,
 	messages: {

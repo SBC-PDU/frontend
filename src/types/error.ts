@@ -17,7 +17,7 @@
 /**
  * Error
  */
-export interface Error {
+export interface ErrorMessage {
 	/// Error code
 	code: number;
 	/// Error message

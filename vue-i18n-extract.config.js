@@ -13,42 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {UserInfo} from '@/types/user';
-
-/**
- * User credentials
- */
-export interface Credentials {
-	/// User email
-	email: string;
-	/// User password
-	password: string;
-	/// TOTP code
-	code?: string;
-}
-
-/**
- * Password recovery request
- */
-export interface PasswordRecovery {
-	/// User email
-	email: string;
-}
-
-/**
- * Password set
- */
-export interface PasswordSet {
-	/// User password
-	password: string;
-}
-
-/**
- * Signed-in user - user info with JWT token
- */
-export interface SignedInUser {
-	/// JWT token
-	token: string;
-	/// User info
-	info: UserInfo;
-}
+module.exports = {
+	'vueFiles': './src/**/*.{vue,ts}',
+	'languageFiles': './src/locales/*.json',
+	'exclude': [
+		'$vuetify',
+	],
+};

@@ -124,9 +124,9 @@
 					"success": "Invitation to user {name} ({email}) has been successfully resent.",
 					"error": "Invitation to user {name} ({email}) could not be resent."
 				},
-				"validation": {
-					"success": "Validation link to user {name} ({email}) has been successfully resent.",
-					"error": "Validation link to user {name} ({email}) could not be resent."
+				"verification": {
+					"success": "Verification link to user {name} ({email}) has been successfully resent.",
+					"error": "Verification link to user {name} ({email}) could not be resent."
 				}
 			},
 			"unblock": {
@@ -176,6 +176,15 @@
 					"error": "PDU {name} could not be edited."
 				}
 			},
+			"delete": {
+				"title": "Delete PDU",
+				"message" : "Are you sure you want to delete PDU {name} (MAC address {macAddress})?",
+				"messages": {
+					"success": "PDU {name} (MAC address {macAddress}) has been successfully deleted.",
+					"error": "PDU {name} (MAC address {macAddress}) could not be deleted."
+				},
+				"confirm": "Delete PDU"
+			},
 			"detail": {
 				"title": "PDU - {name}",
 				"info": {
@@ -187,8 +196,8 @@
 					"current": "Current",
 					"voltage": "Voltage",
 					"timeRanges": {
-						"5": "Last 5 minutes",
-						"15": "Last 15 minutes",
+						"5m": "Last 5 minutes",
+						"15m": "Last 15 minutes",
 						"1h": "Last hour",
 						"6h": "Last 6 hours",
 						"12h": "Last 12 hours",
@@ -284,10 +293,9 @@
 		"password": {
 			"recovery": {
 				"title": "Password recovery",
-				"text": " Please enter your e-mail address and a password recovery email will be sent to the specified e-mail address",
+				"text": "Please enter your e-mail address and a password recovery email will be sent to the specified e-mail address",
 				"button": "Recover password",
 				"messages": {
-					"incorrectCurrentPassword": "Current password is incorrect.",
 					"success": "Password recovery request has been successfully sent.",
 					"error": "An error occurred during password recovery request."
 				}
@@ -323,6 +331,7 @@
 				"passwordChange": "Do you want to change your password?"
 			},
 			"messages": {
+				"incorrectCurrentPassword": "Current password is incorrect.",
 				"success": "User profile has been successfully edited.",
 				"error": "User profile could not be edited."
 			}
@@ -358,6 +367,50 @@
 				"unverified": "Unverified",
 				"verified": "Verified",
 				"invited": "Invited"
+			},
+			"totp": {
+				"title": "Two-factor authentication",
+				"add": {
+					"title": "Add a new TOTP authenticator",
+					"activator": "Add TOTP authenticator",
+					"confirm": "Add authenticator",
+					"messages": {
+						"success": "TOTP authenticator {name} has been successfully added.",
+						"error": "TOTP authenticator {name} could not be added."
+					}
+				},
+				"delete": {
+					"title": "Delete TOTP authenticator",
+					"confirm": "Delete authenticator",
+					"message": "Are you sure you want to delete TOTP authenticator {name}?",
+					"messages": {
+						"success": "TOTP authenticator {name} has been successfully deleted.",
+						"error": "TOTP authenticator {name} could not be deleted."
+					}
+				},
+				"fields": {
+					"code": "Code",
+					"createdAt": "Created at",
+					"name": "Name"
+				},
+				"messages": {
+					"emptyName": "Please enter authenticator name.",
+					"emptyCode": "Please enter code.",
+					"incorrectCode": "Code is incorrect.",
+					"invalidCode": "Please enter valid code."
+				},
+				"secret": {
+					"formats": {
+						"qrCode": "QR code",
+						"text": "Text"
+					},
+					"label": "Secret key",
+					"copy": {
+						"success": "Secret key has been successfully copied to clipboard.",
+						"error": "Secret key could not be copied to clipboard."
+					},
+					"openApp": "Open TOTP authenticator app"
+				}
 			},
 			"verification": {
 				"resend": {

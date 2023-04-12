@@ -368,6 +368,51 @@
 				"verified": "Ověřený",
 				"invited": "Pozvaný"
 			},
+			"totp": {
+				"title": "Dvoufaktorová autentikace",
+				"add": {
+					"title": "Přidání TOTP authentikátoru",
+					"activator": "Přidat TOTP authentikátor",
+					"confirm": "Přidat TOTP authentikátor",
+					"messages": {
+						"success": "TOTP authenticator {name} byl úspěšně přidán.",
+						"error": "TOTP authenticator {name} se nepodařilo přidat."
+					}
+
+				},
+				"delete": {
+					"title": "Odstranění TOTP authentikátoru",
+					"confirm": "Odstranit authentikátor",
+					"message": "Opravdu chcete odstranit TOTP authenticator {name}?",
+					"messages": {
+						"success": "TOTP authenticator {name} byl úspěšně odstraněn.",
+						"error": "TOTP authenticator {name} se nepodařilo odstranit."
+					}
+				},
+				"fields": {
+					"code": "Kód",
+					"createdAt": "Vytvořeno",
+					"name": "Název"
+				},
+				"messages": {
+					"emptyName": "Zadejte prosím název authentikátoru.",
+					"emptyCode": "Zadejte prosím kód.",
+					"incorrectCode": "Zadaný kód není správný.",
+					"invalidCode": "Zadejte prosím platný kód."
+				},
+				"secret": {
+					"formats": {
+						"qrCode": "QR kód",
+						"text": "Text"
+					},
+					"label": "Soukromý klíč",
+					"copy": {
+						"success": "Soukromý klíč byl úspěšně zkopírován do schránky.",
+						"error": "Při kopírování soukromého klíče nastala chyba."
+					},
+					"openApp": "Otevřít aplikaci authentikátoru"
+				}
+			},
 			"verification": {
 				"resend": {
 					"text": "Vaše e-mailová adresa není oveřena, některé akce (např. obnova hesla) proto nemusí být dostupné.",
@@ -398,6 +443,6 @@
 		"tables": {
 			"actions": "Akce"
 		},
-		"title": "Správa jednotek PDU"
+		"title": "Správce napájecích jednotek"
 	}
 }

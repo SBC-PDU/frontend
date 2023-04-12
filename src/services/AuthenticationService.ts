@@ -67,6 +67,7 @@ export default class AuthenticationService extends ApiClient {
 		return this.getClient().post('auth/sign/in', {
 			email: punycode.toASCII(credentials.email),
 			password: credentials.password,
+			code: credentials.code,
 		}).then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
 	}
 

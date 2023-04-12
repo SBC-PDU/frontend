@@ -43,4 +43,15 @@ export default class FormValidator {
 		return validator.safeParse(punycode.toASCII(value)).success || errorMessage;
 	}
 
+	/**
+	 * Checks if a field is a valid TOTP code
+	 * @param {string} value Value to check
+	 * @param {string} errorMessage Error message to return if the value is not valid
+	 * @return {boolean|string} True if the value is valid, error message otherwise
+	 */
+	public static isTotpCode(value: string, errorMessage: string): boolean | string {
+		const validator = z.string().regex(/^\d{6}$/);
+		return validator.safeParse(value).success || errorMessage;
+	}
+
 }

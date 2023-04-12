@@ -32,8 +32,8 @@ limitations under the License.
 						</v-btn>
 					</template>
 					<v-list density='compact'>
-						<v-list-item v-for='time in timeRanges' :key='time' @click='fetchData(time)'>
-							<v-list-item-title>{{ $t(`core.devices.detail.measurements.timeRanges.${time}`) }}</v-list-item-title>
+						<v-list-item v-for='time in timeRanges' :key='time.value' @click='fetchData(time.value)'>
+							<v-list-item-title>{{ time.title }}</v-list-item-title>
 						</v-list-item>
 					</v-list>
 				</v-menu> <v-btn
@@ -97,6 +97,16 @@ interface Props {
 	device: DeviceDetail;
 }
 
+/**
+ * Time range
+ */
+interface TimeRange {
+  /// Time range value
+  value: string;
+  /// Time range title
+  title: string;
+}
+
 const i18n = useI18n();
 const service = new DeviceService();
 const props = defineProps<Props>();
@@ -106,7 +116,16 @@ const data: Ref<DeviceOutputMeasurements[]> = ref<DeviceOutputMeasurements[]>([]
 const legend = ref<string[]>([]);
 const series = ref<SeriesOption[]>([]);
 const timeRange = ref<string>('1h');
-const timeRanges: Array<string> = ['5m', '15m', '1h', '6h', '12h', '1d','1w', '1mo'];
+const timeRanges: Array<TimeRange> = [
+	{value: '5m', title: i18n.t('core.devices.detail.measurements.timeRanges.5m').toString()},
+	{value: '15m', title: i18n.t('core.devices.detail.measurements.timeRanges.15m').toString()},
+	{value: '1h', title: i18n.t('core.devices.detail.measurements.timeRanges.1h').toString()},
+	{value: '6h', title: i18n.t('core.devices.detail.measurements.timeRanges.6h').toString()},
+	{value: '12h', title: i18n.t('core.devices.detail.measurements.timeRanges.12h').toString()},
+	{value: '1d', title: i18n.t('core.devices.detail.measurements.timeRanges.1d').toString()},
+	{value: '1w', title: i18n.t('core.devices.detail.measurements.timeRanges.1w').toString()},
+	{value: '1mo', title: i18n.t('core.devices.detail.measurements.timeRanges.1mo').toString()},
+];
 
 /**
  * Fetches the measurements

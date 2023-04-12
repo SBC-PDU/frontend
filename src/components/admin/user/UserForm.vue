@@ -32,7 +32,7 @@ limitations under the License.
 				{{ $t('admin.users.add.activator') }}
 			</v-btn>
 			<v-btn
-				v-if='action === Action.Invite'
+				v-else-if='action === Action.Invite'
 				v-bind='props'
 				color='info'
 				prepend-icon='mdi-send'

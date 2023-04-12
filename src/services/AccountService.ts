@@ -21,6 +21,7 @@ import {ApiClient} from '@/services/ApiClient';
 import {AccountModify} from '@/types/account';
 import {SignedInUser} from '@/types/auth';
 import {UserInfo} from '@/types/user';
+import {UserTotp, UserTotpAdd, UserTotpRemove} from '@/types/totp';
 
 /**
  * User account service
@@ -57,6 +58,49 @@ export default class AccountService extends ApiClient {
 			...body,
 			baseUrl: BaseUrlHelper.get(),
 		}).then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
+	}
+
+	/**
+	 * Lists user's TOTP tokens
+	 * @return {Promise<UserTotp[]>} List of TOTP tokens
+	 */
+	public listTotp(): Promise<UserTotp[]> {
+		return this.getClient().get('account/totp')
+			.then((response: AxiosResponse): UserTotp[] => {
+				const data = response.data as Record<string, string>[];
+				return data.map((item: Record<string, string>): UserTotp => {
+					return {
+						uuid: item.uuid,
+						name: item.name,
+						createdAt: new Date(item.createdAt),
+					};
+				});
+			});
+	}
+
+	/**
+	 * Adds a new TOTP token
+	 * @param {UserTotpAdd} totp TOTP token data
+	 */
+	public addTotp(totp: UserTotpAdd): Promise<void> {
+		return this.getClient().post('account/totp', {
+			...totp,
+			baseUrl: BaseUrlHelper.get(),
+		});
+	}
+
+	/**
+	 * Removes a TOTP token
+	 * @param {string} uuid TOTP token UUID
+	 * @param {UserTotpRemove} totp TOTP token removal confirmation
+	 */
+	public removeTotp(uuid: string, totp: UserTotpRemove): Promise<void> {
+		return this.getClient().delete(`account/totp/${uuid}`, {
+			data: {
+				...totp,
+				baseUrl: BaseUrlHelper.get(),
+			}
+		});
 	}
 
 	/**

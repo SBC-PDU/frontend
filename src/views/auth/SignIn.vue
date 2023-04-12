@@ -23,25 +23,40 @@ limitations under the License.
 			{{ $t('core.sign.in.title') }}
 		</template>
 		<v-form ref='form' @submit.prevent='onSubmit'>
-			<v-text-field
-				v-model='credentials.email'
-				:label='$t("core.user.fields.email")'
-				:rules='[
-					(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
-					(v: string) => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
-				]'
-				required
-				prepend-inner-icon='mdi-email'
-			/>
-			<PasswordField
-				v-model='credentials.password'
-				:label='$t("core.user.fields.password")'
-				:rules='[
-					(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
-				]'
-				required
-				prepend-inner-icon='mdi-key'
-			/>
+			<div v-if='!secondFactor'>
+				<v-text-field
+					v-model='credentials.email'
+					:label='$t("core.user.fields.email")'
+					:rules='[
+						(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
+						(v: string) => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
+					]'
+					required
+					prepend-inner-icon='mdi-email'
+				/>
+				<PasswordField
+					v-model='credentials.password'
+					:label='$t("core.user.fields.password")'
+					:rules='[
+						(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
+					]'
+					required
+					prepend-inner-icon='mdi-key'
+				/>
+			</div>
+			<div v-else>
+				<v-text-field
+					v-model='credentials.code'
+					:label='$t("core.user.totp.fields.code")'
+					:rules='[
+						(v: string|null) => FormValidator.isRequired(v, $t("core.user.totp.messages.emptyCode")),
+						(v: string) => FormValidator.isTotpCode(v, $t("core.user.totp.messages.invalidCode")),
+					]'
+					required
+					:counter='6'
+					prepend-inner-icon='mdi-two-factor-authentication'
+				/>
+			</div>
 			<v-btn
 				color='primary'
 				type='submit'
@@ -68,6 +83,7 @@ import FormValidator from '@/helpers/formValidator';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {useUserStore} from '@/store/user';
 import {Credentials} from '@/types/auth';
+import {ErrorMessage} from '@/types/error';
 
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
@@ -77,8 +93,10 @@ const userStore = useUserStore();
 const credentials: Ref<Credentials> = ref({
 	email: '',
 	password: '',
+	code: undefined,
 });
 const form: Ref<typeof VForm | null> = ref(null);
+const secondFactor: Ref<boolean> = ref(false);
 
 /**
  * Submit the form
@@ -87,11 +105,11 @@ async function onSubmit(): Promise<void> {
 	if (form.value === null) {
 		return;
 	}
-	loadingSpinner.show();
 	const {valid} = await form.value.validate();
 	if (!valid) {
 		return;
 	}
+	loadingSpinner.show();
 	await userStore.signIn(credentials.value).then(() => {
 		let destination = (route?.query?.redirect as string | undefined) ?? '/';
 		if (destination.startsWith('/auth/sign/in')) {
@@ -103,7 +121,19 @@ async function onSubmit(): Promise<void> {
 	}).catch((error: AxiosError) => {
 		loadingSpinner.hide();
 		if (error.response?.status === 400) {
-			toast.error(i18n.t('core.sign.in.messages.invalidCredentials').toString());
+			const message: ErrorMessage = error.response.data as ErrorMessage;
+			if (message.message === 'Invalid credentials') {
+				toast.error(i18n.t('core.sign.in.messages.invalidCredentials').toString());
+				return;
+			}
+			if (message.message === 'Incorrect 2FA code') {
+				toast.error(i18n.t('core.user.totp.messages.incorrectCode').toString());
+				return;
+			}
+			if (message.message === '2FA code is required') {
+				secondFactor.value = true;
+				return;
+			}
 			return;
 		} else if (error.response?.status === 403) {
 			toast.error(i18n.t('core.sign.in.messages.accountBlocked').toString());
