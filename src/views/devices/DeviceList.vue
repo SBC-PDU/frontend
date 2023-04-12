@@ -27,8 +27,9 @@ limitations under the License.
 		<template #top>
 			<v-toolbar color='primary' flat>
 				<v-toolbar-title>{{ $t('core.devices.list.title') }}</v-toolbar-title>
-				<v-spacer/>
-				<DeviceForm action='add' @save='loadDevices()' />
+				<v-toolbar-items>
+					<DeviceForm action='add' @save='loadDevices()' />
+				</v-toolbar-items>
 			</v-toolbar>
 		</template>
 		<template #item='{item}'>

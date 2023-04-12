@@ -15,16 +15,20 @@ limitations under the License.
 -->
 
 <template>
-	<Card>
-		<template #title>
+	<v-toolbar color='primary' density='comfortable'>
+		<v-toolbar-title>
 			<v-icon>mdi-information-variant</v-icon>
 			{{ $t('core.devices.detail.info.title') }}
+		</v-toolbar-title>
+		<v-toolbar-items>
 			<DeviceForm
 				action='edit'
 				:id='device.id'
 				@save='reload()'
 			/>
-		</template>
+		</v-toolbar-items>
+	</v-toolbar>
+	<Card>
 		<v-table>
 			<tbody>
 				<tr>

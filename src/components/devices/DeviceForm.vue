@@ -22,37 +22,35 @@ limitations under the License.
 		:width='modalWidth'
 	>
 		<template #activator='{ props }'>
-			<v-btn
-				v-if='action === "add"'
-				color='green'
-				prepend-icon='mdi-plus'
-				v-bind='props'
-				variant='elevated'
-			>
-				<span class='d-none d-sm-inline'>
-					{{ $t('core.devices.add.activator') }}
-				</span>
-			</v-btn>
-			<v-btn
-				v-else-if='action === "edit"'
-				color='blue'
-				class='float-end'
-				prepend-icon='mdi-pencil'
-				v-bind='props'
-				variant='elevated'
-			>
-				<span class='d-none d-sm-inline'>
-					{{ $t('core.devices.edit.activator') }}
-				</span>
-			</v-btn>
 			<v-icon
-				v-else
+				v-if='action === Action.EditFromTable'
 				v-bind='props'
 				color='primary'
 				class='me-2'
 			>
 				mdi-pencil-outline
 			</v-icon>
+			<v-btn
+				v-else
+				:color='action === Action.Add ? "green" : "blue"'
+				:prepend-icon='display.smAndUp.value ? (action === Action.Add ? "mdi-plus" : "mdi-pencil") : undefined'
+				v-bind='props'
+				variant='elevated'
+				class='float-end'
+			>
+				<span v-if='action === Action.Add'>
+					<span v-if='display.smAndUp.value'>
+						{{ $t('core.devices.add.activator') }}
+					</span>
+					<v-icon v-else>mdi-plus</v-icon>
+				</span>
+				<span v-if='action === Action.Edit'>
+					<span v-if='display.smAndUp.value'>
+						{{ $t('core.devices.edit.activator') }}
+					</span>
+					<v-icon v-else>mdi-pencil</v-icon>
+				</span>
+			</v-btn>
 		</template>
 		<v-form ref='form' @submit.prevent='submit'>
 			<Card :header-color='action === "add" ? "green-darken-1" : "primary"' style='max-height: 90vh'>
@@ -194,13 +192,23 @@ import {
 } from '@/types/device';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 
+/**
+ * Enum for action to perform
+ */
+enum Action {
+  Add = 'add',
+	Edit = 'edit',
+	EditFromTable = 'editTable',
+}
+
 interface Props {
 	/// Action to perform
-	action: 'add' | 'edit' | 'editTable';
+	action: Action;
 	/// Device ID to edit
 	id?: string;
 }
 
+const display = useDisplay();
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
 const service = new DeviceService();
@@ -208,7 +216,6 @@ const service = new DeviceService();
 const emit = defineEmits(['save']);
 const props = defineProps<Props>();
 const dialog = ref(false);
-const display = useDisplay();
 const modalWidth = ModalWindowHelper.getWidth();
 const form: Ref<typeof VForm | null> = ref(null);
 
@@ -221,7 +228,7 @@ const device: Ref<DeviceAdd|DeviceModify> = ref({
  * Loads data about the device
  */
 function loadData(): void {
-	if (props.action === 'add' || props.id === undefined) {
+	if (props.action === Action.Add || props.id === undefined) {
 		device.value = {
 			name: '',
 			macAddress: '',
@@ -314,7 +321,7 @@ async function submit(): Promise<void> {
 	}
 	close();
 	loadingSpinner.show();
-	if (props.action === 'add') {
+	if (props.action === Action.Add) {
 		await add(device.value as DeviceAdd);
 	} else if (props.id !== undefined) {
 		await edit(props.id, device.value as DeviceModify);

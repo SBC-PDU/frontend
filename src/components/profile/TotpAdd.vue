@@ -23,22 +23,15 @@ limitations under the License.
 	>
 		<template #activator='{ props }'>
 			<v-btn
-				v-if='display.smAndUp.value'
 				v-bind='props'
 				color='green'
-				prepend-icon='mdi-plus'
+				:prepend-icon='display.smAndUp.value ? "mdi-plus" : undefined'
 				variant='elevated'
 			>
-				{{ $t('core.user.totp.add.activator') }}
-			</v-btn>
-			<v-btn
-				v-else
-				v-bind='props'
-				color='green'
-				variant='elevated'
-				size='small'
-			>
-				<v-icon>mdi-plus</v-icon>
+				<span v-if='display.smAndUp.value'>
+					{{ $t('core.user.totp.add.activator') }}
+				</span>
+				<v-icon v-else>mdi-plus</v-icon>
 			</v-btn>
 		</template>
 		<v-form @submit.prevent='add()' ref='form'>
@@ -192,19 +185,12 @@ const defaultFormData: UserTotpAdd = {
 const form: Ref<typeof VForm | null> = ref(null);
 const formData = ref<UserTotpAdd>(defaultFormData);
 
-setInterval(() => {
-	console.warn(totp.generate());
-}, 10_000);
-
 /// QR code size
 const qrCodeSize = computed(() => {
 	if (display.smAndDown.value) {
 		return 200;
 	}
-	if (display.md.value) {
-		return 300;
-	}
-	if (display.lg.value) {
+	if (display.md.value && display.lg.value) {
 		return 300;
 	}
 	return 400;

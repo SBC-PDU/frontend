@@ -22,32 +22,34 @@ limitations under the License.
 		:width='modalWidth'
 	>
 		<template #activator='{ props }'>
-			<v-btn
-				v-if='action === Action.Add'
-				v-bind='props'
-				color='green'
-				prepend-icon='mdi-plus'
-				variant='elevated'
-			>
-				{{ $t('admin.users.add.activator') }}
-			</v-btn>
-			<v-btn
-				v-else-if='action === Action.Invite'
-				v-bind='props'
-				color='info'
-				prepend-icon='mdi-send'
-				variant='elevated'
-			>
-				{{ $t('admin.users.invite.activator') }}
-			</v-btn>
 			<v-icon
-				v-else
+				v-if='action === Action.Edit'
 				v-bind='props'
 				color='primary'
 				class='me-2'
 			>
 				mdi-pencil
 			</v-icon>
+			<v-btn
+				v-else
+				v-bind='props'
+				:color='action === Action.Add ? "green" : "info"'
+				:prepend-icon='display.smAndUp.value ? (action === Action.Add ? "mdi-plus" : "mdi-send") : undefined'
+				variant='elevated'
+			>
+				<span v-if='action === Action.Add'>
+					<span v-if='display.smAndUp.value'>
+						{{ $t('admin.users.add.activator') }}
+					</span>
+					<v-icon v-else>mdi-plus</v-icon>
+				</span>
+				<span v-if='action === Action.Invite'>
+					<span v-if='display.smAndUp.value'>
+						{{ $t('admin.users.invite.activator') }}
+					</span>
+					<v-icon v-else>mdi-send</v-icon>
+				</span>
+			</v-btn>
 		</template>
 		<v-form ref='form' @submit.prevent='submit'>
 			<Card :header-color='action === Action.Add ? "green-darken-1" : "primary"' style='max-height: 90vh'>
@@ -148,15 +150,16 @@ limitations under the License.
 import {Ref, ref, watchEffect} from 'vue';
 import {toast} from 'vue3-toastify';
 import {useI18n} from 'vue-i18n';
+import {useDisplay} from 'vuetify';
 import {VForm} from 'vuetify/components';
 
+import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
 import FormValidator from '@/helpers/formValidator';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
-import {UserAdd, UserInfo, UserLanguage, UserModify, UserRole} from '@/types/user';
 import UserService from '@/services/UserService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import Card from '@/components/Card.vue';
+import {UserAdd, UserInfo, UserLanguage, UserModify, UserRole} from '@/types/user';
 
 /**
  * Actions to perform
@@ -177,6 +180,7 @@ interface Props {
 	initUser?: UserInfo;
 }
 
+const display = useDisplay();
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
 const service = new UserService();

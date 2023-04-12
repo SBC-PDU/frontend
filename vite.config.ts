@@ -22,6 +22,7 @@ import path from 'path';
 import {fileURLToPath, URL} from 'node:url';
 import {defineConfig, loadEnv} from 'vite';
 import vuetify, {transformAssetUrls} from 'vite-plugin-vuetify';
+import svgLoader from 'vite-svg-loader';
 
 // Git commit hash
 const gitCommitHash = child_process.execSync('git rev-parse --short HEAD').toString().trim();
@@ -42,6 +43,7 @@ export default defineConfig(({mode}) => {
 			VueI18nPlugin({
 				include: [path.resolve(__dirname, 'src/locales/**')],
 			}),
+			svgLoader({defaultImport: 'url'}),
 			sentryVitePlugin({
 				include: ['src'],
 				ignore: ['node_modules', 'vite.config.ts'],

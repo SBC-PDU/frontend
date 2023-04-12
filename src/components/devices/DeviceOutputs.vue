@@ -15,18 +15,26 @@ limitations under the License.
 -->
 
 <template>
-	<Card header-color='grey'>
-		<template #title>
+	<v-toolbar color='grey' density='compact'>
+		<v-toolbar-title>
 			<v-icon>mdi-power</v-icon>
 			{{ $t('core.devices.detail.outputs.title') }}
+		</v-toolbar-title>
+		<v-toolbar-items>
 			<v-btn
-				class='float-end'
 				color='primary'
-				prepend-icon='mdi-refresh'
+				:prepend-icon='display.smAndUp.value ? "mdi-refresh" : undefined'
+				variant='elevated'
 				@click='reload()'
-			>{{ $t('core.devices.detail.outputs.reload') }}
+			>
+				<span v-if='display.smAndUp.value'>
+					{{ $t('core.devices.detail.outputs.reload') }}
+				</span>
+				<v-icon v-else>mdi-refresh</v-icon>
 			</v-btn>
-		</template>
+		</v-toolbar-items>
+	</v-toolbar>
+	<Card>
 		<v-table>
 			<thead>
 				<tr>
@@ -66,6 +74,7 @@ limitations under the License.
 <script lang='ts' setup>
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
+import {useDisplay} from 'vuetify';
 
 import Card from '@/components/Card.vue';
 import DeviceService from '@/services/DeviceService';
@@ -77,6 +86,7 @@ interface Props {
 	device: DeviceDetail;
 }
 
+const display = useDisplay();
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
 const service = new DeviceService();

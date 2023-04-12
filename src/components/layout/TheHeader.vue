@@ -17,9 +17,16 @@ limitations under the License.
 <template>
 	<v-app-bar color='primary'>
 		<v-app-bar-nav-icon @click='sidebarStore.toggleVisibility()' />
-		<v-toolbar-title>
+		<v-img
+			:src='Logo'
+			alt='Logo'
+			max-height='36'
+			max-width='36'
+			cover
+		/>
+		<v-app-bar-title class='d-none d-md-inline'>
 			{{ $t('core.title') }}
-		</v-toolbar-title>
+		</v-app-bar-title>
 		<v-spacer/>
 		<LocaleSwitcher/>
 		<ProfileDropdown v-if='userStore.isLoggedIn'/>
@@ -27,6 +34,7 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import Logo from '@/assets/icon.svg?url';
 import LocaleSwitcher from '@/components/layout/header/LocaleSwitcher.vue';
 import ProfileDropdown from '@/components/layout/header/ProfileDropdown.vue';
 import {useSidebarStore} from '@/store/sidebar';

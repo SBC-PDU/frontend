@@ -15,7 +15,9 @@ limitations under the License.
 -->
 
 <template>
-	<v-menu>
+	<v-menu
+		location='bottom end'
+	>
 		<template v-slot:activator='{ props }'>
 			<v-btn
 				color='blue-lighten-1'

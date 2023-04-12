@@ -16,7 +16,7 @@ limitations under the License.
 
 <template>
 	<v-card class='mb-4'>
-		<v-card-title :class='headerClass'>
+		<v-card-title v-if='$slots.title' :class='headerClass'>
 			<slot name='title' />
 		</v-card-title>
 		<v-card-text class='card-text'>
