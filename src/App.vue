@@ -16,9 +16,7 @@ limitations under the License.
 
 <template :key='locale'>
 	<LoadingSpinner />
-	<v-app dark style='background-color: #f5f5f5'>
-		<router-view/>
-	</v-app>
+	<router-view/>
 </template>
 
 <script lang='ts' setup>
