@@ -27,6 +27,7 @@ limitations under the License.
 		<template #top>
 			<v-toolbar color='primary' flat>
 				<v-toolbar-title>
+					<v-icon>mdi-account-group</v-icon>
 					{{ $t('admin.users.list.title') }}
 				</v-toolbar-title>
 				<v-toolbar-items>
@@ -47,9 +48,7 @@ limitations under the License.
 					</a>
 				</td>
 				<td>
-					<v-chip :color='getRoleColor(item.raw.role)'>
-						{{ $t(`core.user.roles.${item.raw.role}`) }}
-					</v-chip>
+					<UserRoleBadge :role='item.raw.role' />
 				</td>
 				<td>
 					{{ getLanguageFlag(item.raw.language) }}
@@ -58,11 +57,7 @@ limitations under the License.
 					</span>
 				</td>
 				<td>
-					<v-chip :color='getStateColor(item.raw.state)' :prepend-icon='getStateIcon(item.raw.state)'>
-						<span class='d-none d-xl-inline'>
-							{{ $t(`core.user.states.${item.raw.state}`) }}
-						</span>
-					</v-chip>
+					<AccountStateBadge :state='item.raw.state' />
 				</td>
 				<td style='text-align: right;'>
 					<v-btn-group density='compact'>
@@ -90,7 +85,9 @@ import UserDeleteConfirmation from '@/components/admin/user/UserDeleteConfirmati
 import UserForm from '@/components/admin/user/UserForm.vue';
 import UserService from '@/services/UserService';
 import {useUserStore} from '@/store/user';
-import {AccountState, UserInfo, UserLanguage, UserRole} from '@/types/user';
+import {UserInfo, UserLanguage} from '@/types/user';
+import AccountStateBadge from '@/components/admin/user/AccountStateBadge.vue';
+import UserRoleBadge from '@/components/admin/user/UserRoleBadge.vue';
 
 const i18n = useI18n();
 const userService = new UserService();
@@ -130,56 +127,6 @@ function getLanguageFlag(language: UserLanguage): string {
 			return '🇨🇿';
 		case UserLanguage.English:
 			return '🇬🇧';
-	}
-}
-
-/**
- * Returns the color for the given role
- * @param {UserRole} role The role to get the color for
- * @returns {string} The color
- */
-function getRoleColor(role: UserRole): string {
-	switch (role) {
-		case UserRole.Admin:
-			return 'green';
-		case UserRole.Normal:
-			return 'secondary';
-	}
-}
-
-/**
- * Returns the color for the given state
- * @param {AccountState} state The state to get the color for
- * @returns {string} The color
- */
-function getStateColor(state: AccountState): string {
-	switch (state) {
-		case AccountState.Verified:
-			return 'green';
-		case AccountState.Unverified:
-			return 'orange';
-		case AccountState.Invited:
-			return 'blue';
-		case AccountState.Blocked:
-			return 'red';
-	}
-}
-
-/**
- * Returns the icon for the given state
- * @param {AccountState} state The state to get the icon for
- * @returns {string} The icon
- */
-function getStateIcon(state: AccountState): string {
-	switch (state) {
-		case AccountState.Verified:
-			return 'mdi-check';
-		case AccountState.Unverified:
-			return 'mdi-help';
-		case AccountState.Invited:
-			return 'mdi-email';
-		case AccountState.Blocked:
-			return 'mdi-lock';
 	}
 }
 
