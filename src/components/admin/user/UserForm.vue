@@ -54,9 +54,18 @@ limitations under the License.
 		<v-form ref='form' @submit.prevent='submit'>
 			<Card :header-color='action === Action.Add ? "green-darken-1" : "primary"' style='max-height: 90vh'>
 				<template #title>
-					<span v-if='action === Action.Add'>{{ $t('admin.users.add.title') }}</span>
-					<span v-if='action === Action.Edit'>{{ $t('admin.users.edit.title') }}</span>
-					<span v-if='action === Action.Invite'>{{ $t('admin.users.invite.title') }}</span>
+					<span v-if='action === Action.Add'>
+						<v-icon>mdi-account-plus</v-icon>
+						{{ $t('admin.users.add.title') }}
+					</span>
+					<span v-if='action === Action.Edit'>
+						<v-icon>mdi-account-edit</v-icon>
+						{{ $t('admin.users.edit.title') }}
+					</span>
+					<span v-if='action === Action.Invite'>
+						<v-icon>mdi-account-plus</v-icon>
+						{{ $t('admin.users.invite.title') }}
+					</span>
 				</template>
 				<v-text-field
 					v-model='user.name'
@@ -65,6 +74,7 @@ limitations under the License.
 						v => FormValidator.isRequired(v, $t("core.user.messages.emptyName")),
 					]'
 					required
+					prepend-inner-icon='mdi-account'
 				/>
 				<v-text-field
 					v-model='user.email'
@@ -74,6 +84,7 @@ limitations under the License.
 						v => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
 					]'
 					required
+					prepend-inner-icon='mdi-email'
 				/>
 				<PasswordField
 					v-if='action === Action.Add'
@@ -83,6 +94,7 @@ limitations under the License.
 						(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
 					]'
 					required
+					prepend-inner-icon='mdi-lock'
 				/>
 				<v-select
 					v-model='user.role'
@@ -95,19 +107,9 @@ limitations under the License.
 						v => FormValidator.isRequired(v, $t("core.user.messages.emptyRole")),
 					]'
 					required
+					prepend-inner-icon='mdi-account-group'
 				/>
-				<v-select
-					v-model='user.language'
-					:items='[
-						{title: $t("core.locales.en"), value: UserLanguage.English},
-						{title: $t("core.locales.cs"), value: UserLanguage.Czech},
-					]'
-					:label='$t("core.user.fields.language")'
-					:rules='[
-						v => FormValidator.isRequired(v, $t("core.user.messages.emptyLanguage")),
-					]'
-					required
-				/>
+				<LanguageSelector v-model='user.language' />
 				<template #actions>
 					<v-btn
 						v-if='action === Action.Add'
@@ -155,6 +157,7 @@ import {VForm} from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
+import LanguageSelector from '@/components/users/LanguageSelector.vue';
 import FormValidator from '@/helpers/formValidator';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import UserService from '@/services/UserService';
@@ -196,7 +199,7 @@ const defaultUser: UserModify = {
 	language: UserLanguage.English,
 };
 const modalWidth = ModalWindowHelper.getWidth();
-const user: Ref<UserModify | UserAdd> = ref<UserModify>(defaultUser);
+const user = ref<UserAdd | UserModify>(defaultUser);
 
 watchEffect(async (): Promise<void> => {
 	switch (props.action) {

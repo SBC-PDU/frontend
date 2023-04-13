@@ -45,17 +45,7 @@ limitations under the License.
 				/>
 			</div>
 			<div v-else>
-				<v-text-field
-					v-model='credentials.code'
-					:label='$t("core.user.totp.fields.code")'
-					:rules='[
-						(v: string|null) => FormValidator.isRequired(v, $t("core.user.totp.messages.emptyCode")),
-						(v: string) => FormValidator.isTotpCode(v, $t("core.user.totp.messages.invalidCode")),
-					]'
-					required
-					:counter='6'
-					prepend-inner-icon='mdi-two-factor-authentication'
-				/>
+				<TotpField v-model='credentials.code' />
 			</div>
 			<v-btn
 				color='primary'
@@ -79,6 +69,7 @@ import {VForm} from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
+import TotpField from '@/components/users/TotpField.vue';
 import FormValidator from '@/helpers/formValidator';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {useUserStore} from '@/store/user';
@@ -93,7 +84,7 @@ const userStore = useUserStore();
 const credentials: Ref<Credentials> = ref({
 	email: '',
 	password: '',
-	code: undefined,
+	code: null,
 });
 const form: Ref<typeof VForm | null> = ref(null);
 const secondFactor: Ref<boolean> = ref(false);

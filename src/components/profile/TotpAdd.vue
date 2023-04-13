@@ -65,7 +65,7 @@ limitations under the License.
 							</v-window-item>
 							<v-window-item value='text'>
 								<v-text-field
-									:model-value='secret.base32.match(/.{1,4}/g).join(" ")'
+									:model-value='(secret.base32.match(/.{1,4}/g) ?? []).join(" ")'
 									readonly
 									:label='$t("core.user.totp.secret.label")'
 									append-inner-icon='mdi-content-copy'
@@ -93,17 +93,7 @@ limitations under the License.
 							:counter='255'
 							prepend-inner-icon='mdi-text-short'
 						/>
-						<v-text-field
-							v-model='formData.code'
-							:label='$t("core.user.totp.fields.code")'
-							:rules='[
-								(v: any) => FormValidator.isRequired(v, $t("core.user.totp.messages.emptyCode")),
-								(v: string) => FormValidator.isTotpCode(v, $t("core.user.totp.messages.invalidCode")),
-							]'
-							required
-							:counter='6'
-							prepend-inner-icon='mdi-two-factor-authentication'
-						/>
+						<TotpField v-model='formData.code' />
 						<PasswordField
 							v-model='formData.password'
 							:label='$t("core.user.fields.password")'
@@ -140,21 +130,21 @@ limitations under the License.
 import * as OTPAuth from 'otpauth';
 import QrcodeVue from 'qrcode.vue';
 import { Clipboard } from 'v-clipboard';
-import {computed, Ref, ref} from 'vue';
+import {computed, Ref, ref, watch} from 'vue';
 import {toast} from 'vue3-toastify';
 import {useI18n} from 'vue-i18n';
-
-import Card from '@/components/Card.vue';
-import ModalWindowHelper from '@/helpers/modalWindowHelper';
-import {useUserStore} from '@/store/user';
 import {useDisplay} from 'vuetify';
-import AccountService from '@/services/AccountService';
-import {UserTotpAdd} from '@/types/totp';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import FormValidator from '@/helpers/formValidator';
-import PasswordField from '@/components/PasswordField.vue';
 import {VForm} from 'vuetify/components';
 
+import Card from '@/components/Card.vue';
+import PasswordField from '@/components/PasswordField.vue';
+import TotpField from '@/components/users/TotpField.vue';
+import FormValidator from '@/helpers/formValidator';
+import ModalWindowHelper from '@/helpers/modalWindowHelper';
+import AccountService from '@/services/AccountService';
+import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
+import {useUserStore} from '@/store/user';
+import {UserTotpAdd} from '@/types/totp';
 
 const display = useDisplay();
 const i18n = useI18n();
@@ -167,17 +157,17 @@ const dialog = ref<boolean>(false);
 const modalWidth = ModalWindowHelper.getWidth();
 const tab = ref<string>('qrCode');
 
-const secret = new OTPAuth.Secret({size: 20});
+const secret = ref<OTPAuth.Secret>(new OTPAuth.Secret({size: 20}));
 const totp = new OTPAuth.TOTP({
 	issuer: i18n.t('core.title').toString(),
 	label: userStore.getEmail ?? '',
 	algorithm: 'SHA1',
 	digits: 6,
 	period: 30,
-	secret: secret,
+	secret: secret.value,
 });
 const defaultFormData: UserTotpAdd = {
-	secret: secret.base32,
+	secret: secret.value.base32,
 	name: '',
 	code: '',
 	password: '',
@@ -196,6 +186,14 @@ const qrCodeSize = computed(() => {
 	return 400;
 });
 
+watch(dialog, (value: boolean) => {
+	if (value) {
+		secret.value = new OTPAuth.Secret({size: 20});
+		formData.value = defaultFormData;
+		formData.value.secret = secret.value.base32;
+	}
+});
+
 /**
  * Close the dialog
  */
@@ -203,6 +201,9 @@ function close(): void {
 	dialog.value = false;
 }
 
+/**
+ * Add a new TOTP to the account
+ */
 async function add(): Promise<void> {
 	if (form.value === null) {
 		return;
@@ -228,7 +229,7 @@ async function add(): Promise<void> {
  */
 async function copySecret(): Promise<void> {
 	try {
-		await Clipboard.copy(secret.base32);
+		await Clipboard.copy(secret.value.base32);
 		toast.success(i18n.t('core.user.totp.secret.copy.success').toString());
 	} catch (e) {
 		toast.error(i18n.t('core.user.totp.secret.copy.error').toString());

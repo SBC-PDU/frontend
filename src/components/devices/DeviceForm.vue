@@ -64,6 +64,7 @@ limitations under the License.
 						v => FormValidator.isRequired(v, $t("core.devices.form.messages.emptyName")),
 					]'
 					required
+					prepend-inner-icon='mdi-text-short'
 				/>
 				<v-text-field
 					v-if='action === "add"'
@@ -73,6 +74,7 @@ limitations under the License.
 						v => FormValidator.isRequired(v, $t("core.devices.form.messages.emptyMacAddress")),
 					]'
 					required
+					prepend-inner-icon='mdi-wifi'
 				/>
 				<h2 class='mb-4'>{{ $t('core.devices.form.outputs.title') }}</h2>
 				<v-row v-for='(output, outputIndex) in device.outputs' :key='output.index'>
@@ -85,6 +87,7 @@ limitations under the License.
 							]'
 							required
 							type='number'
+							prepend-inner-icon='mdi-identifier'
 						/>
 					</v-col>
 					<v-col cols='12' sm='8'>
@@ -95,6 +98,7 @@ limitations under the License.
 								v => FormValidator.isRequired(v, $t("core.devices.form.messages.outputs.emptyName")),
 							]'
 							required
+							prepend-inner-icon='mdi-text-short'
 						>
 							<template v-slot:append v-if='display.smAndUp.value'>
 								<v-btn-group class='my-auto' density='compact'>

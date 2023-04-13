@@ -24,10 +24,12 @@ limitations under the License.
 		<template #top>
 			<v-toolbar color='grey' flat>
 				<v-toolbar-title>
+					<v-icon>mdi-two-factor-authentication</v-icon>
 					{{ $t('core.user.totp.title') }}
 				</v-toolbar-title>
-				<v-spacer/>
-				<TotpAdd @submit='loadData()'/>
+				<v-toolbar-items>
+					<TotpAdd @submit='loadData()' />
+				</v-toolbar-items>
 			</v-toolbar>
 		</template>
 		<template #item='{ item }'>

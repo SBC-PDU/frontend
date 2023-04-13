@@ -17,6 +17,7 @@ limitations under the License.
 <template>
 	<Card>
 		<template #title>
+			<v-icon>mdi-account</v-icon>
 			{{ $t('core.profile.title') }}
 		</template>
 		<v-form ref='form' class='mt-4' @submit.prevent='onSubmit'>
@@ -39,19 +40,7 @@ limitations under the License.
 				required
 				prepend-inner-icon='mdi-email'
 			/>
-			<v-select
-				v-model='user.language'
-				:items='[
-					{title: $t("core.locales.en"), value: UserLanguage.English},
-					{title: $t("core.locales.cs"), value: UserLanguage.Czech},
-				]'
-				:label='$t("core.user.fields.language")'
-				:rules='[
-					v => FormValidator.isRequired(v, $t("core.user.messages.emptyLanguage")),
-				]'
-				required
-				prepend-inner-icon='mdi-translate'
-			/>
+			<LanguageSelector v-model='user.language' />
 			<v-switch
 				v-model='user.changePassword'
 				:label='$t("core.profile.fields.passwordChange")'
@@ -98,6 +87,7 @@ import {VForm} from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
+import LanguageSelector from '@/components/users/LanguageSelector.vue';
 import FormValidator from '@/helpers/formValidator';
 import AccountService from '@/services/AccountService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';

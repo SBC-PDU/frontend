@@ -36,17 +36,7 @@ limitations under the License.
 					{{ $t('core.user.totp.delete.title') }}
 				</template>
 				{{ $t('core.user.totp.delete.message', {name: token.name}) }}
-				<v-text-field
-					v-model='formData.code'
-					:label='$t("core.user.totp.fields.code")'
-					:rules='[
-						(v: any) => FormValidator.isRequired(v, $t("core.user.totp.messages.emptyCode")),
-						(v: string) => FormValidator.isTotpCode(v, $t("core.user.totp.messages.invalidCode")),
-					]'
-					required
-					:counter='6'
-					prepend-inner-icon='mdi-two-factor-authentication'
-				/>
+				<TotpField v-model='formData.code'/>
 				<PasswordField
 					v-model='formData.password'
 					:label='$t("core.user.fields.password")'
@@ -81,15 +71,16 @@ limitations under the License.
 import {Ref, ref} from 'vue';
 import {toast} from 'vue3-toastify';
 import {useI18n} from 'vue-i18n';
+import {VForm} from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
+import PasswordField from '@/components/PasswordField.vue';
+import TotpField from '@/components/users/TotpField.vue';
+import FormValidator from '@/helpers/formValidator';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import AccountService from '@/services/AccountService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {UserTotp, UserTotpRemove} from '@/types/totp';
-import FormValidator from '@/helpers/formValidator';
-import PasswordField from '@/components/PasswordField.vue';
-import {VForm} from 'vuetify/components';
 
 /**
  * The component props
@@ -123,7 +114,7 @@ function close(): void {
 /**
  * Delete the TOTP token
  */
-async function deleteToken(): void {
+async function deleteToken(): Promise<void> {
 	if (form.value === null) {
 		return;
 	}

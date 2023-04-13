@@ -41,6 +41,7 @@ interface Props {
 }
 
 const display = useDisplay();
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<Props>();
 
 /**

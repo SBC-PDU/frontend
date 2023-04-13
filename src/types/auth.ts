@@ -24,7 +24,7 @@ export interface Credentials {
 	/// User password
 	password: string;
 	/// TOTP code
-	code?: string;
+	code: string | null;
 }
 
 /**
