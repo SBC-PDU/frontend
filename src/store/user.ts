@@ -131,6 +131,17 @@ export const useUserStore = defineStore('user', {
 			return state.user.email;
 		},
 		/**
+		 * Returns user token expiration timestamp
+		 * @param {UserState} state User state
+		 * @returns {number|null} Token expiration timestamp
+		 */
+		getExpiration(state: UserState): number | null {
+			if (state.user === null || !this.isLoggedIn) {
+				return null;
+			}
+			return state.expiration;
+		},
+		/**
 		 * Returns user name
 		 * @param {UserState} state User state
 		 * @returns {string|null} User name

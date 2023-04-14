@@ -71,4 +71,13 @@ export default class AuthenticationService extends ApiClient {
 		}).then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
 	}
 
+	/**
+	 * Extends the session
+	 * @returns {Promise<SignedInUser>} User info with JWT token
+	 */
+	public extendSession(): Promise<SignedInUser> {
+		return this.getClient().post('auth/token/refresh')
+			.then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
+	}
+
 }

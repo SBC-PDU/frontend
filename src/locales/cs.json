@@ -424,6 +424,19 @@
 				}
 			}
 		},
+		"session": {
+			"expiration": {
+				"title": "Brzy vyprší platnost Vaší relace",
+				"countdown": "Vaše relace vypršela. | Vaše relace vyprší za {countdown} sekundu. | Vaše relace vyprší za {countdown} sekundy. | Vaše relace vyprší za {countdown} sekund.",
+				"message": "Chcete-li pokračovat v práci v aplikaci, klikněte na tlačítko „Prodloužit relaci“.",
+				"extend": "Prodloužit relaci",
+				"messages": {
+					"success": "Vaše relace byla prodloužena.",
+					"error": "Při prodlužování Vaší relace nastala chyba.",
+					"signOut": "Vaše relace vypršela. Byl jste odhlášen."
+				}
+			}
+		},
 		"sign": {
 			"in": {
 				"title": "Přihlášení",

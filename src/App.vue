@@ -16,6 +16,7 @@ limitations under the License.
 
 <template :key='locale'>
 	<LoadingSpinner />
+	<SessionExpirationModal />
 	<router-view/>
 </template>
 
@@ -27,6 +28,7 @@ import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 
 import LoadingSpinner from '@/components/layout/LoadingSpinner.vue';
+import SessionExpirationModal from '@/components/layout/SessionExpirationModal.vue';
 import {useLocaleStore} from '@/store/locale';
 
 const localeStore = useLocaleStore();
@@ -45,6 +47,10 @@ const headOptions = ref({
 });
 setLocale(null);
 
+/**
+ * Sets locale
+ * @param {string | null} newLocale New locale
+ */
 function setLocale(newLocale: string | null = null): void {
 	const localeToSet = newLocale ?? locale.value;
 	i18n.locale.value = localeToSet;

@@ -423,6 +423,19 @@
 				}
 			}
 		},
+		"session": {
+			"expiration": {
+				"title": "Your session will expire soon",
+				"countdown": "Your session expired. | Your session will expire in {countdown} second. | Your session will expire in {countdown} seconds.",
+				"message": "To continue working in the application, click on the \"Extend Session\" button.",
+				"extend": "Extend Session",
+				"messages": {
+					"success": "Your session has been successfully extended.",
+					"error": "An error occurred during session extension.",
+					"signOut": "Your session has expired. Please sign in again."
+				}
+			}
+		},
 		"sign": {
 			"in": {
 				"title": "Sign in",
