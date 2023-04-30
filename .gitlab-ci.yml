@@ -1,0 +1,73 @@
+# Copyright 2022-2023 Roman Ondráček
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+image: $CI_REGISTRY_IMAGE:testing
+
+stages:
+    - build-docker-testing
+    - test
+    - coding-style
+    - build
+    - deploy
+
+variables:
+    COMPOSER_CACHE_DIR: temp/composer/cache
+
+cache:
+    paths:
+        - .pnpm-store
+
+build-docker-testing:
+    stage: build-docker-testing
+    image: docker:latest
+    services:
+        - docker:dind
+    before_script: []
+    script:
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - docker build -f docker/testing/Dockerfile -t $CI_REGISTRY_IMAGE:testing docker/testing/
+        - docker push $CI_REGISTRY_IMAGE:testing
+    only:
+        refs:
+            - master
+
+before_script:
+    - pnpm config set store-dir .pnpm-store
+    - pnpm install
+
+eslint:
+    script:
+        - pnpm run lint:js
+    stage: coding-style
+    needs: [build-docker-testing]
+
+vue-i18n:
+    script:
+        - pnpm run lint:i18n
+    stage: coding-style
+    needs: [build-docker-testing]
+
+stylelint:
+    script:
+        - pnpm run lint:css
+    stage: coding-style
+    needs: [build-docker-testing]
+
+build:
+    script:
+        - pnpm run build
+    stage: build
+    artifacts:
+        paths:
+            - dist
