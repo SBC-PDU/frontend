@@ -44,7 +44,7 @@ export default defineConfig(({mode}) => {
 				include: [path.resolve(__dirname, 'src/locales/**')],
 			}),
 			svgLoader({defaultImport: 'url'}),
-			sentryVitePlugin({
+			(env.VITE_SENTRY_ENABLED || process.env.SENTRY_ENABLED) === 'true' && sentryVitePlugin({
 				include: ['src'],
 				ignore: ['node_modules', 'vite.config.ts'],
 				release: gitCommitHash,
