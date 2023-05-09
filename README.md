@@ -20,6 +20,7 @@ Tento repozitář obsahuje frontendovou část pro centrální správu napájec�
 2. Nainstalujte závislosti pomocí příkazu:
 	 ```bash
 	 npm install
+   npm update
 	 ```
 3. Vytvořte soubor `.env.local` s konfigurací:
 	```dotenv
@@ -38,7 +39,7 @@ Tento repozitář obsahuje frontendovou část pro centrální správu napájec�
 	# limitations under the License.
 	
 	# REST API base URL
-	VITE_API_BASE_URL=           # URL backendu (např. http://localhost:8090/v1)
+	VITE_API_BASE_URL=/api/v1    # URL backendu (např. http://localhost:8090/v1)
 	# Localization
 	VITE_I18N_LOCALE=en          # Výchozí lokalizace (musí být v seznamu podporovaných lokalizací)
 	VITE_I18N_FALLBACK_LOCALE=en # Výchozí lokalizace pro případ, že nějaký text není přeložen
