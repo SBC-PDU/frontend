@@ -31,6 +31,9 @@ const gitCommitHash = child_process.execSync('git rev-parse --short HEAD').toStr
 export default defineConfig(({mode}) => {
 	const env = loadEnv(mode, process.cwd(), '');
 	return {
+		build: {
+			sourcemap: true,
+		},
 		plugins: [
 			vue({
 				template: {transformAssetUrls}
@@ -45,8 +48,6 @@ export default defineConfig(({mode}) => {
 			}),
 			svgLoader({defaultImport: 'url'}),
 			(env.VITE_SENTRY_ENABLED || process.env.SENTRY_ENABLED) === 'true' && sentryVitePlugin({
-				include: ['src'],
-				ignore: ['node_modules', 'vite.config.ts'],
 				release: gitCommitHash,
 				url: env.VITE_SENTRY_URL || process.env.SENTRY_URL,
 				org: env.VITE_SENTRY_ORG || process.env.SENTRY_ORG,

@@ -18,7 +18,7 @@ limitations under the License.
 	<Head>
 		<title>{{ $t('core.devices.list.title') }}</title>
 	</Head>
-	<v-data-table-server
+	<v-data-table
 		:headers='headers'
 		:items='devices'
 		:items-length='devices.length'
@@ -35,29 +35,22 @@ limitations under the License.
 				</v-toolbar-items>
 			</v-toolbar>
 		</template>
-		<template #item='{item}'>
-			<tr>
-				<td>
-					<router-link :to='"/devices/" + item.raw.id'>
-						{{ item.raw.name }}
-					</router-link>
-				</td>
-				<td>
-					{{ item.raw.macAddress }}
-				</td>
-				<td>
-					<span v-if='item.raw.lastSeen !== null'>{{ $d(item.raw.lastSeen, 'long') }}</span>
-				</td>
-				<td>
-					{{ item.raw.outputs.length }}
-				</td>
-				<td class='text-end'>
-					<DeviceForm action='editTable' :id='item.raw.id' @save='loadDevices()' />
-					<DeviceDeleteConfirmation v-if='userStore.getRole === UserRole.Admin' :device='item.raw' @delete='loadDevices()' />
-				</td>
-			</tr>
+		<template #item.name='{ item }'>
+			<router-link :to='"/devices/" + item.raw.id'>
+				{{ item.raw.name }}
+			</router-link>
 		</template>
-	</v-data-table-server>
+		<template #item.lastSeen='{ item }'>
+			<span v-if='item.raw.lastSeen !== null'>{{ $d(item.raw.lastSeen, 'long') }}</span>
+		</template>
+		<template #item.outputs='{ item }'>
+			{{ item.raw.outputs.length }}
+		</template>
+		<template #item.actions='{ item }'>
+			<DeviceForm action='editTable' :id='item.raw.id' @save='loadDevices()' />
+			<DeviceDeleteConfirmation v-if='userStore.getRole === UserRole.Admin' :device='item.raw' @delete='loadDevices()' />
+		</template>
+	</v-data-table>
 </template>
 
 <script lang='ts' setup>
@@ -77,11 +70,11 @@ const deviceService = new DeviceService();
 const userStore = useUserStore();
 
 const headers = [
-	{title: i18n.t('core.devices.fields.name'), value: 'name'},
-	{title: i18n.t('core.devices.fields.macAddress'), value: 'macAddress'},
-	{title: i18n.t('core.devices.fields.lastSeen'), values: 'lastSeen'},
-	{title: i18n.t('core.devices.fields.outputs.title'), values: 'outputs'},
-	{title: i18n.t('core.tables.actions'), value: 'actions', align: 'end', sortable: false},
+	{title: i18n.t('core.devices.fields.name'), key: 'name'},
+	{title: i18n.t('core.devices.fields.macAddress'), key: 'macAddress'},
+	{title: i18n.t('core.devices.fields.lastSeen'), key: 'lastSeen'},
+	{title: i18n.t('core.devices.fields.outputs.title'), key: 'outputs'},
+	{title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false},
 ];
 const loading = ref<boolean>(true);
 const devices = ref<Device[]>([]);

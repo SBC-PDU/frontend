@@ -15,7 +15,7 @@ limitations under the License.
 -->
 
 <template>
-	<v-data-table-server
+	<v-data-table
 		:headers='headers'
 		:items='data'
 		:items-length='data.length'
@@ -32,18 +32,15 @@ limitations under the License.
 				</v-toolbar-items>
 			</v-toolbar>
 		</template>
-		<template #item='{ item }'>
-			<tr>
-				<td>{{ item.raw.name }}</td>
-				<td>{{ $d(item.raw.createdAt, 'normal') }}</td>
-				<td style='text-align: right;'>
-					<v-btn-group density='compact'>
-						<TotpDeleteConfirmation :token='item.raw' @delete='loadData()' />
-					</v-btn-group>
-				</td>
-			</tr>
+		<template #item.createdAt='{ item }'>
+			{{ $d(item.raw.createdAt, 'normal') }}
 		</template>
-	</v-data-table-server>
+		<template #item.actions='{ item }'>
+			<v-btn-group density='compact'>
+				<TotpDeleteConfirmation :token='item.raw' @delete='loadData()' />
+			</v-btn-group>
+		</template>
+	</v-data-table>
 </template>
 
 <script lang='ts' setup>
@@ -59,9 +56,9 @@ const i18n = useI18n();
 const accountService = new AccountService();
 
 const headers = [
-	{title: i18n.t('core.user.totp.fields.name'), value: 'name'},
-	{title: i18n.t('core.user.totp.fields.createdAt'), value: 'createdAt'},
-	{title: i18n.t('core.tables.actions'), value: 'actions', align: 'end', sortable: false},
+	{title: i18n.t('core.user.totp.fields.name'), key: 'name'},
+	{title: i18n.t('core.user.totp.fields.createdAt'), key: 'createdAt'},
+	{title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false},
 ];
 let loading = ref(true);
 let data = ref<UserTotp[]>([]);

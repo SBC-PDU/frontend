@@ -18,7 +18,7 @@ limitations under the License.
 	<Head>
 		<title>{{ $t('admin.users.list.title') }}</title>
 	</Head>
-	<v-data-table-server
+	<v-data-table
 		:headers='headers'
 		:items='users'
 		:items-length='users.length'
@@ -36,40 +36,35 @@ limitations under the License.
 				</v-toolbar-items>
 			</v-toolbar>
 		</template>
-		<template #item='{ item }'>
-			<tr>
-				<td>
-					<v-avatar :image='getGravatarUrl(item.raw.email)' class='ma-auto' size='32'/>
-				</td>
-				<td>{{ item.raw.name }}</td>
-				<td>
-					<a :href='"mailto:\"" + item.raw.name + "<" + item.raw.email + ">\""'>
-						{{ item.raw.email }}
-					</a>
-				</td>
-				<td>
-					<UserRoleBadge :role='item.raw.role' />
-				</td>
-				<td>
-					{{ getLanguageFlag(item.raw.language) }}
-					<span class='d-none d-xl-inline'>
-						{{ $t(`core.locales.${item.raw.language}`) }}
-					</span>
-				</td>
-				<td>
-					<AccountStateBadge :state='item.raw.state' />
-				</td>
-				<td style='text-align: right;'>
-					<v-btn-group density='compact'>
-						<ResendEmailButton :user='item.raw' @change='loadUsers' />
-						<AccountStateButton v-if='userId !== item.raw.id' :user='item.raw' @change='loadUsers' />
-						<UserForm :init-user='toRaw(item.raw)' action='edit' @reload='loadUsers' />
-						<UserDeleteConfirmation :user='item.raw' @submit='loadUsers' />
-					</v-btn-group>
-				</td>
-			</tr>
+		<template #item.avatar='{ item }'>
+			<v-avatar :image='getGravatarUrl(item.raw.email)' class='ma-auto' size='32'/>
 		</template>
-	</v-data-table-server>
+		<template #item.email='{ item }'>
+			<a :href='"mailto:\"" + item.raw.name + "<" + item.raw.email + ">\""'>
+				{{ item.raw.email }}
+			</a>
+		</template>
+		<template #item.role='{ item }'>
+			<UserRoleBadge :role='item.raw.role' />
+		</template>
+		<template #item.language='{ item }'>
+			{{ getLanguageFlag(item.raw.language) }}
+			<span class='d-none d-xl-inline'>
+				{{ $t(`core.locales.${item.raw.language}`) }}
+			</span>
+		</template>
+		<template #item.state='{ item }'>
+			<AccountStateBadge :state='item.raw.state' />
+		</template>
+		<template #item.actions='{ item }'>
+			<v-btn-group density='compact'>
+				<ResendEmailButton :user='item.raw' @change='loadUsers' />
+				<AccountStateButton v-if='userId !== item.raw.id' :user='item.raw' @change='loadUsers' />
+				<UserForm :init-user='toRaw(item.raw)' action='edit' @reload='loadUsers' />
+				<UserDeleteConfirmation :user='item.raw' @submit='loadUsers' />
+			</v-btn-group>
+		</template>
+	</v-data-table>
 </template>
 
 <script lang='ts' setup>
@@ -95,13 +90,13 @@ const userStore = useUserStore();
 const {getId: userId} = storeToRefs(userStore);
 
 const headers = [
-	{title: i18n.t('core.user.fields.avatar'), value: 'avatar'},
-	{title: i18n.t('core.user.fields.name'), value: 'name'},
-	{title: i18n.t('core.user.fields.email'), value: 'email'},
-	{title: i18n.t('core.user.fields.role'), value: 'role'},
-	{title: i18n.t('core.user.fields.language'), value: 'language'},
-	{title: i18n.t('core.user.fields.state'), value: 'state'},
-	{title: i18n.t('core.tables.actions'), value: 'actions', align: 'end', sortable: false},
+	{title: i18n.t('core.user.fields.avatar'), key: 'avatar'},
+	{title: i18n.t('core.user.fields.name'), key: 'name'},
+	{title: i18n.t('core.user.fields.email'), key: 'email'},
+	{title: i18n.t('core.user.fields.role'), key: 'role'},
+	{title: i18n.t('core.user.fields.language'), key: 'language'},
+	{title: i18n.t('core.user.fields.state'), key: 'state'},
+	{title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false},
 ];
 let loading = ref(true);
 let users: Ref<UserInfo[]> = ref([]);

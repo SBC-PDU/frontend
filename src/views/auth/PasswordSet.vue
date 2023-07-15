@@ -52,7 +52,7 @@ import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 import {useRouter} from 'vue-router';
 import {VForm} from 'vuetify/components';
-import * as uuid from 'uuid';
+import {validate as uuidValidate, version as uuidVersion} from 'uuid';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
@@ -67,7 +67,7 @@ const props = defineProps({
 		type: String,
 		required: true,
 		validator(value: string): boolean {
-			return uuid.validate(value) && uuid.version(value) === 4;
+			return uuidValidate(value) && uuidVersion(value) === 4;
 		},
 	},
 });
