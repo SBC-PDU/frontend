@@ -58,6 +58,12 @@ limitations under the License.
 	</Card>
 </template>
 
+<route lang='yaml'>
+name: SignIn
+meta:
+  requiresAuth: false
+</route>
+
 <script lang='ts' setup>
 import {Head} from '@vueuse/head';
 import {AxiosError} from 'axios';

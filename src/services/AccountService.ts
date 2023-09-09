@@ -34,8 +34,8 @@ export default class AccountService extends ApiClient {
 	 */
 	public get(): Promise<UserInfo> {
 		return this.getClient().get('account')
-			.then((response: AxiosResponse): UserInfo => {
-				const user = response.data as UserInfo;
+			.then((response: AxiosResponse<UserInfo>): UserInfo => {
+				const user: UserInfo = response.data;
 				/// Convert email to unicode
 				user.email = punycode.toUnicode(user.email);
 				return user;
@@ -57,7 +57,7 @@ export default class AccountService extends ApiClient {
 		return this.getClient().put('account', {
 			...body,
 			baseUrl: BaseUrlHelper.get(),
-		}).then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
+		}).then((response: AxiosResponse<SignedInUser>): SignedInUser => response.data);
 	}
 
 	/**
@@ -66,9 +66,8 @@ export default class AccountService extends ApiClient {
 	 */
 	public listTotp(): Promise<UserTotp[]> {
 		return this.getClient().get('account/totp')
-			.then((response: AxiosResponse): UserTotp[] => {
-				const data = response.data as Record<string, string>[];
-				return data.map((item: Record<string, string>): UserTotp => {
+			.then((response: AxiosResponse<Record<string, string>[]>): UserTotp[] => {
+				return response.data.map((item: Record<string, string>): UserTotp => {
 					return {
 						uuid: item.uuid,
 						name: item.name,
@@ -119,7 +118,7 @@ export default class AccountService extends ApiClient {
 	 */
 	public verify(uuid: string): Promise<SignedInUser> {
 		return this.getClient().post(`account/verification/${uuid}`)
-			.then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
+			.then((response: AxiosResponse<SignedInUser>): SignedInUser => response.data);
 	}
 
 }

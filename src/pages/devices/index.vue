@@ -53,6 +53,10 @@ limitations under the License.
 	</v-data-table>
 </template>
 
+<route lang='yaml'>
+name: DeviceList
+</route>
+
 <script lang='ts' setup>
 import {Head} from '@vueuse/head';
 import {ref} from 'vue';

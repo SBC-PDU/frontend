@@ -39,13 +39,13 @@ export const useLoadingSpinnerStore = defineStore('loadingSpinner', {
 		 * @param {string|null} text Loading spinner text
 		 * @param {number|null} timeout Loading spinner timeout
 		 */
-		show(text: string|null = null, timeout: number|null = null) {
+		show(text: string|null = null, timeout: number|null = null): void {
 			this.enabled = true;
 			this.text = text;
 			if (timeout === null) {
 				return;
 			}
-			this.timeout = window.setTimeout(() => {
+			this.timeout = window.setTimeout((): void => {
 				this.hide();
 			}, timeout);
 		},
@@ -64,7 +64,7 @@ export const useLoadingSpinnerStore = defineStore('loadingSpinner', {
 		 * Update loading spinner text
 		 * @param {string|null} text New loading spinner text
 		 */
-		updateText(text: string|null) {
+		updateText(text: string|null): void {
 			this.text = text;
 		},
 	},

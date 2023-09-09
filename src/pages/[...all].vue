@@ -16,15 +16,24 @@ limitations under the License.
 
 <template>
 	<Head>
-		<title>{{ $t('core.profile.title') }}</title>
+		<title>{{ $t('core.error.404.title') }}</title>
 	</Head>
-	<ProfileForm />
-	<TotpList />
+	<Card>
+		<template #title>
+			{{ $t('core.error.404.header') }} - {{ $t('core.error.404.title') }}
+		</template>
+		<p>{{ $t('core.error.404.message') }}</p>
+	</Card>
 </template>
+
+<route lang='yaml'>
+name: NotFound
+meta:
+  requiresAuth: false
+</route>
 
 <script lang='ts' setup>
 import {Head} from '@vueuse/head';
 
-import ProfileForm from '@/components/profile/ProfileForm.vue';
-import TotpList from '@/components/profile/TotpList.vue';
+import Card from '@/components/Card.vue';
 </script>

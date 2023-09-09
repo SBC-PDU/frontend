@@ -15,6 +15,7 @@
  */
 import * as Sentry from '@sentry/vue';
 import jwtDecode, {JwtPayload} from 'jwt-decode';
+import {DateTime} from 'luxon';
 import md5 from 'md5';
 import {defineStore} from 'pinia';
 
@@ -68,8 +69,8 @@ export const useUserStore = defineStore('user', {
 		 * @param {Credentials} credentials User credentials
 		 */
 		signIn(credentials: Credentials): Promise<void> {
-			const service = new AuthenticationService();
-			return service.signIn(credentials).then((response: SignedInUser) => this.setUserInfo(response));
+			const service: AuthenticationService = new AuthenticationService();
+			return service.signIn(credentials).then((response: SignedInUser): void => this.setUserInfo(response));
 		},
 		/**
 		 * Sign out
@@ -92,8 +93,7 @@ export const useUserStore = defineStore('user', {
 			if (state.user === null) {
 				return false;
 			}
-			const now = new Date();
-			const epoch = Math.round(now.getTime() / 1000);
+			const epoch: number = DateTime.now().toSeconds();
 			return state.expiration > epoch;
 		},
 		/**

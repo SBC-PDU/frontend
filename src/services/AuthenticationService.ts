@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import {AxiosResponse} from 'axios';
-import * as punycode from 'punycode';
+import * as punycode from 'punycode/';
 
 import BaseUrlHelper from '@/helpers/baseUrlHelper';
 import {ApiClient} from '@/services/ApiClient';
@@ -44,7 +44,7 @@ export default class AuthenticationService extends ApiClient {
 	 */
 	public passwordReset(uuid: string, reset: PasswordSet): Promise<SignedInUser> {
 		return this.getClient().post(`auth/password/reset/${uuid}`, reset)
-			.then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
+			.then((response: AxiosResponse<SignedInUser>): SignedInUser => response.data);
 	}
 
 	/**
@@ -55,7 +55,7 @@ export default class AuthenticationService extends ApiClient {
 	 */
 	public passwordSet(uuid: string, set: PasswordSet): Promise<SignedInUser> {
 		return this.getClient().post(`auth/password/set/${uuid}`, set)
-			.then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
+			.then((response: AxiosResponse<SignedInUser>): SignedInUser => response.data);
 	}
 
 	/**
@@ -67,8 +67,8 @@ export default class AuthenticationService extends ApiClient {
 		return this.getClient().post('auth/sign/in', {
 			email: punycode.toASCII(credentials.email),
 			password: credentials.password,
-			code: credentials.code !== null ? credentials.code : undefined,
-		}).then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
+			code: credentials.code ?? undefined,
+		}).then((response: AxiosResponse<SignedInUser>): SignedInUser => response.data);
 	}
 
 	/**
@@ -77,7 +77,7 @@ export default class AuthenticationService extends ApiClient {
 	 */
 	public extendSession(): Promise<SignedInUser> {
 		return this.getClient().post('auth/token/refresh')
-			.then((response: AxiosResponse): SignedInUser => response.data as SignedInUser);
+			.then((response: AxiosResponse<SignedInUser>): SignedInUser => response.data);
 	}
 
 }

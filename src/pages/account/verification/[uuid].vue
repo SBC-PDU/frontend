@@ -40,6 +40,12 @@ limitations under the License.
 	</Card>
 </template>
 
+<route lang='yaml'>
+name: AccountVerification
+meta:
+  requiresAuth: false
+</route>
+
 <script lang='ts' setup>
 import VueCountdown from '@chenfengyuan/vue-countdown';
 import {Head} from '@vueuse/head';

@@ -1,4 +1,6 @@
 /// <reference types="vite/client" />
+/// <reference types="vite-plugin-vue-layouts/client" />
+/// <reference types="vite-plugin-pages/client" />
 /**
  * Copyright 2022-2023 Roman Ondráček
  *

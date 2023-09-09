@@ -21,20 +21,28 @@ import * as child_process from 'child_process';
 import path from 'path';
 import {fileURLToPath, URL} from 'node:url';
 import {defineConfig, loadEnv} from 'vite';
+import Pages from 'vite-plugin-pages';
+import VueDevTools from 'vite-plugin-vue-devtools';
+import Layouts from 'vite-plugin-vue-layouts';
 import vuetify, {transformAssetUrls} from 'vite-plugin-vuetify';
 import svgLoader from 'vite-svg-loader';
 
 // Git commit hash
-const gitCommitHash = child_process.execSync('git rev-parse --short HEAD').toString().trim();
+const gitCommitHash: string = child_process.execSync('git rev-parse --short HEAD').toString().trim();
 
 // https://vitejs.dev/config/
 export default defineConfig(({mode}) => {
-	const env = loadEnv(mode, process.cwd(), '');
+	const env: Record<string, string> = loadEnv(mode, process.cwd(), '');
 	return {
 		build: {
 			sourcemap: true,
 		},
 		plugins: [
+			Pages(),
+			Layouts({
+				defaultLayout: 'Dashboard',
+			}),
+			VueDevTools(),
 			vue({
 				template: {transformAssetUrls}
 			}),

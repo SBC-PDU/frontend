@@ -15,13 +15,20 @@ limitations under the License.
 -->
 
 <template>
-	<router-view v-if='userStore.getRole === UserRole.Admin'/>
-	<Forbidden v-else/>
+	<Head>
+		<title>{{ $t('core.profile.title') }}</title>
+	</Head>
+	<ProfileForm />
+	<TotpList />
 </template>
-<script lang='ts' setup>
-import {useUserStore} from '@/store/user';
-import Forbidden from '@/views/Forbidden.vue';
-import {UserRole} from '@/types/user';
 
-const userStore = useUserStore();
+<route lang='yaml'>
+name: Profile
+</route>
+
+<script lang='ts' setup>
+import {Head} from '@vueuse/head';
+
+import ProfileForm from '@/components/profile/ProfileForm.vue';
+import TotpList from '@/components/profile/TotpList.vue';
 </script>

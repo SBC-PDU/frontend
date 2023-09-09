@@ -39,7 +39,7 @@ export default class FormValidator {
 	 * @return {boolean|string} True if the value is valid, error message otherwise
 	 */
 	public static isEmail(value: string, errorMessage: string): boolean | string {
-		const validator = z.string().email();
+		const validator: z.ZodString = z.string().email();
 		return validator.safeParse(punycode.toASCII(value)).success || errorMessage;
 	}
 
@@ -50,7 +50,7 @@ export default class FormValidator {
 	 * @return {boolean|string} True if the value is valid, error message otherwise
 	 */
 	public static isTotpCode(value: string, errorMessage: string): boolean | string {
-		const validator = z.string().regex(/^\d{6}$/);
+		const validator: z.ZodString = z.string().regex(/^\d{6}$/);
 		return validator.safeParse(value).success || errorMessage;
 	}
 

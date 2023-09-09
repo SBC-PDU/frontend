@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {useDisplay} from 'vuetify';
+import {DisplayInstance, useDisplay} from 'vuetify';
 import {computed, ComputedRef} from 'vue';
 
 /**
@@ -22,8 +22,8 @@ import {computed, ComputedRef} from 'vue';
  */
 export default class ModalWindowHelper {
 	public static getWidth(): ComputedRef<string> {
-		return computed(() => {
-			const display = useDisplay();
+		return computed((): string => {
+			const display: DisplayInstance = useDisplay();
 			if (display.lgAndUp.value) {
 				return '50%';
 			}

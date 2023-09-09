@@ -37,6 +37,10 @@ limitations under the License.
 	<DeviceMeasurementChart v-if='device !== null' :device='toRaw(device)'/>
 </template>
 
+<route lang='yaml'>
+name: DeviceDetail
+</route>
+
 <script lang='ts' setup>
 import {Head} from '@vueuse/head';
 import {AxiosError} from 'axios';

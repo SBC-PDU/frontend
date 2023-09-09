@@ -26,6 +26,12 @@ limitations under the License.
 	</Card>
 </template>
 
+<route lang='yaml'>
+name: ApiDocs
+meta:
+  requiresAuth: false
+</route>
+
 <script lang='ts' setup>
 import {Head} from '@vueuse/head';
 import {storeToRefs} from 'pinia';

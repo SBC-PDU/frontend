@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as Sentry from '@sentry/vue';
-import {BrowserTracing} from '@sentry/tracing';
+import {BrowserTracing} from '@sentry/browser';
 import {App} from 'vue';
 import {Router} from 'vue-router';
 
@@ -33,7 +33,6 @@ export default function registerSentry(app: App, router: Router): void {
 		integrations: [
 			new BrowserTracing({
 				routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-				tracePropagationTargets: ['localhost', 'sbc-pdu.romanondracek.cz', /^\//],
 			}),
 			new Sentry.Replay(),
 		],
@@ -48,6 +47,7 @@ export default function registerSentry(app: App, router: Router): void {
 		// of transactions for performance monitoring.
 		// We recommend adjusting this value in production
 		tracesSampleRate: 1.0,
+		tracePropagationTargets: ['localhost', 'sbc-pdu.romanondracek.cz', /^\//],
 		release: __GIT_COMMIT_HASH__,
 	});
 }

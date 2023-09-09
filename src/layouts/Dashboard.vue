@@ -21,7 +21,8 @@ limitations under the License.
 		<v-main style='background-color: #f5f5f5'>
 			<v-container>
 				<UnverifiedAccountAlert />
-				<router-view/>
+				<router-view v-if='isAllowed' />
+				<Forbidden v-else/>
 			</v-container>
 		</v-main>
 		<TheFooter />
@@ -29,8 +30,22 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {storeToRefs} from 'pinia';
+
 import TheFooter from '@/components/layout/TheFooter.vue';
 import TheHeader from '@/components/layout/TheHeader.vue';
 import TheSidebar from '@/components/layout/TheSidebar.vue';
+import Forbidden from '@/components/Forbidden.vue';
 import UnverifiedAccountAlert from '@/components/UnverifiedAccountAlert.vue';
+import {useUserStore} from '@/store/user';
+import {UserRole} from '@/types/user';
+import {computed, Ref} from 'vue';
+import {useRoute} from 'vue-router';
+
+const route = useRoute();
+const userStore = useUserStore();
+
+const {getRole: role} = storeToRefs(userStore);
+const requiredRoles: Ref<UserRole[]> = computed((): UserRole[] => (route.meta.requiredRoles ?? []) as UserRole[]);
+const isAllowed: Ref<boolean> = computed((): boolean => requiredRoles.value.length === 0 || role.value !== null && requiredRoles.value.includes(role.value));
 </script>

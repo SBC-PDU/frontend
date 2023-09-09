@@ -36,8 +36,8 @@ export default class DeviceService extends ApiClient {
 	 */
 	public list(): Promise<Device[]> {
 		return this.getClient().get('/devices')
-			.then((response: AxiosResponse) => {
-				return (response.data as Device[]).map((device: Device) => this.deserializeDevice(device));
+			.then((response: AxiosResponse<Device[]>) => {
+				return response.data.map((device: Device): Device => this.deserializeDevice(device));
 			});
 	}
 
@@ -56,7 +56,7 @@ export default class DeviceService extends ApiClient {
 	 */
 	public get(id: string): Promise<DeviceDetail> {
 		return this.getClient().get(`/devices/${id}`)
-			.then((response: AxiosResponse) => this.deserializeDevice(response.data as DeviceDetail));
+			.then((response: AxiosResponse<DeviceDetail>): DeviceDetail => this.deserializeDevice(response.data));
 	}
 
 	/**
@@ -84,8 +84,8 @@ export default class DeviceService extends ApiClient {
 	 */
 	public getMeasurements(id: string, timeRange: string): Promise<DeviceOutputMeasurements[]> {
 		return this.getClient().get(`/devices/${id}/measurements?timeRange=${timeRange}`)
-			.then((response: AxiosResponse): DeviceOutputMeasurements[] => {
-				const data = response.data as DeviceOutputMeasurements[];
+			.then((response: AxiosResponse<DeviceOutputMeasurements[]>): DeviceOutputMeasurements[] => {
+				const data: DeviceOutputMeasurements[] = response.data;
 				for (const outputIndex in data) {
 					const measurements = (data[outputIndex].measurements as unknown) as {current: DeviceOutputMeasurementRaw[], voltage: DeviceOutputMeasurementRaw[]};
 					data[outputIndex].measurements.current = this.convertMeasurements(measurements.current);
@@ -113,7 +113,7 @@ export default class DeviceService extends ApiClient {
 	 * @return {DeviceOutputMeasurement[]} Converted measurements
 	 */
 	private convertMeasurements(measurements: DeviceOutputMeasurementRaw[]): DeviceOutputMeasurement[] {
-		return measurements.map((measurement) => ({
+		return measurements.map((measurement: DeviceOutputMeasurementRaw): DeviceOutputMeasurement => ({
 			time: DateTime.fromISO(measurement.time).toJSDate(),
 			value: measurement.value,
 		}));

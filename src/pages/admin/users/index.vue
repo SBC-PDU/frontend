@@ -67,6 +67,12 @@ limitations under the License.
 	</v-data-table>
 </template>
 
+<route lang='yaml'>
+meta:
+  requiredRoles:
+    - admin
+</route>
+
 <script lang='ts' setup>
 import {Head} from '@vueuse/head';
 import md5 from 'md5';

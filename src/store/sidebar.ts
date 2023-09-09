@@ -38,19 +38,19 @@ export const useSidebarStore = defineStore('sidebar', {
 		 * Sets sidebar visibility
 		 * @param {boolean} visible Sidebar visibility
 		 */
-		setVisibility(visible: boolean) {
+		setVisibility(visible: boolean): void {
 			this.visible = visible;
 		},
 		/**
 		 * Toggles sidebar size
 		 */
-		toggleSize() {
+		toggleSize(): void {
 			this.minimized = !this.minimized;
 		},
 		/**
 		 * Toggles sidebar visibility
 		 */
-		toggleVisibility() {
+		toggleVisibility(): void {
 			this.visible = !this.visible;
 		}
 	},
