@@ -17,6 +17,7 @@ limitations under the License.
 <template>
 	<v-select
 		:model-value='modelValue'
+		@update:model-value='$emit("update:modelValue", $event)'
 		:items='[
 			{title: "🇬🇧 " + $t("core.locales.en"), value: UserLanguage.English},
 			{title: "🇨🇿 " + $t("core.locales.cs"), value: UserLanguage.Czech},

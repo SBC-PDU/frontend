@@ -35,6 +35,14 @@ limitations under the License.
 		<template #item.createdAt='{ item }'>
 			{{ $d(item.raw.createdAt, 'normal') }}
 		</template>
+		<template #item.lastUsedAt='{ item }'>
+			<span v-if='item.raw.lastUsedAt === null'>
+				{{ $t('core.user.totp.lastUsedAts.never') }}
+			</span>
+			<span v-else>
+				{{ $d(item.raw.lastUsedAt, 'normal') }}
+			</span>
+		</template>
 		<template #item.actions='{ item }'>
 			<v-btn-group density='compact'>
 				<TotpDeleteConfirmation :token='item.raw' @delete='loadData()' />
@@ -58,6 +66,7 @@ const accountService = new AccountService();
 const headers = [
 	{title: i18n.t('core.user.totp.fields.name'), key: 'name'},
 	{title: i18n.t('core.user.totp.fields.createdAt'), key: 'createdAt'},
+	{title: i18n.t('core.user.totp.fields.lastUsedAt'), key: 'lastUsedAt'},
 	{title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false},
 ];
 let loading = ref(true);

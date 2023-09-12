@@ -72,6 +72,7 @@ export default class AccountService extends ApiClient {
 						uuid: item.uuid,
 						name: item.name,
 						createdAt: new Date(item.createdAt),
+						lastUsedAt: item.lastUsedAt !== null ? new Date(item.lastUsedAt) : null,
 					};
 				});
 			});

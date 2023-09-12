@@ -392,7 +392,11 @@
 				"fields": {
 					"code": "Kód",
 					"createdAt": "Vytvořeno",
+					"lastUsedAt": "Naposledy použito",
 					"name": "Název"
+				},
+				"lastUsedAts": {
+					"never": "Nikdy"
 				},
 				"messages": {
 					"emptyName": "Zadejte prosím název authentikátoru.",

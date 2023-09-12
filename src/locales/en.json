@@ -391,7 +391,11 @@
 				"fields": {
 					"code": "Code",
 					"createdAt": "Created at",
+					"lastUsedAt": "Last used at",
 					"name": "Name"
+				},
+				"lastUsedAts": {
+					"never": "Never"
 				},
 				"messages": {
 					"emptyName": "Please enter authenticator name.",
