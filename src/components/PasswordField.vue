@@ -18,14 +18,15 @@ limitations under the License.
 	<v-text-field
 		:model-value='modelValue'
 		v-bind='$attrs'
-		:append-inner-icon='showPassword ? "mdi-eye" : "mdi-eye-off"'
+		:append-inner-icon='showPassword ? mdiEye : mdiEyeOff'
 		:type='showPassword ? "text": "password"'
 		@click:append-inner='showPassword = !showPassword'
 	/>
 </template>
 
 <script lang='ts' setup>
-import {ref, Ref} from 'vue';
+import {mdiEye, mdiEyeOff} from '@mdi/js';
+import {ref, type Ref} from 'vue';
 
 const showPassword: Ref<boolean> = ref(false);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

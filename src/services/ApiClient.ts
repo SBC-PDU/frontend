@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import axios, {type AxiosError, type AxiosInstance, type AxiosResponse} from 'axios';
 import {storeToRefs} from 'pinia';
-import {Ref} from 'vue';
+import {type Ref} from 'vue';
 
 import router from '@/router';
 import {useUserStore} from '@/store/user';
@@ -26,19 +26,19 @@ import {useUserStore} from '@/store/user';
 export class ApiClient {
 
 	/**
-	 * @property {AxiosInstance} client Axios instance
+	 * client Axios instance
 	 */
 	protected client: AxiosInstance;
 
 	/**
-	 * @property {Ref<string> | null} authToken Auth token
+	 * authToken Auth token
 	 */
 	private authToken: Ref<string | null> | null = null;
 
 	/**
 	 * Constructor
 	 */
-	constructor() {
+	public constructor() {
 		const userStore = useUserStore();
 		const {token} = storeToRefs(userStore);
 		this.authToken = token;
@@ -73,13 +73,13 @@ export class ApiClient {
 				}
 				// Handle other HTTP errors
 				return Promise.reject(error);
-			}
+			},
 		);
 	}
 
 	/**
 	 * Returns Axios instance
-	 * @returns {AxiosInstance} Axios instance
+	 * @return Axios instance
 	 */
 	public getClient(): AxiosInstance {
 		return this.client;

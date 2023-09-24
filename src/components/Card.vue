@@ -16,13 +16,19 @@ limitations under the License.
 
 <template>
 	<v-card class='mb-4'>
-		<v-card-title v-if='$slots.title' :class='headerClass'>
+		<v-card-title
+			v-if='$slots.title'
+			:class='headerClass'
+		>
 			<slot name='title' />
 		</v-card-title>
 		<v-card-text class='card-text'>
 			<slot />
 		</v-card-text>
-		<v-card-actions v-if='$slots.actions' :class='actionsClass'>
+		<v-card-actions
+			v-if='$slots.actions'
+			:class='actionsClass'
+		>
 			<slot name='actions' />
 		</v-card-actions>
 	</v-card>
@@ -36,13 +42,13 @@ const props = defineProps({
 	actionsColor: {
 		type: String,
 		default: 'grey-lighten-2',
-		required: false
+		required: false,
 	},
 	headerColor: {
 		type: String,
 		default: 'primary',
-		required: false
-	}
+		required: false,
+	},
 });
 const actionsClass = computed(() => `bg-${props.actionsColor}`);
 const headerClass = computed(() => `bg-${props.headerColor}`);

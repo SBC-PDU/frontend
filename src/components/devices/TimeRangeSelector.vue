@@ -16,22 +16,29 @@ limitations under the License.
 
 <template>
 	<v-menu>
-		<template v-slot:activator='{props}'>
+		<template #activator='{props}'>
 			<v-btn
 				color='primary'
-				:prepend-icon='display.smAndUp.value ? "mdi-timelapse" : undefined'
-				append-icon='mdi-menu-down'
+				:prepend-icon='display.smAndUp.value ? mdiTimelapse : undefined'
+				:append-icon='mdiMenuDown'
 				variant='elevated'
 				v-bind='props'
 			>
 				<span v-if='display.smAndUp.value'>
 					{{ $t(`core.devices.detail.measurements.timeRanges.${modelValue}`) }}
 				</span>
-				<v-icon v-else>mdi-timelapse</v-icon>
+				<v-icon
+					v-else
+					:icon='mdiTimelapse'
+				/>
 			</v-btn>
 		</template>
 		<v-list density='compact'>
-			<v-list-item v-for='time in timeRanges' :key='time.value' @click='click(time.value)'>
+			<v-list-item
+				v-for='time in timeRanges'
+				:key='time.value'
+				@click='click(time.value)'
+			>
 				<v-list-item-title>{{ time.title }}</v-list-item-title>
 			</v-list-item>
 		</v-list>
@@ -39,6 +46,7 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {mdiMenuDown, mdiTimelapse} from '@mdi/js';
 import {useI18n} from 'vue-i18n';
 import {useDisplay} from 'vuetify';
 
@@ -53,10 +61,10 @@ interface Props {
  * Time range
  */
 interface TimeRange {
-  /// Time range value
-  value: string;
   /// Time range title
   title: string;
+  /// Time range value
+  value: string;
 }
 
 const display = useDisplay();
@@ -64,7 +72,7 @@ const i18n = useI18n();
 
 const emit = defineEmits(['update:model-value']);
 const props = defineProps<Props>();
-const timeRanges: Array<TimeRange> = [
+const timeRanges: TimeRange[] = [
 	{value: '5m', title: i18n.t('core.devices.detail.measurements.timeRanges.5m').toString()},
 	{value: '15m', title: i18n.t('core.devices.detail.measurements.timeRanges.15m').toString()},
 	{value: '1h', title: i18n.t('core.devices.detail.measurements.timeRanges.1h').toString()},
@@ -77,7 +85,7 @@ const timeRanges: Array<TimeRange> = [
 
 /**
  * Handle time range change
- * @param {string} timeRange The time range to set
+ * @param timeRange The time range to set
  */
 function click(timeRange: string) {
 	if (props.modelValue === timeRange) {

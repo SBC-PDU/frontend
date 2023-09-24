@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {AxiosResponse} from 'axios';
+import {type AxiosResponse} from 'axios';
 import * as punycode from 'punycode/';
 
 import BaseUrlHelper from '@/helpers/baseUrlHelper';
 import {ApiClient} from '@/services/ApiClient';
-import {UserInfo, UserModify} from '@/types/user';
+import {type UserInfo, type UserModify} from '@/types/user';
 
 /**
  * User manager service
@@ -27,7 +27,8 @@ export default class UserService extends ApiClient {
 
 	/**
 	 * Creates a new user
-	 * @param {UserModify} user User to create
+	 * @param user User to create
+	 * @return Empty promise
 	 */
 	public create(user: UserModify): Promise<void> {
 		return this.getClient().post('users', {
@@ -38,7 +39,8 @@ export default class UserService extends ApiClient {
 
 	/**
 	 * Deletes a user
-	 * @param {number} id User ID to delete
+	 * @param id User ID to delete
+	 * @return Empty promise
 	 */
 	public delete(id: number): Promise<void> {
 		return this.getClient().delete(`users/${id}`);
@@ -46,8 +48,9 @@ export default class UserService extends ApiClient {
 
 	/**
 	 * Edits a user
-	 * @param {number} id User ID to edit
-	 * @param {UserModify} user Modified user
+	 * @param id User ID to edit
+	 * @param user Modified user
+	 * @return Empty promise
 	 */
 	public edit(id: number, user: UserModify): Promise<void> {
 		return this.getClient().put(`users/${id}`, {
@@ -58,7 +61,7 @@ export default class UserService extends ApiClient {
 
 	/**
 	 * Lists all users
-	 * @return {Promise<UserInfo[]>} List of users
+	 * @return List of users
 	 */
 	public list(): Promise<UserInfo[]> {
 		return this.getClient().get('users')
@@ -73,7 +76,8 @@ export default class UserService extends ApiClient {
 
 	/**
 	 * Blocks the user
-	 * @param {number} id ID of user to block
+	 * @param id ID of user to block
+	 * @return Empty promise
 	 */
 	public block(id: number): Promise<void> {
 		return this.getClient().post(`users/${id}/block`);
@@ -81,7 +85,8 @@ export default class UserService extends ApiClient {
 
 	/**
 	 * Unblocks the user
-	 * @param {number} id ID of user to unblock
+	 * @param id ID of user to unblock
+	 * @return Empty promise
 	 */
 	public unblock(id: number): Promise<void> {
 		return this.getClient().post(`users/${id}/unblock`);
@@ -89,7 +94,8 @@ export default class UserService extends ApiClient {
 
 	/**
 	 * Resends the invitation or verification email
-	 * @param {number} id ID of user to resend email
+	 * @param id ID of user to resend email
+	 * @return Empty promise
 	 */
 	public resend(id: number): Promise<void> {
 		return this.getClient().post(`users/${id}/resend`, {
@@ -99,8 +105,8 @@ export default class UserService extends ApiClient {
 
 	/**
 	 * Serializes user identity
-	 * @param {UserModify} user User entity to serialize
-	 * @return {UserModify} Serialized user entity
+	 * @param user User entity to serialize
+	 * @return Serialized user entity
 	 */
 	private serializeUser(user: UserModify): UserModify {
 		/// Convert email to punycode

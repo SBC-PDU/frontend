@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { setupLayouts } from 'virtual:generated-layouts';
+import generatedRoutes from 'virtual:generated-pages';
 import {
 	createRouter,
 	createWebHistory,
-	NavigationGuardNext,
-	RouteLocationNormalized,
-	Router,
-	RouteRecordRaw
+	type NavigationGuardNext,
+	type RouteLocationNormalized,
+	type Router,
+	type RouteRecordRaw,
 } from 'vue-router';
-
-import { setupLayouts } from 'virtual:generated-layouts';
-import generatedRoutes from 'virtual:generated-pages';
 
 import {useUserStore} from '@/store/user';
 

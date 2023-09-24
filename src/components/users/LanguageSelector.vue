@@ -17,7 +17,6 @@ limitations under the License.
 <template>
 	<v-select
 		:model-value='modelValue'
-		@update:model-value='$emit("update:modelValue", $event)'
 		:items='[
 			{title: "🇬🇧 " + $t("core.locales.en"), value: UserLanguage.English},
 			{title: "🇨🇿 " + $t("core.locales.cs"), value: UserLanguage.Czech},
@@ -27,11 +26,14 @@ limitations under the License.
 			v => FormValidator.isRequired(v, $t("core.user.messages.emptyLanguage")),
 		]'
 		required
-		prepend-inner-icon='mdi-translate'
+		:prepend-inner-icon='mdiTranslate'
+		@update:model-value='$emit("update:modelValue", $event)'
 	/>
 </template>
 
 <script lang='ts' setup>
+import {mdiTranslate} from '@mdi/js';
+
 import FormValidator from '@/helpers/formValidator';
 import {UserLanguage} from '@/types/user';
 
@@ -42,6 +44,8 @@ interface Props {
   modelValue: UserLanguage;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const emit = defineEmits(['update:modelValue']);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<Props>();
 </script>

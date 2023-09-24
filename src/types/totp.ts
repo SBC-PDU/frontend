@@ -18,20 +18,20 @@
  * TOTP detail response
  */
 export interface UserTotp {
-	uuid: string;
-	name: string;
 	createdAt: Date;
 	lastUsedAt: Date|null;
+	name: string;
+	uuid: string;
 }
 
 /**
  * TOTP add request
  */
 export interface UserTotpAdd {
-	name: string;
-	secret: string;
 	code: string;
+	name: string;
 	password: string;
+	secret: string;
 }
 
 /**

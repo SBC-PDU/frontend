@@ -15,11 +15,17 @@ limitations under the License.
 -->
 
 <template>
-	<v-chip :color='getColor(state)' :prepend-icon='display.mdAndUp.value ? getIcon(state) : undefined'>
+	<v-chip
+		:color='getColor(state)'
+		:prepend-icon='display.mdAndUp.value ? getIcon(state) : undefined'
+	>
 		<span v-if='display.mdAndUp.value'>
 			{{ $t(`core.user.states.${state}`) }}
 		</span>
-		<v-tooltip v-else location='start'>
+		<v-tooltip
+			v-else
+			location='start'
+		>
 			<template #activator='{ props }'>
 				<v-icon v-bind='props'>
 					{{ getIcon(state) }}
@@ -31,6 +37,7 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {mdiCheck, mdiEmail, mdiHelp, mdiLock} from '@mdi/js';
 import {useDisplay} from 'vuetify';
 
 import {AccountState} from '@/types/user';
@@ -46,8 +53,8 @@ const props = defineProps<Props>();
 
 /**
  * Returns the color for the given state
- * @param {AccountState} state The state to get the color for
- * @returns {string} The color
+ * @param state The state to get the color for
+ * @return The color
  */
 function getColor(state: AccountState): string {
 	switch (state) {
@@ -64,19 +71,19 @@ function getColor(state: AccountState): string {
 
 /**
  * Returns the icon for the given state
- * @param {AccountState} state The state to get the icon for
- * @returns {string} The icon
+ * @param state The state to get the icon for
+ * @return The icon
  */
 function getIcon(state: AccountState): string {
 	switch (state) {
 		case AccountState.Verified:
-			return 'mdi-check';
+			return mdiCheck;
 		case AccountState.Unverified:
-			return 'mdi-help';
+			return mdiHelp;
 		case AccountState.Invited:
-			return 'mdi-email';
+			return mdiEmail;
 		case AccountState.Blocked:
-			return 'mdi-lock';
+			return mdiLock;
 	}
 }
 

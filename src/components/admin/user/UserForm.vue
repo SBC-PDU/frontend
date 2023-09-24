@@ -27,43 +27,54 @@ limitations under the License.
 				v-bind='props'
 				color='primary'
 				class='me-2'
-			>
-				mdi-pencil
-			</v-icon>
+				:icon='mdiPencil'
+			/>
 			<v-btn
 				v-else
 				v-bind='props'
 				:color='action === Action.Add ? "green" : "info"'
-				:prepend-icon='display.smAndUp.value ? (action === Action.Add ? "mdi-plus" : "mdi-send") : undefined'
+				:prepend-icon='display.smAndUp.value ? (action === Action.Add ? mdiPlus : mdiSend) : undefined'
 				variant='elevated'
 			>
 				<span v-if='action === Action.Add'>
 					<span v-if='display.smAndUp.value'>
 						{{ $t('admin.users.add.activator') }}
 					</span>
-					<v-icon v-else>mdi-plus</v-icon>
+					<v-icon
+						v-else
+						:icon='mdiPlus'
+					/>
 				</span>
 				<span v-if='action === Action.Invite'>
 					<span v-if='display.smAndUp.value'>
 						{{ $t('admin.users.invite.activator') }}
 					</span>
-					<v-icon v-else>mdi-send</v-icon>
+					<v-icon
+						v-else
+						:icon='mdiSend'
+					/>
 				</span>
 			</v-btn>
 		</template>
-		<v-form ref='form' @submit.prevent='submit'>
-			<Card :header-color='action === Action.Add ? "green-darken-1" : "primary"' style='max-height: 90vh'>
+		<v-form
+			ref='form'
+			@submit.prevent='submit'
+		>
+			<Card
+				:header-color='action === Action.Add ? "green-darken-1" : "primary"'
+				style='max-height: 90vh'
+			>
 				<template #title>
 					<span v-if='action === Action.Add'>
-						<v-icon>mdi-account-plus</v-icon>
+						<v-icon :icon='mdiAccountPlus' />
 						{{ $t('admin.users.add.title') }}
 					</span>
 					<span v-if='action === Action.Edit'>
-						<v-icon>mdi-account-edit</v-icon>
+						<v-icon :icon='mdiAccountEdit' />
 						{{ $t('admin.users.edit.title') }}
 					</span>
 					<span v-if='action === Action.Invite'>
-						<v-icon>mdi-account-plus</v-icon>
+						<v-icon :icon='mdiAccountPlus' />
 						{{ $t('admin.users.invite.title') }}
 					</span>
 				</template>
@@ -74,7 +85,7 @@ limitations under the License.
 						v => FormValidator.isRequired(v, $t("core.user.messages.emptyName")),
 					]'
 					required
-					prepend-inner-icon='mdi-account'
+					:prepend-inner-icon='mdiAccount'
 				/>
 				<v-text-field
 					v-model='user.email'
@@ -84,7 +95,7 @@ limitations under the License.
 						v => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
 					]'
 					required
-					prepend-inner-icon='mdi-email'
+					:prepend-inner-icon='mdiEmail'
 				/>
 				<PasswordField
 					v-if='action === Action.Add'
@@ -94,7 +105,7 @@ limitations under the License.
 						(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
 					]'
 					required
-					prepend-inner-icon='mdi-lock'
+					:prepend-inner-icon='mdiLock'
 				/>
 				<v-select
 					v-model='user.role'
@@ -107,7 +118,7 @@ limitations under the License.
 						v => FormValidator.isRequired(v, $t("core.user.messages.emptyRole")),
 					]'
 					required
-					prepend-inner-icon='mdi-account-group'
+					:prepend-inner-icon='mdiAccountGroup'
 				/>
 				<LanguageSelector v-model='user.language' />
 				<template #actions>
@@ -135,7 +146,7 @@ limitations under the License.
 					>
 						{{ $t('core.actions.invite') }}
 					</v-btn>
-					<v-spacer/>
+					<v-spacer />
 					<v-btn
 						color='gray-darken-1'
 						@click='close'
@@ -149,9 +160,19 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {Ref, ref, watchEffect} from 'vue';
-import {toast} from 'vue3-toastify';
+import {
+	mdiAccount,
+	mdiAccountEdit,
+	mdiAccountGroup,
+	mdiAccountPlus,
+	mdiEmail,
+	mdiLock, mdiPencil,
+	mdiPlus,
+	mdiSend,
+} from '@mdi/js';
+import {type Ref, ref, watchEffect} from 'vue';
 import {useI18n} from 'vue-i18n';
+import {toast} from 'vue3-toastify';
 import {useDisplay} from 'vuetify';
 import {VForm} from 'vuetify/components';
 
@@ -162,7 +183,7 @@ import FormValidator from '@/helpers/formValidator';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import UserService from '@/services/UserService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {UserAdd, UserInfo, UserLanguage, UserModify, UserRole} from '@/types/user';
+import {type UserAdd, type UserInfo, UserLanguage, type UserModify, UserRole} from '@/types/user';
 
 /**
  * Actions to perform
@@ -232,6 +253,70 @@ function close(): void {
 }
 
 /**
+ * Creates a new user
+ */
+async function add(): Promise<void> {
+	const translationParams = {
+		name: user.value.name,
+		email: user.value.email,
+	};
+	await service.create(user.value as UserAdd)
+		.then(() => {
+			loadingSpinner.hide();
+			close();
+			toast.success(i18n.t('admin.users.add.messages.success', translationParams));
+		})
+		.catch(() => {
+			loadingSpinner.hide();
+			toast.error(i18n.t('admin.users.add.messages.error', translationParams));
+		});
+}
+
+/**
+ * Invites the user
+ */
+async function invite(): Promise<void> {
+	const translationParams = {
+		name: user.value.name,
+		email: user.value.email,
+	};
+	await service.create(user.value)
+		.then(() => {
+			loadingSpinner.hide();
+			close();
+			toast.success(i18n.t('admin.users.invite.messages.success', translationParams));
+		})
+		.catch(() => {
+			loadingSpinner.hide();
+			toast.error(i18n.t('admin.users.invite.messages.error', translationParams));
+		});
+}
+
+/**
+ * Edits the user
+ * @return Empty promise
+ */
+async function edit(): Promise<void> {
+	const translationParams = {
+		name: user.value.name,
+		email: user.value.email,
+	};
+	if (props.initUser?.id === undefined) {
+		return;
+	}
+	return await service.edit(props.initUser.id, user.value)
+		.then(() => {
+			loadingSpinner.hide();
+			close();
+			toast.success(i18n.t('admin.users.edit.messages.success', translationParams));
+		})
+		.catch(() => {
+			loadingSpinner.hide();
+			toast.error(i18n.t('admin.users.edit.messages.error', translationParams));
+		});
+}
+
+/**
  * Submits the form
  */
 async function submit(): Promise<void> {
@@ -255,63 +340,6 @@ async function submit(): Promise<void> {
 			break;
 	}
 	emit('reload');
-}
-
-/**
- * Creates a new user
- */
-async function add(): Promise<void> {
-	const translationParams = {
-		name: user.value.name,
-		email: user.value.email,
-	};
-	await service.create(user.value as UserAdd).then(() => {
-		loadingSpinner.hide();
-		close();
-		toast.success(i18n.t('admin.users.add.messages.success', translationParams));
-	}).catch(() => {
-		loadingSpinner.hide();
-		toast.error(i18n.t('admin.users.add.messages.error', translationParams));
-	});
-}
-
-/**
- * Invites the user
- */
-async function invite(): Promise<void> {
-	const translationParams = {
-		name: user.value.name,
-		email: user.value.email,
-	};
-	await service.create(user.value).then(() => {
-		loadingSpinner.hide();
-		close();
-		toast.success(i18n.t('admin.users.invite.messages.success', translationParams));
-	}).catch(() => {
-		loadingSpinner.hide();
-		toast.error(i18n.t('admin.users.invite.messages.error', translationParams));
-	});
-}
-
-/**
- * Edits the user
- */
-async function edit(): Promise<void> {
-	const translationParams = {
-		name: user.value.name,
-		email: user.value.email,
-	};
-	if (props.initUser?.id === undefined) {
-		return;
-	}
-	return await service.edit(props.initUser.id, user.value).then(() => {
-		loadingSpinner.hide();
-		close();
-		toast.success(i18n.t('admin.users.edit.messages.success', translationParams));
-	}).catch(() => {
-		loadingSpinner.hide();
-		toast.error(i18n.t('admin.users.edit.messages.error', translationParams));
-	});
 }
 
 </script>

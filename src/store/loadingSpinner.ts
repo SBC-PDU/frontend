@@ -36,8 +36,8 @@ export const useLoadingSpinnerStore = defineStore('loadingSpinner', {
 	actions: {
 		/**
 		 * Show loading spinner
-		 * @param {string|null} text Loading spinner text
-		 * @param {number|null} timeout Loading spinner timeout
+		 * @param text Loading spinner text
+		 * @param timeout Loading spinner timeout
 		 */
 		show(text: string|null = null, timeout: number|null = null): void {
 			this.enabled = true;
@@ -62,7 +62,7 @@ export const useLoadingSpinnerStore = defineStore('loadingSpinner', {
 		},
 		/**
 		 * Update loading spinner text
-		 * @param {string|null} text New loading spinner text
+		 * @param text New loading spinner text
 		 */
 		updateText(text: string|null): void {
 			this.text = text;
@@ -71,14 +71,14 @@ export const useLoadingSpinnerStore = defineStore('loadingSpinner', {
 	getters: {
 		/**
 		 * Check if loading spinner is enabled
-		 * @returns {boolean} Loading spinner enablement
+		 * @return Loading spinner enablement
 		 */
 		isEnabled(): boolean {
 			return this.enabled;
 		},
 		/**
 		 * Returns loading spinner text
-		 * @returns {string|null} Loading spinner text
+		 * @return Loading spinner text
 		 */
 		getText(): string|null {
 			return this.text;

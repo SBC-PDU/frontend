@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {UserLanguage} from '@/types/user';
+import {type UserLanguage} from '@/types/user';
 
 /**
  * Account modify
  */
 export interface AccountModify {
-	/// User name
-	name: string;
+	/// Change password?
+	changePassword: boolean;
 	/// User email
 	email: string;
 	/// User language
 	language: UserLanguage;
-	/// Change password?
-	changePassword: boolean;
-	/// Current password
-	oldPassword?: string|null;
+	/// User name
+	name: string;
 	/// New password
 	newPassword?: string|null;
+	/// Current password
+	oldPassword?: string|null;
 }

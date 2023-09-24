@@ -23,7 +23,10 @@ limitations under the License.
 			{{ $t('core.password.set.title') }}
 		</template>
 		{{ $t('core.password.set.text') }}
-		<v-form @submit.prevent='submit' ref='form'>
+		<v-form
+			ref='form'
+			@submit.prevent='submit'
+		>
 			<PasswordField
 				v-model='value.password'
 				:label='$t("core.user.fields.newPassword")'
@@ -31,12 +34,12 @@ limitations under the License.
 					(v: any) => FormValidator.isRequired(v, $t("core.user.messages.emptyNewPassword")),
 				]'
 				required
-				prepend-inner-icon='mdi-key'
+				:prepend-inner-icon='mdiKey'
 			/>
 			<v-btn
 				color='primary'
 				type='submit'
-				prepend-icon='mdi-account-key'
+				:prepend-icon='mdiAccountKey'
 			>
 				{{ $t('core.password.set.button') }}
 			</v-btn>
@@ -51,14 +54,15 @@ meta:
 </route>
 
 <script lang='ts' setup>
-import {Head} from '@vueuse/head';
-import {AxiosError} from 'axios';
-import {ref, Ref} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
-import {useRouter} from 'vue-router';
-import {VForm} from 'vuetify/components';
+import {mdiAccountKey, mdiKey} from '@mdi/js';
+import {Head} from '@unhead/vue/components';
+import {type AxiosError} from 'axios';
 import {validate as uuidValidate, version as uuidVersion} from 'uuid';
+import {ref, type Ref} from 'vue';
+import {useI18n} from 'vue-i18n';
+import {useRouter} from 'vue-router';
+import {toast} from 'vue3-toastify';
+import {VForm} from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
@@ -66,7 +70,7 @@ import FormValidator from '@/helpers/formValidator';
 import AuthenticationService from '@/services/AuthenticationService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {useUserStore} from '@/store/user';
-import {PasswordSet, SignedInUser} from '@/types/auth';
+import {type PasswordSet, type SignedInUser} from '@/types/auth';
 
 const props = defineProps({
 	uuid: {

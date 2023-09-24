@@ -15,23 +15,32 @@ limitations under the License.
 -->
 
 <template>
-	<v-toolbar color='grey' density='compact'>
+	<v-toolbar
+		color='grey'
+		density='compact'
+	>
 		<v-toolbar-title>
-			<v-icon>mdi-chart-timeline-variant</v-icon>
+			<v-icon :icon='mdiChartTimelineVariant' />
 			{{ $t('core.devices.detail.measurements.title') }}
 		</v-toolbar-title>
 		<v-toolbar-items>
-			<TimeRangeSelector v-model='timeRange' @update:modelValue='fetchData' />
+			<TimeRangeSelector
+				v-model='timeRange'
+				@update:model-value='fetchData'
+			/>
 			<v-btn
 				color='primary'
-				:prepend-icon='display.smAndUp.value ? "mdi-refresh" : undefined'
+				:prepend-icon='display.smAndUp.value ? mdiRefresh : undefined'
 				variant='elevated'
 				@click='fetchData(timeRange)'
 			>
 				<span v-if='display.smAndUp.value'>
 					{{ $t('core.devices.detail.measurements.reload') }}
 				</span>
-				<v-icon v-else>mdi-refresh</v-icon>
+				<v-icon
+					v-else
+					:icon='mdiRefresh'
+				/>
 			</v-btn>
 		</v-toolbar-items>
 	</v-toolbar>
@@ -46,7 +55,8 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {EChartsOption, SeriesOption} from 'echarts';
+import {mdiChartTimelineVariant, mdiRefresh} from '@mdi/js';
+import {type EChartsOption, type SeriesOption} from 'echarts';
 import {LineChart} from 'echarts/charts';
 import {
 	DataZoomComponent,
@@ -58,22 +68,22 @@ import {
 } from 'echarts/components';
 import {use} from 'echarts/core';
 import {CanvasRenderer} from 'echarts/renderers';
-import {reactive, Ref, ref, watchEffect} from 'vue';
+import {reactive, type Ref, ref, watchEffect} from 'vue';
 import VChart from 'vue-echarts';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
+import {useDisplay} from 'vuetify';
 
 import Card from '@/components/Card.vue';
 import TimeRangeSelector from '@/components/devices/TimeRangeSelector.vue';
 import DeviceService from '@/services/DeviceService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {
-	DeviceDetail,
-	DeviceOutputWithMeasurements,
-	DeviceOutputMeasurement,
-	DeviceOutputMeasurements,
+	type DeviceDetail,
+	type DeviceOutputWithMeasurements,
+	type DeviceOutputMeasurement,
+	type DeviceOutputMeasurements,
 } from '@/types/device';
-import {useDisplay} from 'vuetify';
 
 use([
 	CanvasRenderer,
@@ -105,51 +115,53 @@ const timeRange = ref<string>('1h');
 
 /**
  * Fetches the measurements
- * @param {string} newTimeRange New time range
+ * @param newTimeRange New time range
  */
 async function fetchData(newTimeRange: string): Promise<void> {
 	loadingSpinner.show();
 	if (timeRange.value !== newTimeRange) {
 		timeRange.value = newTimeRange;
 	}
-	await service.getMeasurements(props.device.id, timeRange.value).then((measurements: DeviceOutputMeasurements[]) => {
-		data.value = measurements;
-		loaded.value = true;
-		const newSeries: SeriesOption[] = [];
-		for (const index in data.value) {
-			const output: DeviceOutputMeasurements = data.value[index];
-			newSeries.push({
-				name: `#${output.index} - ${props.device.outputs[index].name}`,
-				type: 'line',
-				smooth: true,
-				symbol: 'none',
-				data: output.measurements.current.map((measurement: DeviceOutputMeasurement): [Date, number] => [measurement.time, measurement.value]),
-				connectNulls: false,
-				tooltip: {
-					valueFormatter: (value): string => (Number(value).toFixed(2).toString() + ' mA'),
-				},
-			});
-			newSeries.push({
-				name: `#${output.index} - ${props.device.outputs[index].name}`,
-				type: 'line',
-				smooth: true,
-				symbol: 'none',
-				data: output.measurements.voltage.map((measurement: DeviceOutputMeasurement): [Date, number] => [measurement.time, measurement.value]),
-				connectNulls: false,
-				yAxisIndex: 1,
-				xAxisIndex: 1,
-				tooltip: {
-					valueFormatter: (value): string => (Number(value).toFixed(2).toString() + ' V'),
-				},
-			});
-		}
-		legend.value = Object.values(props.device.outputs).map((output: DeviceOutputWithMeasurements) => (`#${output.index} - ${output.name}`));
-		series.value = newSeries;
-		loadingSpinner.hide();
-	}).catch(() => {
-		toast.error(i18n.t('core.devices.detail.measurements.messages.error').toString());
-		loadingSpinner.hide();
-	});
+	await service.getMeasurements(props.device.id, timeRange.value)
+		.then((measurements: DeviceOutputMeasurements[]) => {
+			data.value = measurements;
+			loaded.value = true;
+			const newSeries: SeriesOption[] = [];
+			for (const index in data.value) {
+				const output: DeviceOutputMeasurements = data.value[index];
+				newSeries.push({
+					name: `#${output.index} - ${props.device.outputs[index].name}`,
+					type: 'line',
+					smooth: true,
+					symbol: 'none',
+					data: output.measurements.current.map((measurement: DeviceOutputMeasurement): [Date, number] => [measurement.time, measurement.value]),
+					connectNulls: false,
+					tooltip: {
+						valueFormatter: (value): string => (Number(value).toFixed(2).toString() + ' mA'),
+					},
+				});
+				newSeries.push({
+					name: `#${output.index} - ${props.device.outputs[index].name}`,
+					type: 'line',
+					smooth: true,
+					symbol: 'none',
+					data: output.measurements.voltage.map((measurement: DeviceOutputMeasurement): [Date, number] => [measurement.time, measurement.value]),
+					connectNulls: false,
+					yAxisIndex: 1,
+					xAxisIndex: 1,
+					tooltip: {
+						valueFormatter: (value): string => (Number(value).toFixed(2).toString() + ' V'),
+					},
+				});
+			}
+			legend.value = Object.values(props.device.outputs).map((output: DeviceOutputWithMeasurements) => (`#${output.index} - ${output.name}`));
+			series.value = newSeries;
+			loadingSpinner.hide();
+		})
+		.catch(() => {
+			toast.error(i18n.t('core.devices.detail.measurements.messages.error').toString());
+			loadingSpinner.hide();
+		});
 }
 
 watchEffect(async () => {
@@ -172,7 +184,7 @@ const options: EChartsOption = reactive({
 			top: '55%',
 			left: 'center',
 			text: i18n.t('core.devices.detail.measurements.voltage').toString(),
-		}
+		},
 	],
 	legend: {
 		data: legend,
@@ -180,8 +192,8 @@ const options: EChartsOption = reactive({
 	},
 	toolbox: {
 		feature: {
-			saveAsImage: {}
-		}
+			saveAsImage: {},
+		},
 	},
 	grid: [
 		{
@@ -189,7 +201,7 @@ const options: EChartsOption = reactive({
 		},
 		{
 			top: '60%',
-		}
+		},
 	],
 	xAxis: [
 		{

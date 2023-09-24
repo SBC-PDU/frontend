@@ -26,11 +26,13 @@ limitations under the License.
 				v-bind='props'
 				color='error'
 				class='me-2'
-			>
-				mdi-trash-can
-			</v-icon>
+				:icon='mdiTrashCan'
+			/>
 		</template>
-		<Card header-color='red-darken-1' style='max-height: 90vh'>
+		<Card
+			header-color='red-darken-1'
+			style='max-height: 90vh'
+		>
 			<template #title>
 				{{ $t('core.devices.delete.title') }}
 			</template>
@@ -43,7 +45,7 @@ limitations under the License.
 				>
 					{{ $t('core.devices.delete.confirm') }}
 				</v-btn>
-				<v-spacer/>
+				<v-spacer />
 				<v-btn
 					color='gray darken-1'
 					@click='close'
@@ -56,15 +58,16 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {mdiTrashCan} from '@mdi/js';
 import {ref} from 'vue';
-import {toast} from 'vue3-toastify';
 import {useI18n} from 'vue-i18n';
+import {toast} from 'vue3-toastify';
 
 import Card from '@/components/Card.vue';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import DeviceService from '@/services/DeviceService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {Device} from '@/types/device';
+import {type Device} from '@/types/device';
 
 /**
  * The component props

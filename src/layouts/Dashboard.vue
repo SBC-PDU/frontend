@@ -17,12 +17,12 @@ limitations under the License.
 <template>
 	<v-app>
 		<TheHeader />
-		<TheSidebar/>
+		<TheSidebar />
 		<v-main style='background-color: #f5f5f5'>
 			<v-container>
 				<UnverifiedAccountAlert />
 				<router-view v-if='isAllowed' />
-				<Forbidden v-else/>
+				<Forbidden v-else />
 			</v-container>
 		</v-main>
 		<TheFooter />
@@ -31,16 +31,16 @@ limitations under the License.
 
 <script lang='ts' setup>
 import {storeToRefs} from 'pinia';
+import {computed, type Ref} from 'vue';
+import {useRoute} from 'vue-router';
 
+import Forbidden from '@/components/Forbidden.vue';
 import TheFooter from '@/components/layout/TheFooter.vue';
 import TheHeader from '@/components/layout/TheHeader.vue';
 import TheSidebar from '@/components/layout/TheSidebar.vue';
-import Forbidden from '@/components/Forbidden.vue';
 import UnverifiedAccountAlert from '@/components/UnverifiedAccountAlert.vue';
 import {useUserStore} from '@/store/user';
-import {UserRole} from '@/types/user';
-import {computed, Ref} from 'vue';
-import {useRoute} from 'vue-router';
+import {type UserRole} from '@/types/user';
 
 const route = useRoute();
 const userStore = useUserStore();

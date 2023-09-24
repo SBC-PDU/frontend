@@ -27,13 +27,12 @@ limitations under the License.
 				v-bind='props'
 				color='primary'
 				class='me-2'
-			>
-				mdi-pencil-outline
-			</v-icon>
+				:icon='mdiPencilOutline'
+			/>
 			<v-btn
 				v-else
 				:color='action === Action.Add ? "green" : "blue"'
-				:prepend-icon='display.smAndUp.value ? (action === Action.Add ? "mdi-plus" : "mdi-pencil") : undefined'
+				:prepend-icon='display.smAndUp.value ? (action === Action.Add ? mdiPlus : mdiPencil) : undefined'
 				v-bind='props'
 				variant='elevated'
 				class='float-end'
@@ -42,18 +41,31 @@ limitations under the License.
 					<span v-if='display.smAndUp.value'>
 						{{ $t('core.devices.add.activator') }}
 					</span>
-					<v-icon v-else>mdi-plus</v-icon>
+					<v-icon
+						v-else
+						:icon='mdiPlus'
+					/>
 				</span>
 				<span v-if='action === Action.Edit'>
 					<span v-if='display.smAndUp.value'>
 						{{ $t('core.devices.edit.activator') }}
 					</span>
-					<v-icon v-else>mdi-pencil</v-icon>
+					<v-icon
+						v-else
+						:icon='mdiPencil'
+					/>
 				</span>
 			</v-btn>
 		</template>
-		<v-form ref='form' @submit.prevent='submit'>
-			<Card :header-color='action === "add" ? "green-darken-1" : "primary"' style='max-height: 90vh'>
+		<v-form
+			v-if='state===PageState.Loaded'
+			ref='form'
+			@submit.prevent='submit'
+		>
+			<Card
+				:header-color='action === "add" ? "green-darken-1" : "primary"'
+				style='max-height: 90vh'
+			>
 				<template #title>
 					{{ action === "add" ? $t('core.devices.add.title') : $t('core.devices.edit.title') }}
 				</template>
@@ -64,7 +76,7 @@ limitations under the License.
 						v => FormValidator.isRequired(v, $t("core.devices.form.messages.emptyName")),
 					]'
 					required
-					prepend-inner-icon='mdi-text-short'
+					:prepend-inner-icon='mdiTextShort'
 				/>
 				<v-text-field
 					v-if='action === "add"'
@@ -74,11 +86,19 @@ limitations under the License.
 						v => FormValidator.isRequired(v, $t("core.devices.form.messages.emptyMacAddress")),
 					]'
 					required
-					prepend-inner-icon='mdi-wifi'
+					:prepend-inner-icon='mdiWifi'
 				/>
-				<h2 class='mb-4'>{{ $t('core.devices.form.outputs.title') }}</h2>
-				<v-row v-for='(output, outputIndex) in device.outputs' :key='output.index'>
-					<v-col cols='12' sm='4'>
+				<h2 class='mb-4'>
+					{{ $t('core.devices.form.outputs.title') }}
+				</h2>
+				<v-row
+					v-for='(output, outputIndex) in device.outputs'
+					:key='output.index'
+				>
+					<v-col
+						cols='12'
+						sm='4'
+					>
 						<v-text-field
 							v-model.number='output.index'
 							:label='$t("core.devices.fields.outputs.index")'
@@ -87,10 +107,13 @@ limitations under the License.
 							]'
 							required
 							type='number'
-							prepend-inner-icon='mdi-identifier'
+							:prepend-inner-icon='mdiIdentifier'
 						/>
 					</v-col>
-					<v-col cols='12' sm='8'>
+					<v-col
+						cols='12'
+						sm='8'
+					>
 						<v-text-field
 							v-model='output.name'
 							:label='$t("core.devices.fields.outputs.name")'
@@ -98,54 +121,59 @@ limitations under the License.
 								v => FormValidator.isRequired(v, $t("core.devices.form.messages.outputs.emptyName")),
 							]'
 							required
-							prepend-inner-icon='mdi-text-short'
+							:prepend-inner-icon='mdiTextShort'
 						>
-							<template v-slot:append v-if='display.smAndUp.value'>
-								<v-btn-group class='my-auto' density='compact'>
+							<template
+								v-if='display.smAndUp.value'
+								#append
+							>
+								<v-btn-group
+									class='my-auto'
+									density='compact'
+								>
 									<v-btn
 										color='success'
-										@click='addOutput()'
 										size='small'
-									>
-										<v-icon>mdi-plus</v-icon>
-									</v-btn>
+										:icon='mdiPlus'
+										@click='addOutput()'
+									/>
 									<v-btn
 										color='red'
-										@click='device.outputs.splice(outputIndex, 1)'
 										:disabled='device.outputs.length === 1'
 										size='small'
-									>
-										<v-icon>mdi-minus</v-icon>
-									</v-btn>
+										:icon='mdiMinus'
+										@click='device.outputs.splice(outputIndex, 1)'
+									/>
 								</v-btn-group>
 							</template>
 						</v-text-field>
-						<v-btn-group v-if='display.xs.value' class='my-auto' density='compact'>
+						<v-btn-group
+							v-if='display.xs.value'
+							class='my-auto'
+							density='compact'
+						>
 							<v-btn
 								color='success'
-								@click='addOutput()'
 								size='small'
-							>
-								<v-icon>mdi-plus</v-icon>
-							</v-btn>
+								:icon='mdiPlus'
+								@click='addOutput()'
+							/>
 							<v-btn
 								color='red'
-								@click='removeOutput(outputIndex)'
 								:disabled='device.outputs.length === 1'
 								size='small'
-							>
-								<v-icon>mdi-minus</v-icon>
-							</v-btn>
+								:icon='mdiMinus'
+								@click='removeOutput(outputIndex)'
+							/>
 						</v-btn-group>
 					</v-col>
 				</v-row>
 				<v-btn
 					v-if='device.outputs.length === 0'
 					color='success'
+					:icon='mdiPlus'
 					@click='addOutput()'
-				>
-					<v-icon>mdi-plus</v-icon>
-				</v-btn>
+				/>
 				<template #actions>
 					<v-btn
 						v-if='action === "add"'
@@ -163,7 +191,7 @@ limitations under the License.
 					>
 						{{ $t('core.actions.edit') }}
 					</v-btn>
-					<v-spacer/>
+					<v-spacer />
 					<v-btn
 						color='gray-darken-1'
 						@click='close'
@@ -173,11 +201,19 @@ limitations under the License.
 				</template>
 			</Card>
 		</v-form>
+		<v-alert
+			v-else-if='state === PageState.NotFound'
+			type='error'
+		>
+			{{ $t('core.devices.form.messages.notFound') }}
+		</v-alert>
 	</v-dialog>
 </template>
 
 <script lang='ts' setup>
-import {Ref, ref, watchEffect} from 'vue';
+import {mdiIdentifier, mdiMinus, mdiPencil, mdiPencilOutline, mdiPlus, mdiTextShort, mdiWifi} from '@mdi/js';
+import {type AxiosError} from 'axios';
+import {type Ref, ref, watchEffect} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 import {useDisplay} from 'vuetify';
@@ -187,14 +223,15 @@ import Card from '@/components/Card.vue';
 import FormValidator from '@/helpers/formValidator';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import DeviceService from '@/services/DeviceService';
-import {
-	DeviceAdd,
-	DeviceDetail,
-	DeviceModify,
-	DeviceOutput,
-	DeviceOutputWithMeasurements
-} from '@/types/device';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
+import {
+	type DeviceAdd,
+	type DeviceDetail,
+	type DeviceModify,
+	type DeviceOutput,
+	type DeviceOutputWithMeasurements,
+} from '@/types/device';
+import {PageState} from '@/types/page.js';
 
 /**
  * Enum for action to perform
@@ -227,6 +264,7 @@ const device: Ref<DeviceAdd|DeviceModify> = ref({
 	name: '',
 	outputs: [],
 });
+const state: Ref<PageState> = ref<PageState>(PageState.Loading);
 
 /**
  * Loads data about the device
@@ -237,20 +275,31 @@ function loadData(): void {
 			name: '',
 			macAddress: '',
 			outputs: [
-				{index: 1, name: ''}
+				{index: 1, name: ''},
 			],
 		};
+		state.value = PageState.Loaded;
 		return;
 	}
-	service.get(props.id).then((response: DeviceDetail) => {
-		device.value = {
-			name: response.name,
-			outputs: response.outputs.map((output: DeviceOutputWithMeasurements): DeviceOutput => ({
-				index: output.index,
-				name: output.name,
-			})),
-		};
-	});
+	state.value = PageState.Loading;
+	service.get(props.id)
+		.then((response: DeviceDetail) => {
+			device.value = {
+				name: response.name,
+				outputs: response.outputs.map((output: DeviceOutputWithMeasurements): DeviceOutput => ({
+					index: output.index,
+					name: output.name,
+				})),
+			};
+			state.value = PageState.Loaded;
+		})
+		.catch((error: AxiosError) => {
+			if (error.response?.status === 404) {
+				state.value = PageState.NotFound;
+			} else {
+				state.value = PageState.LoadFailed;
+			}
+		});
 }
 
 watchEffect(async () => {
@@ -281,7 +330,7 @@ function removeOutput(index: number): void {
 
 /**
  * Adds a new device
- * @param {DeviceAdd} data Device to add
+ * @param data Device to add
  */
 async function add(data: DeviceAdd): Promise<void> {
 	await service.add(data)
@@ -297,8 +346,8 @@ async function add(data: DeviceAdd): Promise<void> {
 
 /**
  * Edits a device
- * @param {string} id Device ID
- * @param {DeviceModify} data Device to edit
+ * @param id Device ID
+ * @param data Device to edit
  */
 async function edit(id: string, data: DeviceModify): Promise<void> {
 	await service.edit(id, data)

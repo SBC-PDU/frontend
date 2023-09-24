@@ -27,7 +27,7 @@ name: Profile
 </route>
 
 <script lang='ts' setup>
-import {Head} from '@vueuse/head';
+import {Head} from '@unhead/vue/components';
 
 import ProfileForm from '@/components/profile/ProfileForm.vue';
 import TotpList from '@/components/profile/TotpList.vue';

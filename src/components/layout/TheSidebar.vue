@@ -20,12 +20,16 @@ limitations under the License.
 		color='primary'
 		:rail='isMinimized'
 	>
-		<SidebarItems :items='items()'/>
+		<SidebarItems :items='items()' />
 		<template #append>
 			<v-list>
-				<v-list-item density='compact' style='margin-top: auto;' @click.stop='sidebarStore.toggleSize()'>
+				<v-list-item
+					density='compact'
+					style='margin-top: auto;'
+					@click.stop='sidebarStore.toggleSize()'
+				>
 					<v-list-item-action>
-						<v-icon>mdi-{{ `chevron-${isMinimized ? 'right' : 'left'}` }}</v-icon>
+						<v-icon :icon='isMinimized ? mdiChevronRight : mdiChevronLeft' />
 					</v-list-item-action>
 				</v-list-item>
 			</v-list>
@@ -34,6 +38,7 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {mdiAccount, mdiAccountKey, mdiBook, mdiChevronLeft, mdiChevronRight, mdiCog, mdiLogin, mdiPower} from '@mdi/js';
 import {storeToRefs} from 'pinia';
 import {useI18n} from 'vue-i18n';
 import {useDisplay} from 'vuetify';
@@ -41,7 +46,7 @@ import {useDisplay} from 'vuetify';
 import SidebarItems from '@/components/layout/sidebar/SidebarItems.vue';
 import {useSidebarStore} from '@/store/sidebar';
 import {useUserStore} from '@/store/user';
-import {SidebarLink} from '@/types/sidebar';
+import {type SidebarLink} from '@/types/sidebar';
 import {UserRole} from '@/types/user';
 
 const i18n = useI18n();
@@ -56,7 +61,8 @@ sidebarStore.setVisibility(display.xlAndUp.value);
 
 /**
  * Filter sidebar items based on user role
- * @param {SidebarLink} item Sidebar item to filter
+ * @param item Sidebar item to filter
+ * @return True if the item should be displayed, false otherwise
  */
 function filter(item: SidebarLink): boolean {
 	const role: UserRole | null = userStore.getRole;
@@ -68,25 +74,25 @@ function filter(item: SidebarLink): boolean {
 
 /**
  * Returns sidebar items
- * @returns {SidebarLink[]} Sidebar items
+ * @return Sidebar items
  */
 function items(): SidebarLink[] {
 	let links: SidebarLink[];
 	if (isLoggedIn.value) {
 		links = [
 			{
-				icon: 'mdi-power',
+				icon: mdiPower,
 				title: i18n.t('core.devices.title').toString(),
 				group: /^\/devices(\/.*)?$/,
 				to: '/devices',
 			},
 			{
-				icon: 'mdi-account',
+				icon: mdiAccount,
 				title: i18n.t('core.profile.title').toString(),
 				to: '/profile',
 			},
 			{
-				icon: 'mdi-cog',
+				icon: mdiCog,
 				title: i18n.t('admin.title').toString(),
 				to: '/admin',
 				roles: [UserRole.Admin],
@@ -98,7 +104,7 @@ function items(): SidebarLink[] {
 				],
 			},
 			{
-				icon: 'mdi-book',
+				icon: mdiBook,
 				title: i18n.t('core.openApi.title').toString(),
 				to: '/apiDocs',
 			},
@@ -106,17 +112,17 @@ function items(): SidebarLink[] {
 	} else {
 		links = [
 			{
-				icon: 'mdi-login',
+				icon: mdiLogin,
 				title: i18n.t('core.sign.in.title').toString(),
 				to: '/auth/sign/in',
 			},
 			{
-				icon: 'mdi-account-key',
+				icon: mdiAccountKey,
 				title: i18n.t('core.password.recovery.title').toString(),
 				to: '/auth/password/recovery',
 			},
 			{
-				icon: 'mdi-book',
+				icon: mdiBook,
 				title: i18n.t('core.openApi.title').toString(),
 				to: '/apiDocs',
 			},

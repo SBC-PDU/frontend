@@ -27,9 +27,9 @@ limitations under the License.
 		<v-app-bar-title class='d-none d-md-inline'>
 			{{ $t('core.title') }}
 		</v-app-bar-title>
-		<v-spacer/>
-		<LocaleSwitcher/>
-		<ProfileDropdown v-if='userStore.isLoggedIn'/>
+		<v-spacer />
+		<LocaleSwitcher />
+		<ProfileDropdown v-if='userStore.isLoggedIn' />
 	</v-app-bar>
 </template>
 

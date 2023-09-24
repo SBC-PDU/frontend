@@ -22,7 +22,10 @@ limitations under the License.
 	>
 		<span class='mr-auto ml-auto'>
 			&copy; 2022-{{ currentYear }}
-			<a class='text-white' href='https://www.romanondracek.cz/'>
+			<a
+				class='text-white'
+				href='https://www.romanondracek.cz/'
+			>
 				Roman Ondráček
 			</a>
 		</span>

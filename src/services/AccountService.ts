@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {AxiosResponse} from 'axios';
-import punycode from 'punycode/';
+import {type AxiosResponse} from 'axios';
+import * as punycode from 'punycode/';
 
 import BaseUrlHelper from '@/helpers/baseUrlHelper';
 import {ApiClient} from '@/services/ApiClient';
-import {AccountModify} from '@/types/account';
-import {SignedInUser} from '@/types/auth';
-import {UserInfo} from '@/types/user';
-import {UserTotp, UserTotpAdd, UserTotpRemove} from '@/types/totp';
+import {type AccountModify} from '@/types/account';
+import {type SignedInUser} from '@/types/auth';
+import {type UserTotp, type UserTotpAdd, type UserTotpRemove} from '@/types/totp';
+import {type UserInfo} from '@/types/user';
 
 /**
  * User account service
@@ -30,7 +30,7 @@ export default class AccountService extends ApiClient {
 
 	/**
 	 * Returns information about logged-in user
-	 * @return {Promise<UserInfo>} Information about logged-in user
+	 * @return Information about logged-in user
 	 */
 	public get(): Promise<UserInfo> {
 		return this.getClient().get('account')
@@ -44,8 +44,8 @@ export default class AccountService extends ApiClient {
 
 	/**
 	 * Edits user account
-	 * @param {AccountModify} account Account data
-	 * @return {Promise<SignedInUser>} User data with JWT token
+	 * @param account Account data
+	 * @return User data with JWT token
 	 */
 	public edit(account: AccountModify): Promise<SignedInUser> {
 		const body: AccountModify = account;
@@ -57,12 +57,13 @@ export default class AccountService extends ApiClient {
 		return this.getClient().put('account', {
 			...body,
 			baseUrl: BaseUrlHelper.get(),
-		}).then((response: AxiosResponse<SignedInUser>): SignedInUser => response.data);
+		})
+			.then((response: AxiosResponse<SignedInUser>): SignedInUser => response.data);
 	}
 
 	/**
 	 * Lists user's TOTP tokens
-	 * @return {Promise<UserTotp[]>} List of TOTP tokens
+	 * @return List of TOTP tokens
 	 */
 	public listTotp(): Promise<UserTotp[]> {
 		return this.getClient().get('account/totp')
@@ -80,7 +81,8 @@ export default class AccountService extends ApiClient {
 
 	/**
 	 * Adds a new TOTP token
-	 * @param {UserTotpAdd} totp TOTP token data
+	 * @param totp TOTP token data
+	 * @return Empty promise
 	 */
 	public addTotp(totp: UserTotpAdd): Promise<void> {
 		return this.getClient().post('account/totp', {
@@ -91,20 +93,22 @@ export default class AccountService extends ApiClient {
 
 	/**
 	 * Removes a TOTP token
-	 * @param {string} uuid TOTP token UUID
-	 * @param {UserTotpRemove} totp TOTP token removal confirmation
+	 * @param uuid TOTP token UUID
+	 * @param totp TOTP token removal confirmation
+	 * @return Empty promise
 	 */
 	public removeTotp(uuid: string, totp: UserTotpRemove): Promise<void> {
 		return this.getClient().delete(`account/totp/${uuid}`, {
 			data: {
 				...totp,
 				baseUrl: BaseUrlHelper.get(),
-			}
+			},
 		});
 	}
 
 	/**
 	 * Resends verification e-mail
+	 * @return Empty promise
 	 */
 	public resendVerificationEmail(): Promise<void> {
 		return this.getClient().post('account/verification/resend', {
@@ -114,8 +118,8 @@ export default class AccountService extends ApiClient {
 
 	/**
 	 * Verifies user's e-mail
-	 * @param {string} uuid Verification UUID
-	 * @return {Promise<SignedInUser>} User data with JWT token
+	 * @param uuid Verification UUID
+	 * @return User data with JWT token
 	 */
 	public verify(uuid: string): Promise<SignedInUser> {
 		return this.getClient().post(`account/verification/${uuid}`)

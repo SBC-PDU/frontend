@@ -18,13 +18,16 @@ limitations under the License.
 	<v-menu
 		location='bottom end'
 	>
-		<template v-slot:activator='{ props }'>
+		<template #activator='{ props }'>
 			<v-btn
 				color='primary'
 				v-bind='props'
 			>
 				{{ store.getLocaleFlag }}
-				<v-icon color='white'>mdi-chevron-down</v-icon>
+				<v-icon
+					color='white'
+					:icon='mdiChevronDown'
+				/>
 			</v-btn>
 		</template>
 		<v-list>
@@ -40,13 +43,15 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {mdiChevronDown} from '@mdi/js';
+
 import {useLocaleStore} from '@/store/locale';
 
 const store = useLocaleStore();
 
 /**
  * Set the language
- * @param {string} locale The locale to set
+ * @param locale The locale to set
  */
 function setLanguage(locale: string) {
 	store.setLocale(locale);

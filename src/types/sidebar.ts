@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {RouteLocationRaw} from 'vue-router';
+import {type RouteLocationRaw} from 'vue-router';
 
-import {UserRole} from '@/types/user';
+import {type UserRole} from '@/types/user';
 
 /**
  * Sidebar item
  */
 export interface SidebarLink {
-	/// Icon
-	icon?: string;
-	/// Title
-	title: string;
 	/// Children
 	children?: SidebarLink[];
 	/// Group
 	group?: string | RegExp;
-	/// Route
-	to?: RouteLocationRaw;
 	/// Href
 	href?: string;
-	/// Target
-	target?: string;
+	/// Icon
+	icon?: string;
 	/// User roles
 	roles?: UserRole[];
+	/// Target
+	target?: string;
+	/// Title
+	title: string;
+	/// Route
+	to?: RouteLocationRaw;
 }

@@ -25,11 +25,13 @@ limitations under the License.
 		]'
 		required
 		:counter='6'
-		prepend-inner-icon='mdi-two-factor-authentication'
+		:prepend-inner-icon='mdiTwoFactorAuthentication'
 	/>
 </template>
 
 <script lang='ts' setup>
+import {mdiTwoFactorAuthentication} from '@mdi/js';
+
 import FormValidator from '@/helpers/formValidator';
 
 /**

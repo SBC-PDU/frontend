@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import * as child_process from 'child_process';
+import {fileURLToPath, URL} from 'node:url';
+import path from 'path';
+
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import {sentryVitePlugin} from '@sentry/vite-plugin';
 import UnheadVite from '@unhead/addons/vite';
 import vue from '@vitejs/plugin-vue';
-import * as child_process from 'child_process';
-import path from 'path';
-import {fileURLToPath, URL} from 'node:url';
 import {defineConfig, loadEnv} from 'vite';
 import Pages from 'vite-plugin-pages';
 import VueDevTools from 'vite-plugin-vue-devtools';
@@ -44,7 +45,7 @@ export default defineConfig(({mode}) => {
 			}),
 			VueDevTools(),
 			vue({
-				template: {transformAssetUrls}
+				template: {transformAssetUrls},
 			}),
 			// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
 			vuetify({
@@ -68,7 +69,7 @@ export default defineConfig(({mode}) => {
 		},
 		resolve: {
 			alias: {
-				'@': fileURLToPath(new URL('./src', import.meta.url))
+				'@': fileURLToPath(new URL('./src', import.meta.url)),
 			},
 			extensions: [
 				'.js',

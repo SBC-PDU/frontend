@@ -26,7 +26,7 @@ export default createI18n<MessageSchema, Locales>({
 	datetimeFormats: {
 		cs: {
 			short: {
-				year: 'numeric', month: 'short', day: 'numeric'
+				year: 'numeric', month: 'short', day: 'numeric',
 			},
 			normal: {
 				year: 'numeric', month: 'short', day: 'numeric',
@@ -34,12 +34,12 @@ export default createI18n<MessageSchema, Locales>({
 			},
 			long: {
 				year: 'numeric', month: 'short', day: 'numeric',
-				weekday: 'short', hour: 'numeric', minute: 'numeric', second: 'numeric'
-			}
+				weekday: 'short', hour: 'numeric', minute: 'numeric', second: 'numeric',
+			},
 		},
 		en: {
 			short: {
-				year: 'numeric', month: 'short', day: 'numeric'
+				year: 'numeric', month: 'short', day: 'numeric',
 			},
 			normal: {
 				year: 'numeric', month: 'short', day: 'numeric',
@@ -47,9 +47,9 @@ export default createI18n<MessageSchema, Locales>({
 			},
 			long: {
 				year: 'numeric', month: 'short', day: 'numeric',
-				weekday: 'short', hour: 'numeric', minute: 'numeric', second: 'numeric'
-			}
-		}
+				weekday: 'short', hour: 'numeric', minute: 'numeric', second: 'numeric',
+			},
+		},
 	},
 	pluralRules: {
 		cs: (choice: number, choicesLength: number): number => {

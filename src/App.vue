@@ -17,13 +17,13 @@ limitations under the License.
 <template :key='locale'>
 	<LoadingSpinner />
 	<SessionExpirationModal />
-	<router-view/>
+	<router-view />
 </template>
 
 <script lang='ts' setup>
 import {storeToRefs} from 'pinia';
 import {getActiveHead} from 'unhead';
-import {ref, watch} from 'vue';
+import {type Ref, ref, watch} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 
@@ -35,9 +35,7 @@ const localeStore = useLocaleStore();
 const {locale} = storeToRefs(localeStore);
 const i18n = useI18n();
 
-watch(locale, setLocale);
-
-const siteName = ref(i18n.t('core.title').toString());
+const siteName: Ref<string> = ref(i18n.t('core.title').toString());
 const headOptions = ref({
 	titleTemplate: '%s %separator %siteName',
 	templateParams: {
@@ -45,11 +43,10 @@ const headOptions = ref({
 		separator: '|',
 	},
 });
-setLocale(null);
 
 /**
  * Sets locale
- * @param {string | null} newLocale New locale
+ * @param newLocale New locale
  */
 function setLocale(newLocale: string | null = null): void {
 	const localeToSet = newLocale ?? locale.value;
@@ -58,5 +55,8 @@ function setLocale(newLocale: string | null = null): void {
 	getActiveHead()?.push(headOptions);
 	toast.success(i18n.t('core.messages.localeChanged', {lang: i18n.t(`core.locales.${localeToSet}`)}));
 }
+
+watch(locale, setLocale);
+setLocale(null);
 
 </script>

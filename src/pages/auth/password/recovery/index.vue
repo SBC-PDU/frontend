@@ -23,7 +23,11 @@ limitations under the License.
 			{{ $t('core.password.recovery.title') }}
 		</template>
 		{{ $t('core.password.recovery.text') }}
-		<v-form @submit.prevent='submit' ref='form' class='mt-4'>
+		<v-form
+			ref='form'
+			class='mt-4'
+			@submit.prevent='submit'
+		>
 			<v-text-field
 				v-model='recovery.email'
 				:label='$t("core.user.fields.email")'
@@ -32,12 +36,12 @@ limitations under the License.
 					v => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
 				]'
 				required
-				prepend-inner-icon='mdi-email'
+				:prepend-inner-icon='mdiEmail'
 			/>
 			<v-btn
 				color='primary'
 				type='submit'
-				prepend-icon='mdi-account-key'
+				:prepend-icon='mdiAccountKey'
 			>
 				{{ $t('core.password.recovery.button') }}
 			</v-btn>
@@ -52,18 +56,19 @@ meta:
 </route>
 
 <script lang='ts' setup>
-import {Head} from '@vueuse/head';
-import {ref, Ref} from 'vue';
+import {mdiAccountKey, mdiEmail} from '@mdi/js';
+import {Head} from '@unhead/vue/components';
+import {ref, type Ref} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
 import {useRouter} from 'vue-router';
+import {toast} from 'vue3-toastify';
 import {VForm} from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import FormValidator from '@/helpers/formValidator';
 import AuthenticationService from '@/services/AuthenticationService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {PasswordRecovery} from '@/types/auth';
+import {type PasswordRecovery} from '@/types/auth';
 
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();

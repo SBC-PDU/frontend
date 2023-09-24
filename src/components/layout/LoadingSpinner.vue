@@ -27,15 +27,21 @@ limitations under the License.
 			size='128'
 			width='16'
 		/>
-		<div v-if='text !== null' class='mt-8'>
-			<h2 class='text-white'>{{ text }}</h2>
+		<div
+			v-if='text !== null'
+			class='mt-8'
+		>
+			<h2 class='text-white'>
+				{{ text }}
+			</h2>
 		</div>
 	</v-overlay>
 </template>
 
 <script lang='ts' setup>
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {storeToRefs} from 'pinia';
+
+import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 
 const store = useLoadingSpinnerStore();
 const {isEnabled, getText: text} = storeToRefs(store);

@@ -19,19 +19,26 @@ limitations under the License.
 		<title>{{ $t('core.devices.list.title') }}</title>
 	</Head>
 	<v-data-table
+		v-if='state !== PageState.LoadFailed'
 		:headers='headers'
 		:items='devices'
 		:items-length='devices.length'
-		:loading='loading'
+		:loading='state === PageState.Loading'
 	>
 		<template #top>
-			<v-toolbar color='primary' flat>
+			<v-toolbar
+				color='primary'
+				flat
+			>
 				<v-toolbar-title>
-					<v-icon>mdi-power</v-icon>
+					<v-icon :icon='mdiPower' />
 					{{ $t('core.devices.list.title') }}
 				</v-toolbar-title>
 				<v-toolbar-items>
-					<DeviceForm action='add' @save='loadDevices()' />
+					<DeviceForm
+						action='add'
+						@save='loadDevices()'
+					/>
 				</v-toolbar-items>
 			</v-toolbar>
 		</template>
@@ -47,10 +54,24 @@ limitations under the License.
 			{{ item.raw.outputs.length }}
 		</template>
 		<template #item.actions='{ item }'>
-			<DeviceForm action='editTable' :id='item.raw.id' @save='loadDevices()' />
-			<DeviceDeleteConfirmation v-if='userStore.getRole === UserRole.Admin' :device='item.raw' @delete='loadDevices()' />
+			<DeviceForm
+				:id='item.raw.id'
+				action='editTable'
+				@save='loadDevices()'
+			/>
+			<DeviceDeleteConfirmation
+				v-if='userStore.getRole === UserRole.Admin'
+				:device='item.raw'
+				@delete='loadDevices()'
+			/>
 		</template>
 	</v-data-table>
+	<v-alert
+		v-else-if='state === PageState.LoadFailed'
+		type='error'
+	>
+		{{ $t('core.devices.list.loadFailed') }}
+	</v-alert>
 </template>
 
 <route lang='yaml'>
@@ -58,15 +79,17 @@ name: DeviceList
 </route>
 
 <script lang='ts' setup>
-import {Head} from '@vueuse/head';
-import {ref} from 'vue';
+import {mdiPower} from '@mdi/js';
+import {Head} from '@unhead/vue/components';
+import {type Ref, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 
 import DeviceDeleteConfirmation from '@/components/devices/DeviceDeleteConfirmation.vue';
 import DeviceForm from '@/components/devices/DeviceForm.vue';
 import DeviceService from '@/services/DeviceService';
 import {useUserStore} from '@/store/user';
-import {Device} from '@/types/device';
+import {type Device} from '@/types/device';
+import {PageState} from '@/types/page';
 import {UserRole} from '@/types/user';
 
 const i18n = useI18n();
@@ -80,20 +103,24 @@ const headers = [
 	{title: i18n.t('core.devices.fields.outputs.title'), key: 'outputs'},
 	{title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false},
 ];
-const loading = ref<boolean>(true);
 const devices = ref<Device[]>([]);
-
-loadDevices();
+const state: Ref<PageState> = ref(PageState.Loading);
 
 /**
  * Load devices
  */
 function loadDevices() {
-	loading.value = true;
-	deviceService.list().then((response: Device[]) => {
-		loading.value = false;
-		devices.value = response;
-	});
+	state.value = PageState.Loading;
+	deviceService.list()
+		.then((response: Device[]) => {
+			state.value = PageState.Loaded;
+			devices.value = response;
+		})
+		.catch(() => {
+			state.value = PageState.LoadFailed;
+		});
 }
+
+loadDevices();
 
 </script>

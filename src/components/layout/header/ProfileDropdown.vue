@@ -18,19 +18,29 @@ limitations under the License.
 	<v-menu
 		location='bottom end'
 	>
-		<template v-slot:activator='{ props }'>
+		<template #activator='{ props }'>
 			<v-btn
 				color='blue-lighten-1'
 				v-bind='props'
 				variant='elevated'
 			>
-				<v-avatar :image='store.getGravatarUrl ?? undefined' class='mr-2' size='32'/>
+				<v-avatar
+					:image='store.getGravatarUrl ?? undefined'
+					class='mr-2'
+					size='32'
+				/>
 				<span class='d-none d-md-inline'>{{ store.getName }}</span>
-				<v-icon color='white'>mdi-chevron-down</v-icon>
+				<v-icon
+					color='white'
+					:icon='mdiChevronDown'
+				/>
 			</v-btn>
 		</template>
 		<v-list density='compact'>
-			<v-list-item prepend-icon='mdi-logout' @click='signOut()'>
+			<v-list-item
+				:prepend-icon='mdiLogout'
+				@click='signOut()'
+			>
 				<v-list-item-title>{{ $t('core.sign.out.title') }}</v-list-item-title>
 			</v-list-item>
 		</v-list>
@@ -38,9 +48,11 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {useUserStore} from '@/store/user';
-import {toast} from 'vue3-toastify';
+import {mdiChevronDown, mdiLogout} from '@mdi/js';
 import {useI18n} from 'vue-i18n';
+import {toast} from 'vue3-toastify';
+
+import {useUserStore} from '@/store/user';
 
 const i18n = useI18n();
 const store = useUserStore();

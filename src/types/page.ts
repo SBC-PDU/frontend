@@ -13,10 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-module.exports = {
-	'vueFiles': './src/**/*.{vue,ts}',
-	'languageFiles': './src/locales/*.json',
-	'exclude': [
-		'$vuetify',
-	],
-};
+
+/**
+ * Page state
+ */
+export enum PageState {
+    /// Page is failed to load
+    LoadFailed = 'loadFailed',
+    /// Page is loaded
+    Loaded = 'loaded',
+    /// Page is loading
+    Loading = 'loading',
+    /// Page not found
+    NotFound = 'notFound',
+}

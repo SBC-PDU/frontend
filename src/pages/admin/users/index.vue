@@ -19,25 +19,39 @@ limitations under the License.
 		<title>{{ $t('admin.users.list.title') }}</title>
 	</Head>
 	<v-data-table
+		v-if='state !== PageState.LoadFailed'
 		:headers='headers'
 		:items='users'
 		:items-length='users.length'
-		:loading='loading'
+		:loading='state === PageState.Loading'
 	>
 		<template #top>
-			<v-toolbar color='primary' flat>
+			<v-toolbar
+				color='primary'
+				flat
+			>
 				<v-toolbar-title>
-					<v-icon>mdi-account-group</v-icon>
+					<v-icon :icon='mdiAccountGroup' />
 					{{ $t('admin.users.list.title') }}
 				</v-toolbar-title>
 				<v-toolbar-items>
-					<UserForm action='invite' @reload='loadUsers'/>
-					<UserForm action='add' @reload='loadUsers'/>
+					<UserForm
+						action='invite'
+						@reload='loadUsers'
+					/>
+					<UserForm
+						action='add'
+						@reload='loadUsers'
+					/>
 				</v-toolbar-items>
 			</v-toolbar>
 		</template>
 		<template #item.avatar='{ item }'>
-			<v-avatar :image='getGravatarUrl(item.raw.email)' class='ma-auto' size='32'/>
+			<v-avatar
+				:image='getGravatarUrl(item.raw.email)'
+				class='ma-auto'
+				size='32'
+			/>
 		</template>
 		<template #item.email='{ item }'>
 			<a :href='"mailto:\"" + item.raw.name + "<" + item.raw.email + ">\""'>
@@ -58,13 +72,33 @@ limitations under the License.
 		</template>
 		<template #item.actions='{ item }'>
 			<v-btn-group density='compact'>
-				<ResendEmailButton :user='item.raw' @change='loadUsers' />
-				<AccountStateButton v-if='userId !== item.raw.id' :user='item.raw' @change='loadUsers' />
-				<UserForm :init-user='toRaw(item.raw)' action='edit' @reload='loadUsers' />
-				<UserDeleteConfirmation :user='item.raw' @submit='loadUsers' />
+				<ResendEmailButton
+					:user='item.raw'
+					@change='loadUsers'
+				/>
+				<AccountStateButton
+					v-if='userId !== item.raw.id'
+					:user='item.raw'
+					@change='loadUsers'
+				/>
+				<UserForm
+					:init-user='toRaw(item.raw)'
+					action='edit'
+					@reload='loadUsers'
+				/>
+				<UserDeleteConfirmation
+					:user='item.raw'
+					@submit='loadUsers'
+				/>
 			</v-btn-group>
 		</template>
 	</v-data-table>
+	<v-alert
+		v-else-if='state === PageState.LoadFailed'
+		type='error'
+	>
+		{{ $t('admin.users.list.loadFailed') }}
+	</v-alert>
 </template>
 
 <route lang='yaml'>
@@ -74,21 +108,23 @@ meta:
 </route>
 
 <script lang='ts' setup>
-import {Head} from '@vueuse/head';
+import {mdiAccountGroup} from '@mdi/js';
+import {Head} from '@unhead/vue/components';
 import md5 from 'md5';
 import {storeToRefs} from 'pinia';
-import {Ref, ref, toRaw} from 'vue';
+import {type Ref, ref, toRaw} from 'vue';
 import {useI18n} from 'vue-i18n';
 
+import AccountStateBadge from '@/components/admin/user/AccountStateBadge.vue';
 import AccountStateButton from '@/components/admin/user/AccountStateButton.vue';
 import ResendEmailButton from '@/components/admin/user/ResendEmailButton.vue';
 import UserDeleteConfirmation from '@/components/admin/user/UserDeleteConfirmation.vue';
 import UserForm from '@/components/admin/user/UserForm.vue';
+import UserRoleBadge from '@/components/admin/user/UserRoleBadge.vue';
 import UserService from '@/services/UserService';
 import {useUserStore} from '@/store/user';
-import {UserInfo, UserLanguage} from '@/types/user';
-import AccountStateBadge from '@/components/admin/user/AccountStateBadge.vue';
-import UserRoleBadge from '@/components/admin/user/UserRoleBadge.vue';
+import {PageState} from '@/types/page.js';
+import {type UserInfo, UserLanguage} from '@/types/user';
 
 const i18n = useI18n();
 const userService = new UserService();
@@ -104,13 +140,13 @@ const headers = [
 	{title: i18n.t('core.user.fields.state'), key: 'state'},
 	{title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false},
 ];
-let loading = ref(true);
-let users: Ref<UserInfo[]> = ref([]);
+const state: Ref<PageState> = ref(PageState.Loading);
+const users: Ref<UserInfo[]> = ref([]);
 
 /**
  * Returns Gravatar URL for the given email
- * @param {string} email User email
- * @returns {string} Gravatar URL
+ * @param email User email
+ * @return Gravatar URL
  */
 function getGravatarUrl(email: string): string {
 	const hash = md5(email.trim().toLowerCase());
@@ -119,8 +155,8 @@ function getGravatarUrl(email: string): string {
 
 /**
  * Returns language flag
- * @param {UserLanguage} language Language
- * @return {string} Unicode flag symbol
+ * @param language Language
+ * @return Unicode flag symbol
  */
 function getLanguageFlag(language: UserLanguage): string {
 	switch (language) {
@@ -131,17 +167,21 @@ function getLanguageFlag(language: UserLanguage): string {
 	}
 }
 
-loadUsers();
-
 /**
  * Loads all users
  */
 function loadUsers() {
-	loading.value = true;
-	userService.list().then((response: UserInfo[]) => {
-		users.value = response;
-		loading.value = false;
-	});
+	state.value = PageState.Loading;
+	userService.list()
+		.then((response: UserInfo[]) => {
+			state.value = PageState.Loaded;
+			users.value = response;
+		})
+		.catch(() => {
+			state.value = PageState.LoadFailed;
+		});
 }
+
+loadUsers();
 
 </script>

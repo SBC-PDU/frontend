@@ -26,17 +26,22 @@ limitations under the License.
 				v-bind='props'
 				color='error'
 				class='me-2'
-			>
-				mdi-trash-can
-			</v-icon>
+				:icon='mdiTrashCan'
+			/>
 		</template>
-		<v-form @submit.prevent='deleteToken()' ref='form'>
-			<Card header-color='red-darken-1' style='max-height: 90vh'>
+		<v-form
+			ref='form'
+			@submit.prevent='deleteToken()'
+		>
+			<Card
+				header-color='red-darken-1'
+				style='max-height: 90vh'
+			>
 				<template #title>
 					{{ $t('core.user.totp.delete.title') }}
 				</template>
 				{{ $t('core.user.totp.delete.message', {name: token.name}) }}
-				<TotpField v-model='formData.code'/>
+				<TotpField v-model='formData.code' />
 				<PasswordField
 					v-model='formData.password'
 					:label='$t("core.user.fields.password")'
@@ -44,7 +49,7 @@ limitations under the License.
 						(v: any) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
 					]'
 					required
-					prepend-inner-icon='mdi-key'
+					:prepend-inner-icon='mdiKey'
 				/>
 				<template #actions>
 					<v-btn
@@ -54,7 +59,7 @@ limitations under the License.
 					>
 						{{ $t('core.user.totp.delete.confirm') }}
 					</v-btn>
-					<v-spacer/>
+					<v-spacer />
 					<v-btn
 						color='gray darken-1'
 						@click='close'
@@ -68,9 +73,10 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {Ref, ref} from 'vue';
-import {toast} from 'vue3-toastify';
+import {mdiKey, mdiTrashCan} from '@mdi/js';
+import {type Ref, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
+import {toast} from 'vue3-toastify';
 import {VForm} from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
@@ -80,7 +86,7 @@ import FormValidator from '@/helpers/formValidator';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import AccountService from '@/services/AccountService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {UserTotp, UserTotpRemove} from '@/types/totp';
+import {type UserTotp, type UserTotpRemove} from '@/types/totp';
 
 /**
  * The component props

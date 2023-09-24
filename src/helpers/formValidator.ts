@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import punycode from 'punycode/';
+import * as punycode from 'punycode/';
 import {z} from 'zod';
 
 /**
@@ -23,9 +23,9 @@ export default class FormValidator {
 
 	/**
 	 * Checks if a required field is filled
-	 * @param {unknown} value Value to check
-	 * @param {string} errorMessage Error message to return if the value is not valid
-	 * @return {boolean|string} True if the value is valid, error message otherwise
+	 * @param value Value to check
+	 * @param errorMessage Error message to return if the value is not valid
+	 * @return True if the value is valid, error message otherwise
 	 * @eslint-disable-next-line @typescript-eslint/no-explicit-any
 	 */
 	public static isRequired(value: unknown, errorMessage: string): boolean | string {
@@ -34,9 +34,9 @@ export default class FormValidator {
 
 	/**
 	 * Checks if a field is a valid e-mail address
-	 * @param {string} value Value to check
-	 * @param {string} errorMessage Error message to return if the value is not valid
-	 * @return {boolean|string} True if the value is valid, error message otherwise
+	 * @param value Value to check
+	 * @param errorMessage Error message to return if the value is not valid
+	 * @return True if the value is valid, error message otherwise
 	 */
 	public static isEmail(value: string, errorMessage: string): boolean | string {
 		const validator: z.ZodString = z.string().email();
@@ -45,9 +45,9 @@ export default class FormValidator {
 
 	/**
 	 * Checks if a field is a valid TOTP code
-	 * @param {string} value Value to check
-	 * @param {string} errorMessage Error message to return if the value is not valid
-	 * @return {boolean|string} True if the value is valid, error message otherwise
+	 * @param value Value to check
+	 * @param errorMessage Error message to return if the value is not valid
+	 * @return True if the value is valid, error message otherwise
 	 */
 	public static isTotpCode(value: string, errorMessage: string): boolean | string {
 		const validator: z.ZodString = z.string().regex(/^\d{6}$/);

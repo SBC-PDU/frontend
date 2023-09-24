@@ -15,11 +15,17 @@ limitations under the License.
 -->
 
 <template>
-	<v-chip :color='getColor(role)' :prepend-icon='display.mdAndUp.value ? getIcon(role) : undefined'>
+	<v-chip
+		:color='getColor(role)'
+		:prepend-icon='display.mdAndUp.value ? getIcon(role) : undefined'
+	>
 		<span v-if='display.mdAndUp.value'>
 			{{ $t(`core.user.roles.${role}`) }}
 		</span>
-		<v-tooltip v-else location='start'>
+		<v-tooltip
+			v-else
+			location='start'
+		>
 			<template #activator='{ props }'>
 				<v-icon v-bind='props'>
 					{{ getIcon(role) }}
@@ -31,6 +37,7 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {mdiAccount, mdiShieldAccount} from '@mdi/js';
 import {useDisplay} from 'vuetify';
 
 import {UserRole} from '@/types/user';
@@ -46,8 +53,8 @@ const props = defineProps<Props>();
 
 /**
  * Returns the color for the given role
- * @param {UserRole} role The role to get the color for
- * @returns {string} The color
+ * @param role The role to get the color for
+ * @return The color
  */
 function getColor(role: UserRole): string {
 	switch (role) {
@@ -60,15 +67,15 @@ function getColor(role: UserRole): string {
 
 /**
  * Returns the icon for the given role
- * @param {UserRole} role The role to get the icon for
- * @returns {string} The icon
+ * @param role The role to get the icon for
+ * @return The icon
  */
 function getIcon(role: UserRole): string {
 	switch (role) {
 		case UserRole.Admin:
-			return 'mdi-shield-account';
+			return mdiShieldAccount;
 		case UserRole.Normal:
-			return 'mdi-account';
+			return mdiAccount;
 	}
 }
 

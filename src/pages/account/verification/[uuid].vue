@@ -24,9 +24,9 @@ limitations under the License.
 		</template>
 		<vue-countdown
 			v-if='state === State.Success'
+			v-slot='{ seconds }'
 			:auto-start='true'
 			:time='10_000'
-			v-slot='{ seconds }'
 			@end='redirect'
 		>
 			{{ $t('core.account.verification.redirect', {countdown: seconds}) }}
@@ -48,9 +48,9 @@ meta:
 
 <script lang='ts' setup>
 import VueCountdown from '@chenfengyuan/vue-countdown';
-import {Head} from '@vueuse/head';
-import {AxiosError} from 'axios';
-import {Ref, ref} from 'vue';
+import {Head} from '@unhead/vue/components';
+import {type AxiosError} from 'axios';
+import {type Ref, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {useRouter} from 'vue-router';
 import {toast} from 'vue3-toastify';
@@ -59,26 +59,26 @@ import Card from '@/components/Card.vue';
 import AccountService from '@/services/AccountService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {useUserStore} from '@/store/user';
-import {SignedInUser} from '@/types/auth';
+import {type SignedInUser} from '@/types/auth';
 
 /**
  * Account verification states
  */
 enum State {
-	/// Loading
-	Loading = 'loading',
-	/// Successfully verified
-	Success = 'success',
-	/// User is banned
-	Banned = 'banned',
-	/// Verification not found
-	NotFound = 'notFound',
 	/// User is already verified
 	AlreadyVerified = 'alreadyVerified',
-	/// Expired verification
-	Expired = 'expired',
+	/// User is banned
+	Banned = 'banned',
 	/// Generic error
 	Error = 'error',
+	/// Expired verification
+	Expired = 'expired',
+	/// Loading
+	Loading = 'loading',
+	/// Verification not found
+	NotFound = 'notFound',
+	/// Successfully verified
+	Success = 'success'
 }
 
 interface Props {
@@ -107,36 +107,38 @@ function redirect(): void {
  */
 function verify(): void {
 	loadingSpinner.show();
-	service.verify(props.uuid).then((response: SignedInUser): void => {
-		state.value = State.Success;
-		store.setUserInfo(response);
-		loadingSpinner.hide();
-		toast.success(i18n.t('core.account.verification.messages.success').toString());
-	}).catch((error: AxiosError) => {
-		loadingSpinner.hide();
-		switch (error.response?.status) {
-			case 400:
-				state.value = State.AlreadyVerified;
-				toast.error(i18n.t('core.account.verification.messages.alreadyVerified').toString());
-				break;
-			case 403:
-				state.value = State.Banned;
-				toast.error(i18n.t('core.account.verification.messages.banned').toString());
-				break;
-			case 404:
-				state.value = State.NotFound;
-				toast.error(i18n.t('core.account.verification.messages.notFound').toString());
-				break;
-			case 410:
-				state.value = State.Expired;
-				toast.error(i18n.t('core.account.verification.messages.expired').toString());
-				break;
-			default:
-				state.value = State.Error;
-				toast.error(i18n.t('core.account.verification.messages.error').toString());
-				break;
-		}
-	});
+	service.verify(props.uuid)
+		.then((response: SignedInUser): void => {
+			state.value = State.Success;
+			store.setUserInfo(response);
+			loadingSpinner.hide();
+			toast.success(i18n.t('core.account.verification.messages.success').toString());
+		})
+		.catch((error: AxiosError) => {
+			loadingSpinner.hide();
+			switch (error.response?.status) {
+				case 400:
+					state.value = State.AlreadyVerified;
+					toast.error(i18n.t('core.account.verification.messages.alreadyVerified').toString());
+					break;
+				case 403:
+					state.value = State.Banned;
+					toast.error(i18n.t('core.account.verification.messages.banned').toString());
+					break;
+				case 404:
+					state.value = State.NotFound;
+					toast.error(i18n.t('core.account.verification.messages.notFound').toString());
+					break;
+				case 410:
+					state.value = State.Expired;
+					toast.error(i18n.t('core.account.verification.messages.expired').toString());
+					break;
+				default:
+					state.value = State.Error;
+					toast.error(i18n.t('core.account.verification.messages.error').toString());
+					break;
+			}
+		});
 }
 
 verify();

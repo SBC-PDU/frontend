@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {AxiosResponse} from 'axios';
+import {type AxiosResponse} from 'axios';
 import {DateTime} from 'luxon';
 
 import {ApiClient} from '@/services/ApiClient';
 import {
-	Device, DeviceAdd,
-	DeviceDetail, DeviceModify,
-	DeviceOutputMeasurement,
-	DeviceOutputMeasurementRaw,
-	DeviceOutputMeasurements
+	type Device, type DeviceAdd,
+	type DeviceDetail, type DeviceModify,
+	type DeviceOutputMeasurement,
+	type DeviceOutputMeasurementRaw,
+	type DeviceOutputMeasurements,
 } from '@/types/device';
 
 /**
@@ -32,7 +32,7 @@ export default class DeviceService extends ApiClient {
 
 	/**
 	 * Lists all devices
-	 * @return {Promise<Device[]>} List of devices
+	 * @return List of devices
 	 */
 	public list(): Promise<Device[]> {
 		return this.getClient().get('/devices')
@@ -43,7 +43,8 @@ export default class DeviceService extends ApiClient {
 
 	/**
 	 * Adds a device
-	 * @param {DeviceAdd} device Device to add
+	 * @param device Device to add
+	 * @return Empty promise
 	 */
 	public add(device: DeviceAdd): Promise<void> {
 		return this.getClient().post('/devices', device);
@@ -51,8 +52,8 @@ export default class DeviceService extends ApiClient {
 
 	/**
 	 * Gets a device
-	 * @param {string} id Device ID
-	 * @return {Promise<DeviceDetail>} Device
+	 * @param id Device ID
+	 * @return Device information
 	 */
 	public get(id: string): Promise<DeviceDetail> {
 		return this.getClient().get(`/devices/${id}`)
@@ -61,8 +62,9 @@ export default class DeviceService extends ApiClient {
 
 	/**
 	 * Edits a device
-	 * @param {string} id Device ID
-	 * @param {DeviceModify} device Device to edit
+	 * @param id Device ID
+	 * @param device Device to edit
+	 * @return Empty promise
 	 */
 	public edit(id: string, device: DeviceModify): Promise<void> {
 		return this.getClient().put(`/devices/${id}`, device);
@@ -70,7 +72,8 @@ export default class DeviceService extends ApiClient {
 
 	/**
 	 * Deletes the device
-	 * @param {string} id Device ID to delete
+	 * @param id Device ID to delete
+	 * @return Empty promise
 	 */
 	public delete(id: string): Promise<void> {
 		return this.getClient().delete(`/devices/${id}`);
@@ -78,9 +81,9 @@ export default class DeviceService extends ApiClient {
 
 	/**
 	 * Returns the measurements of a device
-	 * @param {string} id Device ID
-	 * @param {string} timeRange Time range
-	 * @return {Promise<DeviceOutputMeasurements[]>} Measurements
+	 * @param id Device ID
+	 * @param timeRange Time range
+	 * @return Measurements
 	 */
 	public getMeasurements(id: string, timeRange: string): Promise<DeviceOutputMeasurements[]> {
 		return this.getClient().get(`/devices/${id}/measurements?timeRange=${timeRange}`)
@@ -97,9 +100,10 @@ export default class DeviceService extends ApiClient {
 
 	/**
 	 * Switches an output
-	 * @param {string} id Device ID
-	 * @param {number} output Output index
-	 * @param {boolean} state Output state
+	 * @param id Device ID
+	 * @param output Output index
+	 * @param state Output state
+	 * @return Empty promise
 	 */
 	public switchOutput(id: string, output: number, state: boolean): Promise<void> {
 		return this.getClient().post(`/devices/${id}/outputs/${output}`, {
@@ -109,8 +113,8 @@ export default class DeviceService extends ApiClient {
 
 	/**
 	 * Converts measurements to the correct format
-	 * @param {DeviceOutputMeasurementRaw[]} measurements Measurements to convert
-	 * @return {DeviceOutputMeasurement[]} Converted measurements
+	 * @param measurements Measurements to convert
+	 * @return Converted measurements
 	 */
 	private convertMeasurements(measurements: DeviceOutputMeasurementRaw[]): DeviceOutputMeasurement[] {
 		return measurements.map((measurement: DeviceOutputMeasurementRaw): DeviceOutputMeasurement => ({
@@ -123,8 +127,8 @@ export default class DeviceService extends ApiClient {
 	/**
 	 * Deserializes Device information from JSON
 	 * @template {Device|DeviceDetail} T Device information
-	 * @param {T} device Device information in JSON to deserialize
-	 * @return {T} Deserialized device information
+	 * @param device Device information in JSON to deserialize
+	 * @return Deserialized device information
 	 */
 	private deserializeDevice<T extends Device|DeviceDetail>(device: T): T {
 		// @ts-ignore

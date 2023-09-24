@@ -19,18 +19,19 @@ limitations under the License.
 		v-if='user.state === AccountState.Invited || user.state === AccountState.Unverified'
 		:color='color()'
 		class='me-2'
-		icon='mdi-send'
+		:icon='mdiSend'
 		@click='resend()'
 	/>
 </template>
 
 <script lang='ts' setup>
+import {mdiSend} from '@mdi/js';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 
 import UserService from '@/services/UserService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {AccountState, UserInfo} from '@/types/user';
+import {AccountState, type UserInfo} from '@/types/user';
 
 interface Props {
 	/// User
@@ -46,6 +47,7 @@ const userService = new UserService();
 
 /**
  * Returns the color of the icon
+ * @return Icon color
  */
 function color(): string {
 	if (props.user.state === AccountState.Invited) {
@@ -63,7 +65,7 @@ async function resend(): Promise<void> {
 	loadingSpinner.show();
 	const translationParams = {
 		name: props.user.name,
-		email: props.user.email
+		email: props.user.email,
 	};
 	await userService.resend(props.user.id)
 		.then(() => {

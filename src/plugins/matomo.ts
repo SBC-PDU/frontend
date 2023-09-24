@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {App} from 'vue';
+import {type App} from 'vue';
 // @ts-ignore
 import matomo from 'vue-matomo';
-import {Router} from 'vue-router';
+import {type Router} from 'vue-router';
 
 /**
  * Registers Matomo integration
- * @param {App} app Vue.js app
- * @param {Router} router Router instance
+ * @param app Vue.js app
+ * @param router Router instance
  */
 export default function registerMatomo(app: App, router: Router): void {
 	if (!import.meta.env.VITE_MATOMO_ENABLED) {

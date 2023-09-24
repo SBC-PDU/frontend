@@ -21,8 +21,8 @@ export default class LocaleHelper {
 
 	/**
 	 * Returns locale flag
-	 * @param {string} locale Locale
-	 * @returns {string} Unicode flag
+	 * @param locale Locale
+	 * @return Unicode flag
 	 */
 	public static getFlag(locale: string): string {
 		switch (locale) {

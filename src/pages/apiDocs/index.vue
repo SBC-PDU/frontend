@@ -22,7 +22,10 @@ limitations under the License.
 		<template #title>
 			{{ $t('core.openApi.title') }}
 		</template>
-		<div class='swagger' id='swagger' />
+		<div
+			id='swagger'
+			class='swagger'
+		/>
 	</Card>
 </template>
 
@@ -33,9 +36,9 @@ meta:
 </route>
 
 <script lang='ts' setup>
-import {Head} from '@vueuse/head';
+import {Head} from '@unhead/vue/components';
 import {storeToRefs} from 'pinia';
-import {SwaggerRequest, SwaggerUIBundle} from 'swagger-ui-dist';
+import SwaggerUI from 'swagger-ui';
 import 'swagger-ui/dist/swagger-ui.css';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
@@ -52,20 +55,22 @@ const {token} = storeToRefs(userStore);
 const service = new OpenApiService();
 
 loadingSpinner.show();
-service.getSpecification().then((spec) => {
-	SwaggerUIBundle({
-		spec: spec,
-		dom_id: '#swagger',
-		requestInterceptor: (request: SwaggerRequest) => {
-			if (token.value && !request.headers['Authorization']) {
-				request.headers['Authorization'] = `Bearer ${token.value}`;
-			}
-			return request;
-		},
+service.getSpecification()
+	.then((spec) => {
+		SwaggerUI({
+			spec: spec,
+			dom_id: '#swagger',
+			requestInterceptor: (request: SwaggerUI.Request) => {
+				if (token.value && !request.headers.Authorization) {
+					request.headers.Authorization = `Bearer ${token.value}`;
+				}
+				return request;
+			},
+		});
+		loadingSpinner.hide();
+	})
+	.catch(() => {
+		toast.error(i18n.t('core.openApi.messages.error').toString());
+		loadingSpinner.hide();
 	});
-	loadingSpinner.hide();
-}).catch(() => {
-	toast.error(i18n.t('core.openApi.messages.error').toString());
-	loadingSpinner.hide();
-});
 </script>

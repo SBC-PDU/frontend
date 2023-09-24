@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as Sentry from '@sentry/vue';
 import {BrowserTracing} from '@sentry/browser';
-import {App} from 'vue';
-import {Router} from 'vue-router';
+import * as Sentry from '@sentry/vue';
+import {type App} from 'vue';
+import {type Router} from 'vue-router';
 
 /**
  * Registers Sentry integration
- * @param {App} app Vue.js app
- * @param {Router} router Router instance
+ * @param app Vue.js app
+ * @param router Router instance
  */
 export default function registerSentry(app: App, router: Router): void {
 	if (!import.meta.env.VITE_SENTRY_ENABLED) {

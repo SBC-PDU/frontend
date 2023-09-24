@@ -25,12 +25,12 @@ limitations under the License.
 			{{ $t('core.user.verification.resend.text') }}
 		</div>
 		<v-btn
-			@click='resendVerificationEmail()'
 			color='warning'
 			class='float-right'
 			dense
-			prepend-icon='mdi-email-fast'
+			:prepend-icon='mdiEmailFast'
 			size='small'
+			@click='resendVerificationEmail()'
 		>
 			{{ $t('core.user.verification.resend.button') }}
 		</v-btn>
@@ -38,6 +38,7 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {mdiEmailFast} from '@mdi/js';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 
@@ -60,7 +61,8 @@ function resendVerificationEmail(): void {
 		.then(() => {
 			loadingSpinner.hide();
 			toast.success(i18n.t('core.user.verification.resend.messages.success').toString());
-		}).catch(() => {
+		})
+		.catch(() => {
 			loadingSpinner.hide();
 			toast.error(i18n.t('core.user.verification.resend.messages.error').toString());
 		});

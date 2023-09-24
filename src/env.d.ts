@@ -21,22 +21,42 @@
 interface ImportMetaEnv {
 	/// REST API base URL
 	VITE_API_BASE_URL: string
-	/// Default language
-	VITE_I18N_LOCALE: string
 	/// Fallback language
-	VITE_I18N_FALLBACK_LOCALE: string
+	VITE_I18N_FALLBACK_LOCALE: string,
+	/// Default language
+	VITE_I18N_LOCALE: string,
 	/// Matomo enablement
 	VITE_MATOMO_ENABLED: boolean
 	/// Matomo host
 	VITE_MATOMO_HOST: string
 	/// Matomo site ID
 	VITE_MATOMO_SITEID: number
+	/// Sentry DSN
+	VITE_SENTRY_DSN: string,
 	/// Sentry enablement
 	VITE_SENTRY_ENABLED: boolean
-	/// Sentry DSN
-	VITE_SENTRY_DSN: string
 }
 
 interface ImportMeta {
 	readonly env: ImportMetaEnv
+}
+
+declare global {
+	namespace NodeJS {
+		/**
+		 * Process environment variables
+		 */
+		interface ProcessEnv {
+			/// Sentry auth token
+			SENTRY_AUTH_TOKEN?: string,
+			/// Sentry enablement
+			SENTRY_ENABLED?: boolean,
+			/// Sentry organization
+			SENTRY_ORG?: string
+			/// Sentry project
+			SENTRY_PROJECT?: string
+			/// Sentry URL
+			SENTRY_URL?: string
+		}
+	}
 }

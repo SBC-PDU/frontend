@@ -15,47 +15,6 @@
  */
 
 /**
- * Device brief info
- */
-export interface Device {
-	/// Device ID
-	id: string;
-	/// Device name
-	name: string;
-	/// Device MAC address
-	macAddress: string;
-	/// Device creation date
-	createdAt: Date;
-	/// Device last update
-	lastSeen: Date|null;
-	/// Device outputs
-	outputs: DeviceOutput[];
-}
-
-/**
- * Device detailed info
- */
-export interface DeviceDetail extends Device {
-	/// Device outputs
-	outputs: DeviceOutputWithMeasurements[];
-}
-
-export interface DeviceAdd extends DeviceModify {
-	/// Device MAC address
-	macAddress: string;
-}
-
-/**
- * Device add/modify
- */
-export interface DeviceModify {
-	/// Device name
-	name: string;
-	/// Device outputs
-	outputs: DeviceOutput[];
-}
-
-/**
  * Device output
  */
 export interface DeviceOutput {
@@ -71,12 +30,63 @@ export interface DeviceOutput {
 export interface DeviceOutputWithMeasurements extends DeviceOutput {
 	/// Output alert
 	alert: boolean;
-	/// Output state
-	enabled: boolean;
 	/// Output current
 	current: number;
+	/// Output state
+	enabled: boolean;
 	/// Output voltage
 	voltage: number;
+}
+
+/**
+ * Device brief info
+ */
+export interface Device {
+	/// Device creation date
+	createdAt: Date;
+	/// Device ID
+	id: string;
+	/// Device last update
+	lastSeen: Date|null;
+	/// Device MAC address
+	macAddress: string;
+	/// Device name
+	name: string;
+	/// Device outputs
+	outputs: DeviceOutput[];
+}
+
+/**
+ * Device detailed info
+ */
+export interface DeviceDetail extends Device {
+	/// Device outputs
+	outputs: DeviceOutputWithMeasurements[];
+}
+
+/**
+ * Device add/modify
+ */
+export interface DeviceModify {
+	/// Device name
+	name: string;
+	/// Device outputs
+	outputs: DeviceOutput[];
+}
+
+export interface DeviceAdd extends DeviceModify {
+	/// Device MAC address
+	macAddress: string;
+}
+
+/**
+ * Device output measurement
+ */
+export interface DeviceOutputMeasurement {
+	/// Measurement time
+	time: Date;
+	/// Measurement value
+	value: number;
 }
 
 /**
@@ -92,16 +102,6 @@ export interface DeviceOutputMeasurements {
 		/// Voltage measurements
 		voltage: DeviceOutputMeasurement[];
 	};
-}
-
-/**
- * Device output measurement
- */
-export interface DeviceOutputMeasurement {
-	/// Measurement time
-	time: Date;
-	/// Measurement value
-	value: number;
 }
 
 /**

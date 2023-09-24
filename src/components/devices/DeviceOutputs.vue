@@ -15,22 +15,28 @@ limitations under the License.
 -->
 
 <template>
-	<v-toolbar color='grey' density='compact'>
+	<v-toolbar
+		color='grey'
+		density='compact'
+	>
 		<v-toolbar-title>
-			<v-icon>mdi-power</v-icon>
+			<v-icon :icon='mdiPower' />
 			{{ $t('core.devices.detail.outputs.title') }}
 		</v-toolbar-title>
 		<v-toolbar-items>
 			<v-btn
 				color='primary'
-				:prepend-icon='display.smAndUp.value ? "mdi-refresh" : undefined'
+				:prepend-icon='display.smAndUp.value ? mdiRefresh : undefined'
 				variant='elevated'
 				@click='reload()'
 			>
 				<span v-if='display.smAndUp.value'>
 					{{ $t('core.devices.detail.outputs.reload') }}
 				</span>
-				<v-icon v-else>mdi-refresh</v-icon>
+				<v-icon
+					v-else
+					:icon='mdiRefresh'
+				/>
 			</v-btn>
 		</v-toolbar-items>
 	</v-toolbar>
@@ -47,7 +53,10 @@ limitations under the License.
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for='output in device.outputs' :key='output.index'>
+				<tr
+					v-for='output in device.outputs'
+					:key='output.index'
+				>
 					<td>{{ output.index }}</td>
 					<td>{{ output.name }}</td>
 					<td>
@@ -72,6 +81,7 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {mdiPower, mdiRefresh} from '@mdi/js';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 import {useDisplay} from 'vuetify';
@@ -79,7 +89,7 @@ import {useDisplay} from 'vuetify';
 import Card from '@/components/Card.vue';
 import DeviceService from '@/services/DeviceService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {DeviceDetail, DeviceOutputWithMeasurements} from '@/types/device';
+import {type DeviceDetail, type DeviceOutputWithMeasurements} from '@/types/device';
 
 interface Props {
 	/// Detailed device information
@@ -103,7 +113,8 @@ function reload() {
 
 /**
  * Switches the output of a device
- * @param {DeviceOutputWithMeasurements} output Output to switch
+ * @param output Output to switch
+ * @return Empty promise
  */
 function switchOutput(output: DeviceOutputWithMeasurements): Promise<void> {
 	loadingSpinner.show();
@@ -116,12 +127,12 @@ function switchOutput(output: DeviceOutputWithMeasurements): Promise<void> {
 			if (output.enabled) {
 				toast.success(i18n.t('core.devices.detail.outputs.messages.success.switchedOn', {
 					index: output.index,
-					name: output.name
+					name: output.name,
 				}).toString());
 			} else {
 				toast.success(i18n.t('core.devices.detail.outputs.messages.success.switchedOff', {
 					index: output.index,
-					name: output.name
+					name: output.name,
 				}).toString());
 			}
 		})
@@ -130,12 +141,12 @@ function switchOutput(output: DeviceOutputWithMeasurements): Promise<void> {
 			if (output.enabled) {
 				toast.error(i18n.t('core.devices.detail.outputs.messages.error.switchedOn', {
 					index: output.index,
-					name: output.name
+					name: output.name,
 				}).toString());
 			} else {
 				toast.error(i18n.t('core.devices.detail.outputs.messages.error.switchedOff', {
 					index: output.index,
-					name: output.name
+					name: output.name,
 				}).toString());
 			}
 		});

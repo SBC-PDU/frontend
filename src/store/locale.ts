@@ -49,12 +49,12 @@ export const useLocaleStore = defineStore('locale', {
 			// @ts-ignore
 			i18n.global.locale.value = locale;
 			this.locale = locale;
-		}
+		},
 	},
 	getters: {
 		/**
 		 * Returns available locales
-		 * @return {Locale[]} Available locales
+		 * @return Available locales
 		 */
 		getAvailableLocales(): Locale[] {
 			return [
@@ -64,16 +64,16 @@ export const useLocaleStore = defineStore('locale', {
 		},
 		/**
 		 * Returns current locale code
-		 * @param {LocaleState} state Current state
-		 * @return {string} Current locale code
+		 * @param state Current state
+		 * @return Current locale code
 		 */
 		getLocale(state: LocaleState): string {
 			return state.locale;
 		},
 		/**
 		 * Returns current locale flag
-		 * @param {LocaleState} state Current state
-		 * @return {string} Current locale flag
+		 * @param state Current state
+		 * @return Current locale flag
 		 */
 		getLocaleFlag(state: LocaleState): string {
 			return LocaleHelper.getFlag(state.locale);

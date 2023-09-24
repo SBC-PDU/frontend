@@ -26,11 +26,13 @@ limitations under the License.
 				v-bind='props'
 				color='error'
 				class='me-2'
-			>
-				mdi-trash-can
-			</v-icon>
+				:icon='mdiTrashCan'
+			/>
 		</template>
-		<Card header-color='red-darken-1' style='max-height: 90vh'>
+		<Card
+			header-color='red-darken-1'
+			style='max-height: 90vh'
+		>
 			<template #title>
 				{{ $t('admin.users.delete.title') }}
 			</template>
@@ -43,7 +45,7 @@ limitations under the License.
 				>
 					{{ $t('admin.users.delete.confirm') }}
 				</v-btn>
-				<v-spacer/>
+				<v-spacer />
 				<v-btn
 					color='gray darken-1'
 					@click='close'
@@ -56,14 +58,15 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {mdiTrashCan} from '@mdi/js';
 import {ref} from 'vue';
-import {toast} from 'vue3-toastify';
 import {useI18n} from 'vue-i18n';
+import {toast} from 'vue3-toastify';
 
 import Card from '@/components/Card.vue';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import UserService from '@/services/UserService';
-import {UserInfo} from '@/types/user';
+import {type UserInfo} from '@/types/user';
 
 /**
  * The component props

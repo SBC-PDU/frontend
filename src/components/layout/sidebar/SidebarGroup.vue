@@ -21,9 +21,16 @@ limitations under the License.
 		:value='item.title'
 	>
 		<template #activator='{props}'>
-			<v-list-item :title='item.title' density='compact' v-bind='props'/>
+			<v-list-item
+				:title='item.title'
+				density='compact'
+				v-bind='props'
+			/>
 		</template>
-		<div v-for='(navItem, idx) in item.children' :key='idx'>
+		<div
+			v-for='(navItem, idx) in item.children'
+			:key='idx'
+		>
 			<SidebarGroup
 				v-if='navItem.children !== undefined && navItem.children.length > 0'
 				:item='navItem'
@@ -39,7 +46,7 @@ limitations under the License.
 
 <script lang='ts' setup>
 import SidebarItem from '@/components/layout/sidebar/SidebarItem.vue';
-import {SidebarLink} from '@/types/sidebar';
+import {type SidebarLink} from '@/types/sidebar';
 
 interface Props {
 	/// Sidebar items to render

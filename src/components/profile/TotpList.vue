@@ -16,15 +16,19 @@ limitations under the License.
 
 <template>
 	<v-data-table
+		v-if='state !== PageState.LoadFailed'
 		:headers='headers'
 		:items='data'
 		:items-length='data.length'
-		:loading='loading'
+		:loading='state === PageState.Loading'
 	>
 		<template #top>
-			<v-toolbar color='grey' flat>
+			<v-toolbar
+				color='grey'
+				flat
+			>
 				<v-toolbar-title>
-					<v-icon>mdi-two-factor-authentication</v-icon>
+					<v-icon :icon='mdiTwoFactorAuthentication' />
 					{{ $t('core.user.totp.title') }}
 				</v-toolbar-title>
 				<v-toolbar-items>
@@ -45,20 +49,31 @@ limitations under the License.
 		</template>
 		<template #item.actions='{ item }'>
 			<v-btn-group density='compact'>
-				<TotpDeleteConfirmation :token='item.raw' @delete='loadData()' />
+				<TotpDeleteConfirmation
+					:token='item.raw'
+					@delete='loadData()'
+				/>
 			</v-btn-group>
 		</template>
 	</v-data-table>
+	<v-alert
+		v-else
+		type='error'
+	>
+		{{ $t('core.user.totp.list.loadFailed') }}
+	</v-alert>
 </template>
 
 <script lang='ts' setup>
-import {ref} from 'vue';
+import {mdiTwoFactorAuthentication} from '@mdi/js';
+import {type Ref, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 
 import TotpAdd from '@/components/profile/TotpAdd.vue';
 import TotpDeleteConfirmation from '@/components/profile/TotpDeleteConfirmation.vue';
 import AccountService from '@/services/AccountService';
-import {UserTotp} from '@/types/totp';
+import {PageState} from '@/types/page';
+import {type UserTotp} from '@/types/totp';
 
 const i18n = useI18n();
 const accountService = new AccountService();
@@ -69,20 +84,24 @@ const headers = [
 	{title: i18n.t('core.user.totp.fields.lastUsedAt'), key: 'lastUsedAt'},
 	{title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false},
 ];
-let loading = ref(true);
-let data = ref<UserTotp[]>([]);
-
-loadData();
+const state: Ref<PageState> = ref(PageState.Loading);
+const data = ref<UserTotp[]>([]);
 
 /**
  * Loads all users
  */
 function loadData() {
-	loading.value = true;
-	accountService.listTotp().then((response: UserTotp[]) => {
-		data.value = response;
-		loading.value = false;
-	});
+	state.value = PageState.Loading;
+	accountService.listTotp()
+		.then((response: UserTotp[]) => {
+			data.value = response;
+			state.value = PageState.Loaded;
+		})
+		.catch(() => {
+			state.value = PageState.LoadFailed;
+		});
 }
+
+loadData();
 
 </script>

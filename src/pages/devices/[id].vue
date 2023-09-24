@@ -19,22 +19,33 @@ limitations under the License.
 		<title>{{ $t('core.devices.detail.title', {name: device?.name}) }}</title>
 	</Head>
 	<v-alert
-		v-if='state === State.Error'
+		v-if='state === PageState.LoadFailed'
 		type='error'
 		class='mb-4'
 	>
 		{{ $t('core.devices.detail.messages.fetchFailed') }}
 	</v-alert>
 	<v-alert
-		v-if='state === State.NotFound'
+		v-if='state === PageState.NotFound'
 		type='error'
 		class='mb-4'
 	>
 		{{ $t('core.devices.detail.messages.notFound') }}
 	</v-alert>
-	<DeviceInfo v-if='device !== null' :device='device' @reload='fetchData(true)' />
-	<DeviceOutputs v-if='device !== null' :device='device' @reload='fetchData(false)' />
-	<DeviceMeasurementChart v-if='device !== null' :device='toRaw(device)'/>
+	<DeviceInfo
+		v-if='device !== null'
+		:device='device'
+		@reload='fetchData(true)'
+	/>
+	<DeviceOutputs
+		v-if='device !== null'
+		:device='device'
+		@reload='fetchData(false)'
+	/>
+	<DeviceMeasurementChart
+		v-if='device !== null'
+		:device='toRaw(device)'
+	/>
 </template>
 
 <route lang='yaml'>
@@ -42,18 +53,19 @@ name: DeviceDetail
 </route>
 
 <script lang='ts' setup>
-import {Head} from '@vueuse/head';
-import {AxiosError} from 'axios';
-import {ref, toRaw, watchEffect} from 'vue';
+import {Head} from '@unhead/vue/components';
+import {type AxiosError} from 'axios';
+import {type Ref, ref, toRaw, watchEffect} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 
 import DeviceInfo from '@/components/devices/DeviceInfo.vue';
-import DeviceOutputs from '@/components/devices/DeviceOutputs.vue';
 import DeviceMeasurementChart from '@/components/devices/DeviceMeasurementChart.vue';
+import DeviceOutputs from '@/components/devices/DeviceOutputs.vue';
 import DeviceService from '@/services/DeviceService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {DeviceDetail} from '@/types/device';
+import {type DeviceDetail} from '@/types/device';
+import {PageState} from '@/types/page.js';
 
 /**
  * Device detail props
@@ -63,53 +75,41 @@ interface Props {
 	id: string;
 }
 
-/**
- * Device detail states
- */
-enum State {
-	/// Loading
-	Loading,
-	/// Loaded
-	Loaded,
-	/// Not found
-	NotFound,
-	/// Error
-	Error
-}
-
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
 const service = new DeviceService();
 const props = defineProps<Props>();
 const device = ref<DeviceDetail | null>(null);
-const state = ref<State>(State.Loading);
+const state: Ref<PageState> = ref<PageState>(PageState.Loading);
+
+/**
+ * Fetch information about device
+ * @param showSpinner Show loading spinner
+ */
+function fetchData(showSpinner = true): void {
+	state.value = PageState.Loading;
+	if (showSpinner) {
+		loadingSpinner.show();
+	}
+	service.get(props.id)
+		.then((response: DeviceDetail) => {
+			state.value = PageState.Loaded;
+			device.value = response;
+			loadingSpinner.hide();
+		})
+		.catch((error: AxiosError) => {
+			loadingSpinner.hide();
+			if (error.response?.status === 404) {
+				state.value = PageState.NotFound;
+			} else {
+				toast.error(i18n.t('core.devices.detail.messages.fetchFailed').toString());
+				state.value = PageState.LoadFailed;
+			}
+		});
+}
 
 watchEffect(async () => {
 	fetchData();
 });
-
-/**
- * Fetch information about device
- * @param {boolean} showSpinner Show loading spinner
- */
-function fetchData(showSpinner = true): void {
-	state.value = State.Loading;
-	if (showSpinner) {
-		loadingSpinner.show();
-	}
-	service.get(props.id).then((response: DeviceDetail) => {
-		state.value = State.Loaded;
-		device.value = response;
-		loadingSpinner.hide();
-	}).catch((error: AxiosError) => {
-		loadingSpinner.hide();
-		if (error.response?.status === 404) {
-			state.value = State.NotFound;
-		} else {
-			toast.error(i18n.t('core.devices.detail.messages.fetchFailed').toString());
-			state.value = State.Error;
-		}
-	});
-}
 
 </script>

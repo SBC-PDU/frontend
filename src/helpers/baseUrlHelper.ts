@@ -21,6 +21,7 @@ export default class BaseUrlHelper {
 
 	/**
 	 * Returns frontend base URL
+	 * @return Frontend base URL
 	 */
 	public static get(): string {
 		return `${window.location.protocol}//${window.location.host}${import.meta.env.BASE_URL}`;

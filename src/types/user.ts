@@ -18,14 +18,14 @@
  * User account state
  */
 export enum AccountState {
+	/// Blocked account
+	Blocked = 'blocked',
+	/// Invited account
+	Invited = 'invited',
 	/// Unverified e-mail address
 	Unverified = 'unverified',
 	/// Verified e-mail address
-	Verified = 'verified',
-	/// Invited account
-	Invited = 'invited',
-	/// Blocked account
-	Blocked = 'blocked',
+	Verified = 'verified'
 }
 
 /**
@@ -53,14 +53,14 @@ export enum UserRole {
  * User information
  */
 export interface UserInfo {
-	/// User ID
-	id: number;
-	/// User name
-	name: string;
 	/// User email
 	email: string;
+	/// User ID
+	id: number;
 	/// User language
 	language: UserLanguage;
+	/// User name
+	name: string;
 	/// User role
 	role: UserRole;
 	/// User access state
@@ -68,14 +68,14 @@ export interface UserInfo {
 }
 
 export interface UserModify {
-	/// User name
-	name: string;
 	/// User email
 	email: string;
-	/// User role
-	role: UserRole;
 	/// User language
 	language: UserLanguage;
+	/// User name
+	name: string;
+	/// User role
+	role: UserRole;
 }
 
 export interface UserAdd extends UserModify {

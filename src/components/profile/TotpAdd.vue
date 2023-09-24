@@ -25,22 +25,34 @@ limitations under the License.
 			<v-btn
 				v-bind='props'
 				color='green'
-				:prepend-icon='display.smAndUp.value ? "mdi-plus" : undefined'
+				:prepend-icon='display.smAndUp.value ? mdiPlus : undefined'
 				variant='elevated'
 			>
 				<span v-if='display.smAndUp.value'>
 					{{ $t('core.user.totp.add.activator') }}
 				</span>
-				<v-icon v-else>mdi-plus</v-icon>
+				<v-icon
+					v-else
+					:icon='mdiPlus'
+				/>
 			</v-btn>
 		</template>
-		<v-form @submit.prevent='add()' ref='form'>
-			<Card header-color='success' style='max-height: 90vh'>
+		<v-form
+			ref='form'
+			@submit.prevent='add()'
+		>
+			<Card
+				header-color='success'
+				style='max-height: 90vh'
+			>
 				<template #title>
 					{{ $t('core.user.totp.add.title') }}
 				</template>
 				<v-row>
-					<v-col cols='12' md='6'>
+					<v-col
+						cols='12'
+						md='6'
+					>
 						<v-tabs
 							v-model='tab'
 							bg-color='grey-lighten-2'
@@ -68,13 +80,13 @@ limitations under the License.
 									:model-value='(secret.base32.match(/.{1,4}/g) ?? []).join(" ")'
 									readonly
 									:label='$t("core.user.totp.secret.label")'
-									append-inner-icon='mdi-content-copy'
+									:append-inner-icon='mdiContentCopy'
 									@click:append-inner='copySecret'
 								/>
 								<v-btn
 									color='primary'
 									:href='totp.toString()'
-									prepend-icon='mdi-two-factor-authentication'
+									:prepend-icon='mdiTwoFactorAuthentication'
 									width='100%'
 								>
 									{{ $t('core.user.totp.secret.openApp') }}
@@ -82,7 +94,10 @@ limitations under the License.
 							</v-window-item>
 						</v-window>
 					</v-col>
-					<v-col cols='12' md='6'>
+					<v-col
+						cols='12'
+						md='6'
+					>
 						<v-text-field
 							v-model='formData.name'
 							:label='$t("core.user.totp.fields.name")'
@@ -91,7 +106,7 @@ limitations under the License.
 							]'
 							required
 							:counter='255'
-							prepend-inner-icon='mdi-text-short'
+							:prepend-inner-icon='mdiTextShort'
 						/>
 						<TotpField v-model='formData.code' />
 						<PasswordField
@@ -101,7 +116,7 @@ limitations under the License.
 								(v: any) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
 							]'
 							required
-							prepend-inner-icon='mdi-key'
+							:prepend-inner-icon='mdiKey'
 						/>
 					</v-col>
 				</v-row>
@@ -113,7 +128,7 @@ limitations under the License.
 					>
 						{{ $t('core.user.totp.add.confirm') }}
 					</v-btn>
-					<v-spacer/>
+					<v-spacer />
 					<v-btn
 						color='gray darken-1'
 						@click='close()'
@@ -127,12 +142,13 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {mdiContentCopy, mdiKey, mdiPlus, mdiTextShort, mdiTwoFactorAuthentication} from '@mdi/js';
 import * as OTPAuth from 'otpauth';
 import QrcodeVue from 'qrcode.vue';
 import { Clipboard } from 'v-clipboard';
-import {computed, Ref, ref, watch} from 'vue';
-import {toast} from 'vue3-toastify';
+import {computed, type Ref, ref, watch} from 'vue';
 import {useI18n} from 'vue-i18n';
+import {toast} from 'vue3-toastify';
 import {useDisplay} from 'vuetify';
 import {VForm} from 'vuetify/components';
 
@@ -144,7 +160,7 @@ import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import AccountService from '@/services/AccountService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {useUserStore} from '@/store/user';
-import {UserTotpAdd} from '@/types/totp';
+import {type UserTotpAdd} from '@/types/totp';
 
 const display = useDisplay();
 const i18n = useI18n();
@@ -213,15 +229,17 @@ async function add(): Promise<void> {
 		return;
 	}
 	loadingSpinner.show();
-	await service.addTotp(formData.value).then(() => {
-		loadingSpinner.hide();
-		toast.success(i18n.t('core.user.totp.add.messages.success').toString());
-		emit('submit');
-		close();
-	}).catch(() => {
-		loadingSpinner.hide();
-		toast.error(i18n.t('core.user.totp.add.messages.error').toString());
-	});
+	await service.addTotp(formData.value)
+		.then(() => {
+			loadingSpinner.hide();
+			toast.success(i18n.t('core.user.totp.add.messages.success').toString());
+			emit('submit');
+			close();
+		})
+		.catch(() => {
+			loadingSpinner.hide();
+			toast.error(i18n.t('core.user.totp.add.messages.error').toString());
+		});
 }
 
 /**

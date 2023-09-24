@@ -15,8 +15,8 @@
  */
 import {createApp} from 'vue';
 
-import {registerPlugins} from '@/plugins';
 import App from '@/App.vue';
+import {registerPlugins} from '@/plugins';
 
 /**
  * Creates a Vue.js application

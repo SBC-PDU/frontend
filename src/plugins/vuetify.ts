@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import '@mdi/font/css/materialdesignicons.css';
 import '@/styles/main.scss';
 
+import {useI18n} from 'vue-i18n';
 import {createVuetify} from 'vuetify';
-import {aliases, mdi} from 'vuetify/iconsets/mdi';
+import {aliases, mdi} from 'vuetify/iconsets/mdi-svg';
 import * as labs from 'vuetify/labs/components';
 import {createVueI18nAdapter} from 'vuetify/locale/adapters/vue-i18n';
-import {useI18n} from 'vue-i18n';
 
 import i18n from '@/plugins/i18n';
 
@@ -40,7 +39,7 @@ export default createVuetify({
 	},
 	locale: {
 		// @ts-ignore
-		adapter: createVueI18nAdapter({i18n, useI18n})
+		adapter: createVueI18nAdapter({i18n, useI18n}),
 	},
 	theme: {
 		themes: {

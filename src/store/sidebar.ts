@@ -36,7 +36,7 @@ export const useSidebarStore = defineStore('sidebar', {
 	actions: {
 		/**
 		 * Sets sidebar visibility
-		 * @param {boolean} visible Sidebar visibility
+		 * @param visible Sidebar visibility
 		 */
 		setVisibility(visible: boolean): void {
 			this.visible = visible;
@@ -52,19 +52,19 @@ export const useSidebarStore = defineStore('sidebar', {
 		 */
 		toggleVisibility(): void {
 			this.visible = !this.visible;
-		}
+		},
 	},
 	getters: {
 		/**
 		 * Is the sidebar minimized?
-		 * @returns {boolean} True if the sidebar is minimized, false otherwise
+		 * @return True if the sidebar is minimized, false otherwise
 		 */
 		isMinimized(): boolean {
 			return this.minimized;
 		},
 		/**
 		 * Is the sidebar visible?
-		 * @returns {boolean} True if the sidebar is visible, false otherwise
+		 * @return True if the sidebar is visible, false otherwise
 		 */
 		isVisible(): boolean {
 			return this.visible;

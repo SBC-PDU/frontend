@@ -21,15 +21,18 @@ limitations under the License.
 		scrollable
 		:width='modalWidth'
 	>
-		<Card header-color='warning' style='max-height: 90vh'>
+		<Card
+			header-color='warning'
+			style='max-height: 90vh'
+		>
 			<template #title>
 				{{ $t('core.session.expiration.title') }}
 			</template>
 			<vue-countdown
 				v-if='dialog'
+				v-slot='{ seconds }'
 				auto-start
 				:time='timer'
-				v-slot='{ seconds }'
 				@end='signOut()'
 			>
 				{{ $t('core.session.expiration.countdown', {countdown: seconds}, {plural: seconds}) }}
@@ -42,7 +45,7 @@ limitations under the License.
 				>
 					{{ $t('core.session.expiration.extend') }}
 				</v-btn>
-				<v-spacer/>
+				<v-spacer />
 				<v-btn
 					color='gray darken-1'
 					@click='close()'
@@ -59,6 +62,7 @@ import VueCountdown from '@chenfengyuan/vue-countdown';
 import {storeToRefs} from 'pinia';
 import {ref} from 'vue';
 import {useI18n} from 'vue-i18n';
+import {useRouter} from 'vue-router';
 import {toast} from 'vue3-toastify';
 
 import Card from '@/components/Card.vue';
@@ -66,8 +70,7 @@ import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import AuthenticationService from '@/services/AuthenticationService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {useUserStore} from '@/store/user';
-import {SignedInUser} from '@/types/auth';
-import {useRouter} from 'vue-router';
+import {type SignedInUser} from '@/types/auth';
 
 const authenticationService = new AuthenticationService();
 const i18n = useI18n();
@@ -81,6 +84,13 @@ const modalWidth = ModalWindowHelper.getWidth();
 const lastValue = ref<boolean>(false);
 const isExpiring = ref<boolean>(false);
 const timer = ref<number>(60);
+
+/**
+ * Closes the dialog
+ */
+function close() {
+	dialog.value = false;
+}
 
 /**
  * Watches for changes in the session expiration
@@ -104,13 +114,6 @@ setInterval(() => {
 		lastValue.value = isExpiring.value;
 	}
 }, 1_000);
-
-/**
- * Closes the dialog
- */
-function close() {
-	dialog.value = false;
-}
 
 /**
  * Extends the session

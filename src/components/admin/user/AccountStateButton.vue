@@ -19,25 +19,26 @@ limitations under the License.
 		v-if='user.state === AccountState.Blocked'
 		color='green'
 		class='me-2'
-		icon='mdi-lock-off'
+		:icon='mdiLockOff'
 		@click='unblockUser()'
 	/>
 	<v-icon
 		v-else
 		color='red'
 		class='me-2'
-		icon='mdi-lock'
+		:icon='mdiLock'
 		@click='blockUser()'
 	/>
 </template>
 
 <script lang='ts' setup>
+import {mdiLock, mdiLockOff} from '@mdi/js';
 import {useI18n} from 'vue-i18n';
 import {toast} from 'vue3-toastify';
 
 import UserService from '@/services/UserService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {AccountState, UserInfo} from '@/types/user';
+import {AccountState, type UserInfo} from '@/types/user';
 
 interface Props {
 	/// User

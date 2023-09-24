@@ -398,6 +398,9 @@
 				"lastUsedAts": {
 					"never": "Nikdy"
 				},
+				"list": {
+					"loadFailed": "Nepodařilo se načíst seznam TOTP authentikátorů."
+				},
 				"messages": {
 					"emptyName": "Zadejte prosím název authentikátoru.",
 					"emptyCode": "Zadejte prosím kód.",

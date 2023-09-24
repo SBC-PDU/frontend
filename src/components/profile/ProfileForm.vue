@@ -17,10 +17,15 @@ limitations under the License.
 <template>
 	<Card>
 		<template #title>
-			<v-icon>mdi-account</v-icon>
+			<v-icon :icon='mdiAccount' />
 			{{ $t('core.profile.title') }}
 		</template>
-		<v-form ref='form' class='mt-4' @submit.prevent='onSubmit'>
+		<v-form
+			v-if='state === PageState.Loaded'
+			ref='form'
+			class='mt-4'
+			@submit.prevent='onSubmit'
+		>
 			<v-text-field
 				v-model='user.name'
 				:label='$t("core.user.fields.name")'
@@ -28,7 +33,7 @@ limitations under the License.
 					v => FormValidator.isRequired(v, $t("core.user.messages.emptyName")),
 				]'
 				required
-				prepend-inner-icon='mdi-account'
+				:prepend-inner-icon='mdiAccount'
 			/>
 			<v-text-field
 				v-model='user.email'
@@ -38,14 +43,14 @@ limitations under the License.
 					v => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
 				]'
 				required
-				prepend-inner-icon='mdi-email'
+				:prepend-inner-icon='mdiEmail'
 			/>
 			<LanguageSelector v-model='user.language' />
 			<v-switch
 				v-model='user.changePassword'
 				:label='$t("core.profile.fields.passwordChange")'
 				color='primary'
-				prepend-icon='mdi-key-change'
+				:prepend-icon='mdiKeyChange'
 			/>
 			<PasswordField
 				v-if='user.changePassword'
@@ -55,7 +60,7 @@ limitations under the License.
 					(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyOldPassword")),
 				]'
 				required
-				prepend-inner-icon='mdi-key'
+				:prepend-inner-icon='mdiKey'
 			/>
 			<PasswordField
 				v-if='user.changePassword'
@@ -65,23 +70,30 @@ limitations under the License.
 					(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyNewPassword")),
 				]'
 				required
-				prepend-inner-icon='mdi-key'
+				:prepend-inner-icon='mdiKey'
 			/>
 			<v-btn
 				color='primary'
 				type='submit'
-				prepend-icon='mdi-content-save'
+				:prepend-icon='mdiContentSave'
 			>
 				{{ $t('core.actions.edit') }}
 			</v-btn>
 		</v-form>
+		<v-alert
+			v-else-if='state === PageState.LoadFailed'
+			type='error'
+		>
+			{{ $t('core.profile.messages.loadFailed') }}
+		</v-alert>
 	</Card>
 </template>
 
 <script lang='ts' setup>
-import {AxiosError} from 'axios';
+import {mdiAccount, mdiContentSave, mdiEmail, mdiKey, mdiKeyChange} from '@mdi/js';
+import {type AxiosError} from 'axios';
+import {ref, type Ref} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {ref, Ref} from 'vue';
 import {toast} from 'vue3-toastify';
 import {VForm} from 'vuetify/components';
 
@@ -93,9 +105,10 @@ import AccountService from '@/services/AccountService';
 import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
 import {useLocaleStore} from '@/store/locale';
 import {useUserStore} from '@/store/user';
-import {AccountModify} from '@/types/account';
-import {SignedInUser} from '@/types/auth';
-import {UserInfo, UserLanguage} from '@/types/user';
+import {type AccountModify} from '@/types/account';
+import {type SignedInUser} from '@/types/auth';
+import {PageState} from '@/types/page.js';
+import {type UserInfo, UserLanguage} from '@/types/user';
 
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
@@ -103,6 +116,7 @@ const localeStore = useLocaleStore();
 const userStore = useUserStore();
 const service = new AccountService();
 const form: Ref<typeof VForm | null> = ref(null);
+const state: Ref<PageState> = ref<PageState>(PageState.Loading);
 const user: Ref<AccountModify> = ref<AccountModify>({
 	name: '',
 	email: '',
@@ -117,17 +131,24 @@ const user: Ref<AccountModify> = ref<AccountModify>({
  */
 function loadData(): void {
 	loadingSpinner.show();
-	service.get().then((info: UserInfo) => {
-		user.value = {
-			name: info.name,
-			email: info.email,
-			language: info.language,
-			changePassword: false,
-			oldPassword: null,
-			newPassword: null,
-		};
-		loadingSpinner.hide();
-	});
+	state.value = PageState.Loading;
+	service.get()
+		.then((info: UserInfo) => {
+			state.value = PageState.Loaded;
+			user.value = {
+				name: info.name,
+				email: info.email,
+				language: info.language,
+				changePassword: false,
+				oldPassword: null,
+				newPassword: null,
+			};
+			loadingSpinner.hide();
+		})
+		.catch(() => {
+			loadingSpinner.hide();
+			state.value = PageState.LoadFailed;
+		});
 }
 
 loadData();
@@ -144,22 +165,24 @@ async function onSubmit(): Promise<void> {
 		return;
 	}
 	loadingSpinner.show();
-	service.edit(user.value).then((response: SignedInUser) => {
-		userStore.setUserInfo(response);
-		localeStore.setLocale(user.value.language);
-		loadData();
-		loadingSpinner.hide();
-		toast.success(i18n.t('core.profile.messages.success').toString());
-	}).catch((error: AxiosError) => {
-		loadingSpinner.hide();
-		if (error.response?.status === 400) {
-			const errorResponse: Error = error.response.data as Error;
-			if (errorResponse.message === 'Incorrect current password.') {
-				toast.error(i18n.t('core.profile.messages.incorrectCurrentPassword').toString());
-				return;
+	service.edit(user.value)
+		.then((response: SignedInUser) => {
+			userStore.setUserInfo(response);
+			localeStore.setLocale(user.value.language);
+			loadData();
+			loadingSpinner.hide();
+			toast.success(i18n.t('core.profile.messages.success').toString());
+		})
+		.catch((error: AxiosError) => {
+			loadingSpinner.hide();
+			if (error.response?.status === 400) {
+				const errorResponse: Error = error.response.data as Error;
+				if (errorResponse.message === 'Incorrect current password.') {
+					toast.error(i18n.t('core.profile.messages.incorrectCurrentPassword').toString());
+					return;
+				}
 			}
-		}
-		toast.error(i18n.t('core.profile.messages.error').toString());
-	});
+			toast.error(i18n.t('core.profile.messages.error').toString());
+		});
 }
 </script>

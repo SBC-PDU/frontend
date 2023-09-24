@@ -15,15 +15,18 @@ limitations under the License.
 -->
 
 <template>
-	<v-toolbar color='primary' density='comfortable'>
+	<v-toolbar
+		color='primary'
+		density='comfortable'
+	>
 		<v-toolbar-title>
-			<v-icon>mdi-information-variant</v-icon>
+			<v-icon :icon='mdiInformationVariant' />
 			{{ $t('core.devices.detail.info.title') }}
 		</v-toolbar-title>
 		<v-toolbar-items>
 			<DeviceForm
-				action='edit'
 				:id='device.id'
+				action='edit'
 				@save='reload()'
 			/>
 		</v-toolbar-items>
@@ -53,9 +56,11 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
+import {mdiInformationVariant} from '@mdi/js';
+
 import Card from '@/components/Card.vue';
 import DeviceForm from '@/components/devices/DeviceForm.vue';
-import {DeviceDetail} from '@/types/device';
+import {type DeviceDetail} from '@/types/device';
 
 /**
  * Device information props

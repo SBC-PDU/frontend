@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {AxiosResponse} from 'axios';
+import {type AxiosResponse} from 'axios';
 import * as punycode from 'punycode/';
 
 import BaseUrlHelper from '@/helpers/baseUrlHelper';
 import {ApiClient} from '@/services/ApiClient';
-import {Credentials, PasswordRecovery, PasswordSet, SignedInUser} from '@/types/auth';
+import {type Credentials, type PasswordRecovery, type PasswordSet, type SignedInUser} from '@/types/auth';
 
 /**
  * Authentication service
@@ -27,7 +27,8 @@ export default class AuthenticationService extends ApiClient {
 
 	/**
 	 * Requests password recovery
-	 * @param {PasswordRecovery} recovery Password recovery parameters
+	 * @param recovery Password recovery parameters
+	 * @return Empty promise
 	 */
 	public passwordRecovery(recovery: PasswordRecovery): Promise<void> {
 		return this.getClient().post('auth/password/recovery', {
@@ -38,9 +39,9 @@ export default class AuthenticationService extends ApiClient {
 
 	/**
 	 * Resets the password
-	 * @param {string} uuid Password reset request UUID
-	 * @param {PasswordSet} reset Password reset parameters
-	 * @returns {Promise<SignedInUser>} User info with JWT token
+	 * @param uuid Password reset request UUID
+	 * @param reset Password reset parameters
+	 * @return User info with JWT token
 	 */
 	public passwordReset(uuid: string, reset: PasswordSet): Promise<SignedInUser> {
 		return this.getClient().post(`auth/password/reset/${uuid}`, reset)
@@ -49,9 +50,9 @@ export default class AuthenticationService extends ApiClient {
 
 	/**
 	 * Sets the password of invited user
-	 * @param {string} uuid Password set request UUID
-	 * @param {PasswordSet} set Password set parameters
-	 * @returns {Promise<SignedInUser>} User info with JWT token
+	 * @param uuid Password set request UUID
+	 * @param set Password set parameters
+	 * @return User info with JWT token
 	 */
 	public passwordSet(uuid: string, set: PasswordSet): Promise<SignedInUser> {
 		return this.getClient().post(`auth/password/set/${uuid}`, set)
@@ -60,20 +61,25 @@ export default class AuthenticationService extends ApiClient {
 
 	/**
 	 * Signs in the user
-	 * @param {Credentials} credentials User credentials
-	 * @returns {Promise<SignedInUser>} User info with JWT token
+	 * @param credentials User credentials
+	 * @return User info with JWT token
 	 */
 	public signIn(credentials: Credentials): Promise<SignedInUser> {
-		return this.getClient().post('auth/sign/in', {
+		const body = {
 			email: punycode.toASCII(credentials.email),
 			password: credentials.password,
 			code: credentials.code ?? undefined,
-		}).then((response: AxiosResponse<SignedInUser>): SignedInUser => response.data);
+		};
+		if (['', null, undefined].includes(body.code)) {
+			delete body.code;
+		}
+		return this.getClient().post('auth/sign/in', body)
+			.then((response: AxiosResponse<SignedInUser>): SignedInUser => response.data);
 	}
 
 	/**
 	 * Extends the session
-	 * @returns {Promise<SignedInUser>} User info with JWT token
+	 * @return User info with JWT token
 	 */
 	public extendSession(): Promise<SignedInUser> {
 		return this.getClient().post('auth/token/refresh')
