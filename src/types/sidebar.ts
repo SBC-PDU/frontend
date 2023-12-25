@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {type RouteLocationRaw} from 'vue-router';
+import { type RouteLocationRaw } from 'vue-router';
 
-import {type UserRole} from '@/types/user';
+import { type UserRole } from '@/types/user';
 
 /**
  * Sidebar item

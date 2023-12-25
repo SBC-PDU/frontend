@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {type AxiosResponse} from 'axios';
-import {DateTime} from 'luxon';
+import { type AxiosResponse } from 'axios';
+import { DateTime } from 'luxon';
 
-import {ApiClient} from '@/services/ApiClient';
+import { ApiClient } from '@/services/ApiClient';
 import {
 	type Device, type DeviceAdd,
 	type DeviceDetail, type DeviceModify,
@@ -90,7 +90,7 @@ export default class DeviceService extends ApiClient {
 			.then((response: AxiosResponse<DeviceOutputMeasurements[]>): DeviceOutputMeasurements[] => {
 				const data: DeviceOutputMeasurements[] = response.data;
 				for (const outputIndex in data) {
-					const measurements = (data[outputIndex].measurements as unknown) as {current: DeviceOutputMeasurementRaw[], voltage: DeviceOutputMeasurementRaw[]};
+					const measurements = (data[outputIndex].measurements as unknown) as { current: DeviceOutputMeasurementRaw[], voltage: DeviceOutputMeasurementRaw[] };
 					data[outputIndex].measurements.current = this.convertMeasurements(measurements.current);
 					data[outputIndex].measurements.voltage = this.convertMeasurements(measurements.voltage);
 				}

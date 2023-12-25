@@ -24,13 +24,13 @@ import {
 	type RouteRecordRaw,
 } from 'vue-router';
 
-import {useUserStore} from '@/store/user';
+import { useUserStore } from '@/store/user';
 
 const routes: RouteRecordRaw[] = [
 	{
 		path: '/',
 		name: 'Home',
-		redirect: {name: 'DeviceList'},
+		redirect: { name: 'DeviceList' },
 	},
 	...setupLayouts(generatedRoutes),
 ];
@@ -44,11 +44,11 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
 	const userStore = useUserStore();
 	const requiresAuth: boolean = (to.meta.requiresAuth ?? true) === true;
 	if (!userStore.isLoggedIn && requiresAuth) {
-		let query = {...to.query};
+		let query = { ...to.query };
 		if (to.path !== '/' && to.name !== 'SignIn') {
-			query = {...query, redirect: to.path};
+			query = { ...query, redirect: to.path };
 		}
-		return next({name: 'SignIn', query});
+		return next({ name: 'SignIn', query });
 	}
 	if (to.name === 'SignIn' && userStore.isLoggedIn) {
 		return next((to.query.redirect as string | undefined) ?? '/');

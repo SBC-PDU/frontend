@@ -81,15 +81,15 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiPower, mdiRefresh} from '@mdi/js';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
-import {useDisplay} from 'vuetify';
+import { mdiPower, mdiRefresh } from '@mdi/js';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
+import { useDisplay } from 'vuetify';
 
 import Card from '@/components/Card.vue';
 import DeviceService from '@/services/DeviceService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {type DeviceDetail, type DeviceOutputWithMeasurements} from '@/types/device';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { type DeviceDetail, type DeviceOutputWithMeasurements } from '@/types/device';
 
 interface Props {
 	/// Detailed device information

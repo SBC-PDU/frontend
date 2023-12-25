@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {type AxiosResponse} from 'axios';
+import { type AxiosResponse } from 'axios';
 import * as punycode from 'punycode/';
 
 import BaseUrlHelper from '@/helpers/baseUrlHelper';
-import {ApiClient} from '@/services/ApiClient';
-import {type AccountModify} from '@/types/account';
-import {type SignedInUser} from '@/types/auth';
-import {type UserTotp, type UserTotpAdd, type UserTotpRemove} from '@/types/totp';
-import {type UserInfo} from '@/types/user';
+import { ApiClient } from '@/services/ApiClient';
+import { type AccountModify } from '@/types/account';
+import { type SignedInUser } from '@/types/auth';
+import { type UserTotp, type UserTotpAdd, type UserTotpRemove } from '@/types/totp';
+import { type UserInfo } from '@/types/user';
 
 /**
  * User account service

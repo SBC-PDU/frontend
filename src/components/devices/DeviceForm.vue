@@ -17,8 +17,8 @@ limitations under the License.
 <template>
 	<v-dialog
 		v-model='dialog'
-		persistent
-		scrollable
+		:persistent='true'
+		:scrollable='true'
 		:width='modalWidth'
 	>
 		<template #activator='{ props }'>
@@ -211,19 +211,19 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiIdentifier, mdiMinus, mdiPencil, mdiPencilOutline, mdiPlus, mdiTextShort, mdiWifi} from '@mdi/js';
-import {type AxiosError} from 'axios';
-import {type Ref, ref, watchEffect} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
-import {useDisplay} from 'vuetify';
-import {VForm} from 'vuetify/components';
+import { mdiIdentifier, mdiMinus, mdiPencil, mdiPencilOutline, mdiPlus, mdiTextShort, mdiWifi } from '@mdi/js';
+import { type AxiosError } from 'axios';
+import { type Ref, ref, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
+import { useDisplay } from 'vuetify';
+import { VForm } from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import FormValidator from '@/helpers/formValidator';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import DeviceService from '@/services/DeviceService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
 import {
 	type DeviceAdd,
 	type DeviceDetail,
@@ -231,7 +231,7 @@ import {
 	type DeviceOutput,
 	type DeviceOutputWithMeasurements,
 } from '@/types/device';
-import {PageState} from '@/types/page.js';
+import { PageState } from '@/types/page.js';
 
 /**
  * Enum for action to perform
@@ -255,7 +255,7 @@ const loadingSpinner = useLoadingSpinnerStore();
 const service = new DeviceService();
 
 const emit = defineEmits(['save']);
-const props = defineProps<Props>();
+const componentProps = defineProps<Props>();
 const dialog = ref(false);
 const modalWidth = ModalWindowHelper.getWidth();
 const form: Ref<typeof VForm | null> = ref(null);
@@ -270,19 +270,19 @@ const state: Ref<PageState> = ref<PageState>(PageState.Loading);
  * Loads data about the device
  */
 function loadData(): void {
-	if (props.action === Action.Add || props.id === undefined) {
+	if (componentProps.action === Action.Add || componentProps.id === undefined) {
 		device.value = {
 			name: '',
 			macAddress: '',
 			outputs: [
-				{index: 1, name: ''},
+				{ index: 1, name: '' },
 			],
 		};
 		state.value = PageState.Loaded;
 		return;
 	}
 	state.value = PageState.Loading;
-	service.get(props.id)
+	service.get(componentProps.id)
 		.then((response: DeviceDetail) => {
 			device.value = {
 				name: response.name,
@@ -317,7 +317,7 @@ function close(): void {
  * Adds a new output
  */
 function addOutput(): void {
-	device.value.outputs.push({index: device.value.outputs.length + 1, name: ''});
+	device.value.outputs.push({ index: device.value.outputs.length + 1, name: '' });
 }
 
 /**
@@ -335,10 +335,10 @@ function removeOutput(index: number): void {
 async function add(data: DeviceAdd): Promise<void> {
 	await service.add(data)
 		.then(() => {
-			toast.success(i18n.t('core.devices.add.messages.success', {name: data.name}));
+			toast.success(i18n.t('core.devices.add.messages.success', { name: data.name }));
 		})
 		.catch(() => {
-			toast.error(i18n.t('core.devices.add.messages.error', {name: data.name}));
+			toast.error(i18n.t('core.devices.add.messages.error', { name: data.name }));
 		});
 	loadingSpinner.hide();
 	emit('save');
@@ -352,10 +352,10 @@ async function add(data: DeviceAdd): Promise<void> {
 async function edit(id: string, data: DeviceModify): Promise<void> {
 	await service.edit(id, data)
 		.then(() => {
-			toast.success(i18n.t('core.devices.edit.messages.success', {name: data.name}));
+			toast.success(i18n.t('core.devices.edit.messages.success', { name: data.name }));
 		})
 		.catch(() => {
-			toast.error(i18n.t('core.devices.edit.messages.error', {name: data.name}));
+			toast.error(i18n.t('core.devices.edit.messages.error', { name: data.name }));
 		});
 	loadingSpinner.hide();
 	emit('save');
@@ -368,16 +368,16 @@ async function submit(): Promise<void> {
 	if (form.value === null) {
 		return;
 	}
-	const {valid} = await form.value.validate();
+	const { valid } = await form.value.validate();
 	if (!valid) {
 		return;
 	}
 	close();
 	loadingSpinner.show();
-	if (props.action === Action.Add) {
+	if (componentProps.action === Action.Add) {
 		await add(device.value as DeviceAdd);
-	} else if (props.id !== undefined) {
-		await edit(props.id, device.value as DeviceModify);
+	} else if (componentProps.id !== undefined) {
+		await edit(componentProps.id, device.value as DeviceModify);
 	}
 }
 

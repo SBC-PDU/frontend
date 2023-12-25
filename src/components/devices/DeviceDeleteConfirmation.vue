@@ -58,16 +58,16 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiTrashCan} from '@mdi/js';
-import {ref} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
+import { mdiTrashCan } from '@mdi/js';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
 
 import Card from '@/components/Card.vue';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import DeviceService from '@/services/DeviceService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {type Device} from '@/types/device';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { type Device } from '@/types/device';
 
 /**
  * The component props
@@ -82,7 +82,7 @@ const loadingSpinner = useLoadingSpinnerStore();
 const service = new DeviceService();
 
 const emit = defineEmits(['delete']);
-const props = defineProps<Props>();
+const componentProps = defineProps<Props>();
 const dialog = ref<boolean>(false);
 const modalWidth = ModalWindowHelper.getWidth();
 
@@ -98,16 +98,16 @@ function close(): void {
  */
 function deleteUser(): void {
 	loadingSpinner.show();
-	service.delete(props.device.id)
+	service.delete(componentProps.device.id)
 		.then(() => {
 			close();
 			emit('delete');
 			loadingSpinner.hide();
-			toast.success(i18n.t('core.devices.delete.messages.success', {name: props.device.name, macAddress: props.device.macAddress}));
+			toast.success(i18n.t('core.devices.delete.messages.success', { name: componentProps.device.name, macAddress: componentProps.device.macAddress }));
 		})
 		.catch(() => {
 			loadingSpinner.hide();
-			toast.error(i18n.t('core.devices.delete.messages.error', {name: props.device.name, macAddress: props.device.macAddress}));
+			toast.error(i18n.t('core.devices.delete.messages.error', { name: componentProps.device.name, macAddress: componentProps.device.macAddress }));
 		});
 }
 

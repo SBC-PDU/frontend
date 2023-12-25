@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import 'vue3-toastify/dist/index.css';
-import Vue3Toastify, {type ToastContainerOptions} from 'vue3-toastify';
+import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify';
 
 export const ToastifyOptions: ToastContainerOptions = {
 	autoClose: 5000,

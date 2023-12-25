@@ -32,10 +32,10 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiTranslate} from '@mdi/js';
+import { mdiTranslate } from '@mdi/js';
 
 import FormValidator from '@/helpers/formValidator';
-import {UserLanguage} from '@/types/user';
+import { UserLanguage } from '@/types/user';
 
 /**
  * User language selector props

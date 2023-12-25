@@ -48,46 +48,46 @@ limitations under the License.
 		</template>
 		<template #item.avatar='{ item }'>
 			<v-avatar
-				:image='getGravatarUrl(item.raw.email)'
+				:image='getGravatarUrl(item.email)'
 				class='ma-auto'
 				size='32'
 			/>
 		</template>
 		<template #item.email='{ item }'>
-			<a :href='"mailto:\"" + item.raw.name + "<" + item.raw.email + ">\""'>
-				{{ item.raw.email }}
+			<a :href='"mailto:\"" + item.name + "<" + item.email + ">\""'>
+				{{ item.email }}
 			</a>
 		</template>
 		<template #item.role='{ item }'>
-			<UserRoleBadge :role='item.raw.role' />
+			<UserRoleBadge :role='item.role' />
 		</template>
 		<template #item.language='{ item }'>
-			{{ getLanguageFlag(item.raw.language) }}
+			{{ getLanguageFlag(item.language) }}
 			<span class='d-none d-xl-inline'>
-				{{ $t(`core.locales.${item.raw.language}`) }}
+				{{ $t(`core.locales.${item.language}`) }}
 			</span>
 		</template>
 		<template #item.state='{ item }'>
-			<AccountStateBadge :state='item.raw.state' />
+			<AccountStateBadge :state='item.state' />
 		</template>
 		<template #item.actions='{ item }'>
 			<v-btn-group density='compact'>
 				<ResendEmailButton
-					:user='item.raw'
+					:user='item'
 					@change='loadUsers'
 				/>
 				<AccountStateButton
-					v-if='userId !== item.raw.id'
-					:user='item.raw'
+					v-if='userId !== item.id'
+					:user='item'
 					@change='loadUsers'
 				/>
 				<UserForm
-					:init-user='toRaw(item.raw)'
+					:init-user='toRaw(item)'
 					action='edit'
 					@reload='loadUsers'
 				/>
 				<UserDeleteConfirmation
-					:user='item.raw'
+					:user='item'
 					@submit='loadUsers'
 				/>
 			</v-btn-group>
@@ -108,12 +108,12 @@ meta:
 </route>
 
 <script lang='ts' setup>
-import {mdiAccountGroup} from '@mdi/js';
-import {Head} from '@unhead/vue/components';
+import { mdiAccountGroup } from '@mdi/js';
+import { Head } from '@unhead/vue/components';
 import md5 from 'md5';
-import {storeToRefs} from 'pinia';
-import {type Ref, ref, toRaw} from 'vue';
-import {useI18n} from 'vue-i18n';
+import { storeToRefs } from 'pinia';
+import { type Ref, ref, toRaw } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import AccountStateBadge from '@/components/admin/user/AccountStateBadge.vue';
 import AccountStateButton from '@/components/admin/user/AccountStateButton.vue';
@@ -122,23 +122,23 @@ import UserDeleteConfirmation from '@/components/admin/user/UserDeleteConfirmati
 import UserForm from '@/components/admin/user/UserForm.vue';
 import UserRoleBadge from '@/components/admin/user/UserRoleBadge.vue';
 import UserService from '@/services/UserService';
-import {useUserStore} from '@/store/user';
-import {PageState} from '@/types/page.js';
-import {type UserInfo, UserLanguage} from '@/types/user';
+import { useUserStore } from '@/store/user';
+import { PageState } from '@/types/page.js';
+import { type UserInfo, UserLanguage } from '@/types/user';
 
 const i18n = useI18n();
 const userService = new UserService();
 const userStore = useUserStore();
-const {getId: userId} = storeToRefs(userStore);
+const { getId: userId } = storeToRefs(userStore);
 
 const headers = [
-	{title: i18n.t('core.user.fields.avatar'), key: 'avatar'},
-	{title: i18n.t('core.user.fields.name'), key: 'name'},
-	{title: i18n.t('core.user.fields.email'), key: 'email'},
-	{title: i18n.t('core.user.fields.role'), key: 'role'},
-	{title: i18n.t('core.user.fields.language'), key: 'language'},
-	{title: i18n.t('core.user.fields.state'), key: 'state'},
-	{title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false},
+	{ title: i18n.t('core.user.fields.avatar'), key: 'avatar' },
+	{ title: i18n.t('core.user.fields.name'), key: 'name' },
+	{ title: i18n.t('core.user.fields.email'), key: 'email' },
+	{ title: i18n.t('core.user.fields.role'), key: 'role' },
+	{ title: i18n.t('core.user.fields.language'), key: 'language' },
+	{ title: i18n.t('core.user.fields.state'), key: 'state' },
+	{ title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false },
 ];
 const state: Ref<PageState> = ref(PageState.Loading);
 const users: Ref<UserInfo[]> = ref([]);

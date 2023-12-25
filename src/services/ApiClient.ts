@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import axios, {type AxiosError, type AxiosInstance, type AxiosResponse} from 'axios';
-import {storeToRefs} from 'pinia';
-import {type Ref} from 'vue';
+import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from 'axios';
+import { storeToRefs } from 'pinia';
+import { type Ref } from 'vue';
 
 import router from '@/router';
-import {useUserStore} from '@/store/user';
+import { useUserStore } from '@/store/user';
 
 /**
  * REST API client
@@ -40,7 +40,7 @@ export class ApiClient {
 	 */
 	public constructor() {
 		const userStore = useUserStore();
-		const {token} = storeToRefs(userStore);
+		const { token } = storeToRefs(userStore);
 		this.authToken = token;
 		this.client = axios.create({
 			baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -68,7 +68,7 @@ export class ApiClient {
 					userStore.signOut();
 					// Prevent duplicate redirect to sign in page
 					if (router.currentRoute.value.name !== 'SignIn') {
-						router.push({name: 'SignIn', query: {redirect: router.currentRoute.value.path}});
+						router.push({ name: 'SignIn', query: { redirect: router.currentRoute.value.path } });
 					}
 				}
 				// Handle other HTTP errors

@@ -37,10 +37,10 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiAccount, mdiShieldAccount} from '@mdi/js';
-import {useDisplay} from 'vuetify';
+import { mdiAccount, mdiShieldAccount } from '@mdi/js';
+import { useDisplay } from 'vuetify';
 
-import {UserRole} from '@/types/user';
+import { UserRole } from '@/types/user';
 
 interface Props {
   /// User role
@@ -49,7 +49,7 @@ interface Props {
 
 const display = useDisplay();
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const props = defineProps<Props>();
+const componentProps = defineProps<Props>();
 
 /**
  * Returns the color for the given role

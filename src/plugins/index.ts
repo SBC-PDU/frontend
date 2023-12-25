@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {type App} from 'vue';
+import { type App } from 'vue';
 
 import head from '@/plugins/head';
 import i18n from '@/plugins/i18n';
 import registerMatomo from '@/plugins/matomo';
 import registerSentry from '@/plugins/sentry';
-import toastify, {ToastifyOptions} from '@/plugins/toastify';
+import toastify, { ToastifyOptions } from '@/plugins/toastify';
 import vuetify from '@/plugins/vuetify';
 import router from '@/router';
 import pinia from '@/store';

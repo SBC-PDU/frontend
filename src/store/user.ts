@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 import * as Sentry from '@sentry/vue';
-import jwtDecode, {type JwtPayload} from 'jwt-decode';
-import {DateTime} from 'luxon';
+import { jwtDecode, type JwtPayload } from 'jwt-decode';
+import { DateTime } from 'luxon';
 import md5 from 'md5';
-import {defineStore} from 'pinia';
+import { defineStore } from 'pinia';
 
 import router from '@/router';
 import AuthenticationService from '@/services/AuthenticationService';
-import {useLocaleStore} from '@/store/locale';
-import {type Credentials, type SignedInUser} from '@/types/auth';
-import {type AccountState, type UserInfo, type UserRole} from '@/types/user';
+import { useLocaleStore } from '@/store/locale';
+import { type Credentials, type SignedInUser } from '@/types/auth';
+import { type AccountState, type UserInfo, type UserRole } from '@/types/user';
 
 /**
  * User store state

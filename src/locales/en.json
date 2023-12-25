@@ -12,6 +12,10 @@
 			"prev": "Previous visual"
 		},
 		"close": "Close",
+		"confirmEdit": {
+			"cancel": "Cancel",
+			"ok": "OK"
+		},
 		"dataFooter": {
 			"firstPage": "First page",
 			"itemsPerPageAll": "All",
@@ -38,22 +42,37 @@
 			"sortBy": "Sort by"
 		},
 		"datePicker": {
+			"header": "Enter date",
+			"input": {
+				"placeholder": "Enter date"
+			},
 			"itemsSelected": "{0} selected",
-			"nextMonthAriaLabel": "Next month",
-			"nextYearAriaLabel": "Next year",
-			"prevMonthAriaLabel": "Previous month",
-			"prevYearAriaLabel": "Previous year"
+			"range": {
+				"header": "Enter dates",
+				"title": "Select dates"
+			},
+			"title": "Select date"
+		},
+		"dateRangeInput": {
+			"divider": "to"
 		},
 		"fileInput": {
 			"counter": "{0} files",
 			"counterSize": "{0} files ({1} in total)"
 		},
+		"infiniteScroll": {
+			"empty": "No more",
+			"loadMore": "Load more"
+		},
 		"input": {
 			"appendAction": "{0} appended action",
 			"clear": "Clear {0}",
+			"otp": "Please enter OTP character {0}",
 			"prependAction": "{0} prepended action"
 		},
+		"loading": "Loading...",
 		"noDataText": "No data available",
+		"open": "Open",
 		"pagination": {
 			"ariaLabel": {
 				"currentPage": "Page {0}, Current page",
@@ -70,6 +89,10 @@
 				"item": "Rating {0} of {1}"
 			}
 		},
+		"stepper": {
+			"next": "Next",
+			"prev": "Previous"
+		},
 		"timePicker": {
 			"am": "AM",
 			"pm": "PM"
@@ -79,60 +102,60 @@
 		"title": "Administration",
 		"users": {
 			"add": {
-				"title": "Add a new user",
 				"activator": "Add a new user",
 				"messages": {
-					"success": "User {name} ({email}) has been successfully created.",
-					"error": "User {name} ({email}) could not be created."
-				}
+					"error": "User {name} ({email}) could not be created.",
+					"success": "User {name} ({email}) has been successfully created."
+				},
+				"title": "Add a new user"
 			},
 			"block": {
 				"messages": {
-					"success": "User {name} ({email}) has been successfully blocked.",
-					"error": "User {name} ({email}) could not be blocked."
+					"error": "User {name} ({email}) could not be blocked.",
+					"success": "User {name} ({email}) has been successfully blocked."
 				}
 			},
 			"delete": {
-				"title": "Delete user",
+				"confirm": "Delete user",
 				"message": "Are you sure you want to delete user {name} ({email})?",
 				"messages": {
-					"success": "User {name} ({email}) has been successfully deleted.",
-					"error": "User {name} ({email}) could not be deleted."
+					"error": "User {name} ({email}) could not be deleted.",
+					"success": "User {name} ({email}) has been successfully deleted."
 				},
-				"confirm": "Delete user"
+				"title": "Delete user"
 			},
 			"edit": {
-				"title": "Edit user",
 				"messages": {
-					"success": "User {name} ({email}) has been successfully edited.",
-					"error": "User {name} ({email}) could not be edited."
-				}
+					"error": "User {name} ({email}) could not be edited.",
+					"success": "User {name} ({email}) has been successfully edited."
+				},
+				"title": "Edit user"
 			},
 			"invite": {
-				"title": "Invite a new user",
 				"activator": "Invite a new user",
 				"messages": {
-					"success": "User {name} ({email}) has been successfully invited.",
-					"error": "User {name} ({email}) could not be invited."
-				}
+					"error": "User {name} ({email}) could not be invited.",
+					"success": "User {name} ({email}) has been successfully invited."
+				},
+				"title": "Invite a new user"
 			},
 			"list": {
 				"title": "User management"
 			},
 			"resend": {
 				"invitation": {
-					"success": "Invitation to user {name} ({email}) has been successfully resent.",
-					"error": "Invitation to user {name} ({email}) could not be resent."
+					"error": "Invitation to user {name} ({email}) could not be resent.",
+					"success": "Invitation to user {name} ({email}) has been successfully resent."
 				},
 				"verification": {
-					"success": "Verification link to user {name} ({email}) has been successfully resent.",
-					"error": "Verification link to user {name} ({email}) could not be resent."
+					"error": "Verification link to user {name} ({email}) could not be resent.",
+					"success": "Verification link to user {name} ({email}) has been successfully resent."
 				}
 			},
 			"unblock": {
 				"messages": {
-					"success": "User {name} ({email}) has been successfully unblocked.",
-					"error": "User {name} ({email}) could not be unblocked."
+					"error": "User {name} ({email}) could not be unblocked.",
+					"success": "User {name} ({email}) has been successfully unblocked."
 				}
 			}
 		}
@@ -140,74 +163,64 @@
 	"core": {
 		"account": {
 			"verification": {
-				"title": "Account verification",
-				"redirect": "You will be redirected to the dashboard in {countdown} seconds.",
 				"messages": {
-					"success": "Your account has been successfully verified.",
 					"alreadyVerified": "Your account has already been verified.",
 					"banned": "Your account has been banned.",
-					"expired": "Your verification link has expired. New verification link has been sent to your email address.",
 					"error": "Your account could not be verified.",
-					"notFound": "Your verification link is invalid."
-				}
+					"expired": "Your verification link has expired. New verification link has been sent to your email address.",
+					"notFound": "Your verification link is invalid.",
+					"success": "Your account has been successfully verified."
+				},
+				"redirect": "You will be redirected to the dashboard in {countdown} seconds.",
+				"title": "Account verification"
 			}
 		},
 		"actions": {
 			"add": "Add",
 			"cancel": "Cancel",
-			"invite": "Invite",
-			"edit": "Edit"
+			"edit": "Edit",
+			"invite": "Invite"
 		},
 		"devices": {
-			"title": "Power distribution units",
 			"add": {
-				"title": "Add a new PDU",
 				"activator": "Add PDU",
 				"messages": {
-					"success": "PDU {name} has been successfully created.",
-					"error": "PDU {name} could not be created."
-				}
-			},
-			"edit": {
-				"title": "Edit PDU",
-				"activator": "Edit PDU",
-				"messages": {
-					"success": "PDU {name} has been successfully edited.",
-					"error": "PDU {name} could not be edited."
-				}
+					"error": "PDU {name} could not be created.",
+					"success": "PDU {name} has been successfully created."
+				},
+				"title": "Add a new PDU"
 			},
 			"delete": {
-				"title": "Delete PDU",
-				"message" : "Are you sure you want to delete PDU {name} (MAC address {macAddress})?",
+				"confirm": "Delete PDU",
+				"message": "Are you sure you want to delete PDU {name} (MAC address {macAddress})?",
 				"messages": {
-					"success": "PDU {name} (MAC address {macAddress}) has been successfully deleted.",
-					"error": "PDU {name} (MAC address {macAddress}) could not be deleted."
+					"error": "PDU {name} (MAC address {macAddress}) could not be deleted.",
+					"success": "PDU {name} (MAC address {macAddress}) has been successfully deleted."
 				},
-				"confirm": "Delete PDU"
+				"title": "Delete PDU"
 			},
 			"detail": {
-				"title": "PDU - {name}",
 				"info": {
 					"title": "Information about PDU"
 				},
 				"measurements": {
-					"title": "Measurements",
-					"reload": "Reload",
 					"current": "Current",
-					"voltage": "Voltage",
-					"timeRanges": {
-						"5m": "Last 5 minutes",
-						"15m": "Last 15 minutes",
-						"1h": "Last hour",
-						"6h": "Last 6 hours",
-						"12h": "Last 12 hours",
-						"1d": "Last day",
-						"1w": "Last week",
-						"1mo": "Last month"
-					},
 					"messages": {
 						"error": "Measurements could not be fetched."
-					}
+					},
+					"reload": "Reload",
+					"timeRanges": {
+						"12h": "Last 12 hours",
+						"15m": "Last 15 minutes",
+						"1d": "Last day",
+						"1h": "Last hour",
+						"1mo": "Last month",
+						"1w": "Last week",
+						"5m": "Last 5 minutes",
+						"6h": "Last 6 hours"
+					},
+					"title": "Measurements",
+					"voltage": "Voltage"
 				},
 				"messages": {
 					"fetchFailed": "PDU {name} could not be fetched.",
@@ -215,66 +228,76 @@
 				},
 				"outputs": {
 					"messages": {
-						"success": {
-							"switchedOn": "Output #{index} ({name}) has been successfully switched on.",
-							"switchedOff": "Output #{index} ({name}) has been successfully switched off."
-						},
 						"error": {
-							"switchedOn": "Output #{index} ({name}) could not be switched on.",
-							"switchedOff": "Output #{index} ({name}) could not be switched off."
+							"switchedOff": "Output #{index} ({name}) could not be switched off.",
+							"switchedOn": "Output #{index} ({name}) could not be switched on."
+						},
+						"success": {
+							"switchedOff": "Output #{index} ({name}) has been successfully switched off.",
+							"switchedOn": "Output #{index} ({name}) has been successfully switched on."
 						}
 					},
 					"reload": "Reload",
 					"title": "Outputs"
-				}
+				},
+				"title": "PDU - {name}"
+			},
+			"edit": {
+				"activator": "Edit PDU",
+				"messages": {
+					"error": "PDU {name} could not be edited.",
+					"success": "PDU {name} has been successfully edited."
+				},
+				"title": "Edit PDU"
 			},
 			"fields": {
-				"name": "Name",
-				"macAddress": "MAC address",
 				"lastSeen": "Last seen",
-				"outputs": {
-					"title": "Outputs",
-					"alert": "Alert",
-					"alertValues": {
-						"true": "Yes",
-						"false": "No"
-					},
-					"index": "Index",
-					"name": "Name",
-					"state": "State"
-				},
+				"macAddress": "MAC address",
 				"measurements": {
 					"current": "Current",
 					"voltage": "Voltage"
+				},
+				"name": "Name",
+				"outputs": {
+					"alert": "Alert",
+					"alertValues": {
+						"false": "No",
+						"true": "Yes"
+					},
+					"index": "Index",
+					"name": "Name",
+					"state": "State",
+					"title": "Outputs"
 				}
 			},
 			"form": {
+				"messages": {
+					"emptyMacAddress": "Please enter a MAC address for the PDU.",
+					"emptyName": "Please enter a name for the PDU.",
+					"outputs": {
+						"emptyIndex": "Please enter an index for the output.",
+						"emptyName": "Please enter a name for the output."
+					}
+				},
 				"outputs": {
 					"title": "Outputs"
-				},
-				"messages": {
-					"emptyName": "Please enter a name for the PDU.",
-					"emptyMacAddress": "Please enter a MAC address for the PDU.",
-					"outputs": {
-						"emptyName": "Please enter a name for the output.",
-						"emptyIndex": "Please enter an index for the output."
-					}
 				}
 			},
 			"list": {
 				"title": "PDU list"
-			}
+			},
+			"title": "Power distribution units"
 		},
 		"error": {
 			"403": {
-				"title": "Access denied",
 				"header": "Error 403",
-				"message": "You do not have permission to view this page. Please try contact the web site administrator if you believe you should be able to view this page."
+				"message": "You do not have permission to view this page. Please try contact the web site administrator if you believe you should be able to view this page.",
+				"title": "Access denied"
 			},
 			"404": {
-				"title": "Page not found",
 				"header": "Error 404",
-				"message": "The page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists. Please use a search engine to find what you are looking for."
+				"message": "The page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists. Please use a search engine to find what you are looking for.",
+				"title": "Page not found"
 			}
 		},
 		"locales": {
@@ -285,76 +308,109 @@
 			"localeChanged": "Localization has been successfully changed to {lang}."
 		},
 		"openApi": {
-			"title": "API documentation",
 			"messages": {
 				"error": "An error occurred during API documentation loading."
-			}
+			},
+			"title": "API documentation"
 		},
 		"password": {
 			"recovery": {
-				"title": "Password recovery",
-				"text": "Please enter your e-mail address and a password recovery email will be sent to the specified e-mail address",
 				"button": "Recover password",
 				"messages": {
-					"success": "Password recovery request has been successfully sent.",
-					"error": "An error occurred during password recovery request."
-				}
+					"error": "An error occurred during password recovery request.",
+					"success": "Password recovery request has been successfully sent."
+				},
+				"text": "Please enter your e-mail address and a password recovery email will be sent to the specified e-mail address",
+				"title": "Password recovery"
 			},
 			"reset": {
-				"title": "Password reset",
-				"text": "Please enter your new password.",
 				"button": "Reset password",
 				"messages": {
-					"success": "Password has been successfully reset.",
 					"banned": "Your account has been banned.",
-					"notFound": "Password reset request could not be found.",
+					"error": "An error occurred during password reset.",
 					"expired": "Password reset request has expired.",
-					"error": "An error occurred during password reset."
-				}
+					"notFound": "Password reset request could not be found.",
+					"success": "Password has been successfully reset."
+				},
+				"text": "Please enter your new password.",
+				"title": "Password reset"
 			},
 			"set": {
-				"title": "Set password",
-				"text": "Please enter your new password.",
 				"button": "Set password",
 				"messages": {
-					"success": "Password has been successfully set.",
 					"banned": "Your account has been banned.",
-					"notFound": "Password set request could not be found.",
+					"error": "An error occurred during password set.",
 					"expired": "Password set request has expired.",
-					"error": "An error occurred during password set."
-				}
+					"notFound": "Password set request could not be found.",
+					"success": "Password has been successfully set."
+				},
+				"text": "Please enter your new password.",
+				"title": "Set password"
 			}
 		},
 		"profile": {
-			"title": "User profile",
 			"fields": {
 				"passwordChange": "Do you want to change your password?"
 			},
 			"messages": {
+				"error": "User profile could not be edited.",
 				"incorrectCurrentPassword": "Current password is incorrect.",
-				"success": "User profile has been successfully edited.",
-				"error": "User profile could not be edited."
+				"success": "User profile has been successfully edited."
+			},
+			"title": "User profile"
+		},
+		"session": {
+			"expiration": {
+				"countdown": "Your session expired. | Your session will expire in {countdown} second. | Your session will expire in {countdown} seconds.",
+				"extend": "Extend Session",
+				"message": "To continue working in the application, click on the \"Extend Session\" button.",
+				"messages": {
+					"error": "An error occurred during session extension.",
+					"signOut": "Your session has expired. Please sign in again.",
+					"success": "Your session has been successfully extended."
+				},
+				"title": "Your session will expire soon"
 			}
 		},
+		"sign": {
+			"in": {
+				"button": "Sign in",
+				"messages": {
+					"accountBlocked": "Your account has been blocked.",
+					"error": "An error occurred while signing in.",
+					"invalidCredentials": "Invalid e-mail or password.",
+					"success": "You have been successfully signed in."
+				},
+				"title": "Sign in"
+			},
+			"out": {
+				"message": "You have been successfully signed out.",
+				"title": "Sign out"
+			}
+		},
+		"tables": {
+			"actions": "Actions"
+		},
+		"title": "SBC PDU management",
 		"user": {
 			"fields": {
 				"avatar": "Avatar",
-				"name": "Name",
 				"email": "E-mail address",
-				"password": "Password",
-				"oldPassword": "Current password",
-				"newPassword": "New password",
-				"role": "Role",
 				"language": "Language",
+				"name": "Name",
+				"newPassword": "New password",
+				"oldPassword": "Current password",
+				"password": "Password",
+				"role": "Role",
 				"state": "State"
 			},
 			"messages": {
 				"emptyEmail": "Please enter e-mail address.",
 				"emptyLanguage": "Please select user language.",
 				"emptyName": "Please enter user name.",
-				"emptyPassword": "Please enter password.",
-				"emptyOldPassword": "Please enter current password.",
 				"emptyNewPassword": "Please enter new password.",
+				"emptyOldPassword": "Please enter current password.",
+				"emptyPassword": "Please enter password.",
 				"emptyRole": "Please select user role.",
 				"invalidEmail": "Please enter valid e-mail address."
 			},
@@ -364,29 +420,28 @@
 			},
 			"states": {
 				"blocked": "Blocked",
+				"invited": "Invited",
 				"unverified": "Unverified",
-				"verified": "Verified",
-				"invited": "Invited"
+				"verified": "Verified"
 			},
 			"totp": {
-				"title": "Two-factor authentication",
 				"add": {
-					"title": "Add a new TOTP authenticator",
 					"activator": "Add TOTP authenticator",
 					"confirm": "Add authenticator",
 					"messages": {
-						"success": "TOTP authenticator {name} has been successfully added.",
-						"error": "TOTP authenticator {name} could not be added."
-					}
+						"error": "TOTP authenticator {name} could not be added.",
+						"success": "TOTP authenticator {name} has been successfully added."
+					},
+					"title": "Add a new TOTP authenticator"
 				},
 				"delete": {
-					"title": "Delete TOTP authenticator",
 					"confirm": "Delete authenticator",
 					"message": "Are you sure you want to delete TOTP authenticator {name}?",
 					"messages": {
-						"success": "TOTP authenticator {name} has been successfully deleted.",
-						"error": "TOTP authenticator {name} could not be deleted."
-					}
+						"error": "TOTP authenticator {name} could not be deleted.",
+						"success": "TOTP authenticator {name} has been successfully deleted."
+					},
+					"title": "Delete TOTP authenticator"
 				},
 				"fields": {
 					"code": "Code",
@@ -398,67 +453,36 @@
 					"never": "Never"
 				},
 				"messages": {
-					"emptyName": "Please enter authenticator name.",
 					"emptyCode": "Please enter code.",
+					"emptyName": "Please enter authenticator name.",
 					"incorrectCode": "Code is incorrect.",
-					"invalidCode": "Please enter valid code."
+					"invalidCode": "Please enter valid code.",
+					"prompt": "Please enter the code from your authenticator app."
 				},
 				"secret": {
+					"copy": {
+						"error": "Secret key could not be copied to clipboard.",
+						"success": "Secret key has been successfully copied to clipboard."
+					},
 					"formats": {
 						"qrCode": "QR code",
 						"text": "Text"
 					},
 					"label": "Secret key",
-					"copy": {
-						"success": "Secret key has been successfully copied to clipboard.",
-						"error": "Secret key could not be copied to clipboard."
-					},
 					"openApp": "Open TOTP authenticator app"
-				}
+				},
+				"title": "Two-factor authentication"
 			},
 			"verification": {
 				"resend": {
-					"text": "Your e-mail address is not verified. Some features (e.g. password recovery) may not be available.",
 					"button": "Resend verification e-mail",
 					"messages": {
-						"success": "Verification e-mail has been successfully sent.",
-						"error": "An error occurred during sending verification e-mail."
-					}
+						"error": "An error occurred during sending verification e-mail.",
+						"success": "Verification e-mail has been successfully sent."
+					},
+					"text": "Your e-mail address is not verified. Some features (e.g. password recovery) may not be available."
 				}
 			}
-		},
-		"session": {
-			"expiration": {
-				"title": "Your session will expire soon",
-				"countdown": "Your session expired. | Your session will expire in {countdown} second. | Your session will expire in {countdown} seconds.",
-				"message": "To continue working in the application, click on the \"Extend Session\" button.",
-				"extend": "Extend Session",
-				"messages": {
-					"success": "Your session has been successfully extended.",
-					"error": "An error occurred during session extension.",
-					"signOut": "Your session has expired. Please sign in again."
-				}
-			}
-		},
-		"sign": {
-			"in": {
-				"title": "Sign in",
-				"button": "Sign in",
-				"messages": {
-					"accountBlocked": "Your account has been blocked.",
-					"success": "You have been successfully signed in.",
-					"invalidCredentials": "Invalid e-mail or password.",
-					"error": "An error occurred while signing in."
-				}
-			},
-			"out": {
-				"title": "Sign out",
-				"message": "You have been successfully signed out."
-			}
-		},
-		"tables": {
-			"actions": "Actions"
-		},
-		"title": "SBC PDU management"
+		}
 	}
 }

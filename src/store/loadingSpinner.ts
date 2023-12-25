@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {defineStore} from 'pinia';
+import { defineStore } from 'pinia';
 
 /**
  * Loading spinner store state

@@ -37,8 +37,8 @@ limitations under the License.
 import Logo from '@/assets/icon.svg?url';
 import LocaleSwitcher from '@/components/layout/header/LocaleSwitcher.vue';
 import ProfileDropdown from '@/components/layout/header/ProfileDropdown.vue';
-import {useSidebarStore} from '@/store/sidebar';
-import {useUserStore} from '@/store/user';
+import { useSidebarStore } from '@/store/sidebar';
+import { useUserStore } from '@/store/user';
 
 const sidebarStore = useSidebarStore();
 const userStore = useUserStore();

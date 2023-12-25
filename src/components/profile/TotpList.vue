@@ -37,20 +37,20 @@ limitations under the License.
 			</v-toolbar>
 		</template>
 		<template #item.createdAt='{ item }'>
-			{{ $d(item.raw.createdAt, 'normal') }}
+			{{ $d(item.createdAt, 'normal') }}
 		</template>
 		<template #item.lastUsedAt='{ item }'>
-			<span v-if='item.raw.lastUsedAt === null'>
+			<span v-if='item.lastUsedAt === null'>
 				{{ $t('core.user.totp.lastUsedAts.never') }}
 			</span>
 			<span v-else>
-				{{ $d(item.raw.lastUsedAt, 'normal') }}
+				{{ $d(item.lastUsedAt, 'normal') }}
 			</span>
 		</template>
 		<template #item.actions='{ item }'>
 			<v-btn-group density='compact'>
 				<TotpDeleteConfirmation
-					:token='item.raw'
+					:token='item'
 					@delete='loadData()'
 				/>
 			</v-btn-group>
@@ -65,24 +65,24 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiTwoFactorAuthentication} from '@mdi/js';
-import {type Ref, ref} from 'vue';
-import {useI18n} from 'vue-i18n';
+import { mdiTwoFactorAuthentication } from '@mdi/js';
+import { type Ref, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import TotpAdd from '@/components/profile/TotpAdd.vue';
 import TotpDeleteConfirmation from '@/components/profile/TotpDeleteConfirmation.vue';
 import AccountService from '@/services/AccountService';
-import {PageState} from '@/types/page';
-import {type UserTotp} from '@/types/totp';
+import { PageState } from '@/types/page';
+import { type UserTotp } from '@/types/totp';
 
 const i18n = useI18n();
 const accountService = new AccountService();
 
 const headers = [
-	{title: i18n.t('core.user.totp.fields.name'), key: 'name'},
-	{title: i18n.t('core.user.totp.fields.createdAt'), key: 'createdAt'},
-	{title: i18n.t('core.user.totp.fields.lastUsedAt'), key: 'lastUsedAt'},
-	{title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false},
+	{ title: i18n.t('core.user.totp.fields.name'), key: 'name' },
+	{ title: i18n.t('core.user.totp.fields.createdAt'), key: 'createdAt' },
+	{ title: i18n.t('core.user.totp.fields.lastUsedAt'), key: 'lastUsedAt' },
+	{ title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false },
 ];
 const state: Ref<PageState> = ref(PageState.Loading);
 const data = ref<UserTotp[]>([]);

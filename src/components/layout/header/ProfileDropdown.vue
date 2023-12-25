@@ -48,11 +48,11 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiChevronDown, mdiLogout} from '@mdi/js';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
+import { mdiChevronDown, mdiLogout } from '@mdi/js';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
 
-import {useUserStore} from '@/store/user';
+import { useUserStore } from '@/store/user';
 
 const i18n = useI18n();
 const store = useUserStore();

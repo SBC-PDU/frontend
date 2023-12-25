@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {computed, type ComputedRef} from 'vue';
-import {type DisplayInstance, useDisplay} from 'vuetify';
+import { computed, type ComputedRef } from 'vue';
+import { type DisplayInstance, useDisplay } from 'vuetify';
 
 /**
  * Model window helpers

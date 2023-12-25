@@ -55,8 +55,8 @@ Tento repozitář obsahuje frontendovou část pro centrální správu napájec�
 	VITE_SENTRY_PROJECT=         # Název projektu v Sentry
 	VITE_SENTRY_AUTH_TOKEN=      # Autentizační token pro Sentry
 	```
-5. Spusťte aplikaci pomocí příkazu:
+4. Spusťte aplikaci pomocí příkazu:
 	```bash
 	npm run dev
 	```
-6. Aplikace bude dostupná na adrese [http://localhost:3000](http://localhost:3000).
+5. Aplikace bude dostupná na adrese [http://localhost:3000](http://localhost:3000).

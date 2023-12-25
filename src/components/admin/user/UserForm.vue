@@ -170,11 +170,11 @@ import {
 	mdiPlus,
 	mdiSend,
 } from '@mdi/js';
-import {type Ref, ref, watchEffect} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
-import {useDisplay} from 'vuetify';
-import {VForm} from 'vuetify/components';
+import { type Ref, ref, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
+import { useDisplay } from 'vuetify';
+import { VForm } from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
@@ -182,8 +182,8 @@ import LanguageSelector from '@/components/users/LanguageSelector.vue';
 import FormValidator from '@/helpers/formValidator';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import UserService from '@/services/UserService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {type UserAdd, type UserInfo, UserLanguage, type UserModify, UserRole} from '@/types/user';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { type UserAdd, type UserInfo, UserLanguage, type UserModify, UserRole } from '@/types/user';
 
 /**
  * Actions to perform
@@ -210,7 +210,7 @@ const loadingSpinner = useLoadingSpinnerStore();
 const service = new UserService();
 
 const emit = defineEmits(['reload']);
-const props = defineProps<Props>();
+const componentProps = defineProps<Props>();
 const dialog = ref(false);
 const form: Ref<typeof VForm | null> = ref(null);
 const defaultUser: UserModify = {
@@ -223,24 +223,24 @@ const modalWidth = ModalWindowHelper.getWidth();
 const user = ref<UserAdd | UserModify>(defaultUser);
 
 watchEffect(async (): Promise<void> => {
-	switch (props.action) {
+	switch (componentProps.action) {
 		case Action.Add:
-			user.value = {...defaultUser, password: ''} as UserAdd;
+			user.value = { ...defaultUser, password: '' } as UserAdd;
 			break;
 		case Action.Edit:
-			if (props.initUser) {
+			if (componentProps.initUser) {
 				user.value = {
-					name: props.initUser.name,
-					email: props.initUser.email,
-					role: props.initUser.role,
-					language: props.initUser.language,
+					name: componentProps.initUser.name,
+					email: componentProps.initUser.email,
+					role: componentProps.initUser.role,
+					language: componentProps.initUser.language,
 				};
 			} else {
-				user.value = {...defaultUser};
+				user.value = { ...defaultUser };
 			}
 			break;
 		case Action.Invite:
-			user.value = {...defaultUser};
+			user.value = { ...defaultUser };
 			break;
 	}
 });
@@ -301,10 +301,10 @@ async function edit(): Promise<void> {
 		name: user.value.name,
 		email: user.value.email,
 	};
-	if (props.initUser?.id === undefined) {
+	if (componentProps.initUser?.id === undefined) {
 		return;
 	}
-	return await service.edit(props.initUser.id, user.value)
+	return await service.edit(componentProps.initUser.id, user.value)
 		.then(() => {
 			loadingSpinner.hide();
 			close();
@@ -323,12 +323,12 @@ async function submit(): Promise<void> {
 	if (form.value === null) {
 		return;
 	}
-	const {valid} = await form.value.validate();
+	const { valid } = await form.value.validate();
 	if (!valid) {
 		return;
 	}
 	loadingSpinner.show();
-	switch (props.action) {
+	switch (componentProps.action) {
 		case Action.Add:
 			await add();
 			break;

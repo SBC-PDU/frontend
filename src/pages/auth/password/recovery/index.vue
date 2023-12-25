@@ -56,19 +56,19 @@ meta:
 </route>
 
 <script lang='ts' setup>
-import {mdiAccountKey, mdiEmail} from '@mdi/js';
-import {Head} from '@unhead/vue/components';
-import {ref, type Ref} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {useRouter} from 'vue-router';
-import {toast} from 'vue3-toastify';
-import {VForm} from 'vuetify/components';
+import { mdiAccountKey, mdiEmail } from '@mdi/js';
+import { Head } from '@unhead/vue/components';
+import { ref, type Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
+import { VForm } from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import FormValidator from '@/helpers/formValidator';
 import AuthenticationService from '@/services/AuthenticationService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {type PasswordRecovery} from '@/types/auth';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { type PasswordRecovery } from '@/types/auth';
 
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
@@ -86,7 +86,7 @@ async function submit(): Promise<void> {
 	if (form.value === null) {
 		return;
 	}
-	const {valid} = await form.value.validate();
+	const { valid } = await form.value.validate();
 	if (!valid) {
 		return;
 	}
@@ -95,7 +95,7 @@ async function submit(): Promise<void> {
 		.then(() => {
 			loadingSpinner.hide();
 			toast.success(i18n.t('core.password.recovery.messages.success'));
-			router.push({name: 'SignIn'});
+			router.push({ name: 'SignIn' });
 		})
 		.catch(() => {
 			loadingSpinner.hide();

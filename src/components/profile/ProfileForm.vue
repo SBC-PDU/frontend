@@ -90,25 +90,25 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiAccount, mdiContentSave, mdiEmail, mdiKey, mdiKeyChange} from '@mdi/js';
-import {type AxiosError} from 'axios';
-import {ref, type Ref} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
-import {VForm} from 'vuetify/components';
+import { mdiAccount, mdiContentSave, mdiEmail, mdiKey, mdiKeyChange } from '@mdi/js';
+import { type AxiosError } from 'axios';
+import { ref, type Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
+import { VForm } from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
 import LanguageSelector from '@/components/users/LanguageSelector.vue';
 import FormValidator from '@/helpers/formValidator';
 import AccountService from '@/services/AccountService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {useLocaleStore} from '@/store/locale';
-import {useUserStore} from '@/store/user';
-import {type AccountModify} from '@/types/account';
-import {type SignedInUser} from '@/types/auth';
-import {PageState} from '@/types/page.js';
-import {type UserInfo, UserLanguage} from '@/types/user';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { useLocaleStore } from '@/store/locale';
+import { useUserStore } from '@/store/user';
+import { type AccountModify } from '@/types/account';
+import { type SignedInUser } from '@/types/auth';
+import { PageState } from '@/types/page.js';
+import { type UserInfo, UserLanguage } from '@/types/user';
 
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
@@ -160,7 +160,7 @@ async function onSubmit(): Promise<void> {
 	if (form.value === null) {
 		return;
 	}
-	const {valid} = await form.value.validate();
+	const { valid } = await form.value.validate();
 	if (!valid) {
 		return;
 	}

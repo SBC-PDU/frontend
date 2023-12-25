@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {createApp} from 'vue';
+import { createApp } from 'vue';
 
 import App from '@/App.vue';
-import {registerPlugins} from '@/plugins';
+import { registerPlugins } from '@/plugins';
 
 /**
  * Creates a Vue.js application

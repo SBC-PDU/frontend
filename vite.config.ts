@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 import * as child_process from 'child_process';
-import {fileURLToPath, URL} from 'node:url';
+import { fileURLToPath, URL } from 'node:url';
 import path from 'path';
 
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import {sentryVitePlugin} from '@sentry/vite-plugin';
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 import UnheadVite from '@unhead/addons/vite';
 import vue from '@vitejs/plugin-vue';
-import {defineConfig, loadEnv} from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import Pages from 'vite-plugin-pages';
 import VueDevTools from 'vite-plugin-vue-devtools';
 import Layouts from 'vite-plugin-vue-layouts';
-import vuetify, {transformAssetUrls} from 'vite-plugin-vuetify';
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify';
 import svgLoader from 'vite-svg-loader';
 
 // Git commit hash
 const gitCommitHash: string = child_process.execSync('git rev-parse --short HEAD').toString().trim();
 
 // https://vitejs.dev/config/
-export default defineConfig(({mode}) => {
+export default defineConfig(({ mode }) => {
 	const env: Record<string, string> = loadEnv(mode, process.cwd(), '');
 	return {
 		build: {
@@ -40,12 +40,10 @@ export default defineConfig(({mode}) => {
 		},
 		plugins: [
 			Pages(),
-			Layouts({
-				defaultLayout: 'Dashboard',
-			}),
+			Layouts(),
 			VueDevTools(),
 			vue({
-				template: {transformAssetUrls},
+				template: { transformAssetUrls },
 			}),
 			// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
 			vuetify({
@@ -55,7 +53,7 @@ export default defineConfig(({mode}) => {
 			VueI18nPlugin({
 				include: [path.resolve(__dirname, 'src/locales/**')],
 			}),
-			svgLoader({defaultImport: 'url'}),
+			svgLoader({ defaultImport: 'url' }),
 			(env.VITE_SENTRY_ENABLED || process.env.SENTRY_ENABLED) === 'true' && sentryVitePlugin({
 				release: gitCommitHash,
 				url: env.VITE_SENTRY_URL || process.env.SENTRY_URL,

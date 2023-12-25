@@ -142,15 +142,15 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiContentCopy, mdiKey, mdiPlus, mdiTextShort, mdiTwoFactorAuthentication} from '@mdi/js';
+import { mdiContentCopy, mdiKey, mdiPlus, mdiTextShort, mdiTwoFactorAuthentication } from '@mdi/js';
 import * as OTPAuth from 'otpauth';
 import QrcodeVue from 'qrcode.vue';
 import { Clipboard } from 'v-clipboard';
-import {computed, type Ref, ref, watch} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
-import {useDisplay} from 'vuetify';
-import {VForm} from 'vuetify/components';
+import { computed, type Ref, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
+import { useDisplay } from 'vuetify';
+import { VForm } from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
@@ -158,9 +158,9 @@ import TotpField from '@/components/users/TotpField.vue';
 import FormValidator from '@/helpers/formValidator';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import AccountService from '@/services/AccountService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {useUserStore} from '@/store/user';
-import {type UserTotpAdd} from '@/types/totp';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { useUserStore } from '@/store/user';
+import { type UserTotpAdd } from '@/types/totp';
 
 const display = useDisplay();
 const i18n = useI18n();
@@ -173,7 +173,7 @@ const dialog = ref<boolean>(false);
 const modalWidth = ModalWindowHelper.getWidth();
 const tab = ref<string>('qrCode');
 
-const secret = ref<OTPAuth.Secret>(new OTPAuth.Secret({size: 20}));
+const secret = ref<OTPAuth.Secret>(new OTPAuth.Secret({ size: 20 }));
 const totp = new OTPAuth.TOTP({
 	issuer: i18n.t('core.title').toString(),
 	label: userStore.getEmail ?? '',
@@ -204,7 +204,7 @@ const qrCodeSize = computed(() => {
 
 watch(dialog, (value: boolean) => {
 	if (value) {
-		secret.value = new OTPAuth.Secret({size: 20});
+		secret.value = new OTPAuth.Secret({ size: 20 });
 		formData.value = defaultFormData;
 		formData.value.secret = secret.value.base32;
 	}
@@ -224,7 +224,7 @@ async function add(): Promise<void> {
 	if (form.value === null) {
 		return;
 	}
-	const {valid} = await form.value.validate();
+	const { valid } = await form.value.validate();
 	if (!valid) {
 		return;
 	}

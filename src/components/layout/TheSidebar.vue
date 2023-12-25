@@ -38,24 +38,24 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiAccount, mdiAccountKey, mdiBook, mdiChevronLeft, mdiChevronRight, mdiCog, mdiLogin, mdiPower} from '@mdi/js';
-import {storeToRefs} from 'pinia';
-import {useI18n} from 'vue-i18n';
-import {useDisplay} from 'vuetify';
+import { mdiAccount, mdiAccountKey, mdiBook, mdiChevronLeft, mdiChevronRight, mdiCog, mdiLogin, mdiPower } from '@mdi/js';
+import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
+import { useDisplay } from 'vuetify';
 
 import SidebarItems from '@/components/layout/sidebar/SidebarItems.vue';
-import {useSidebarStore} from '@/store/sidebar';
-import {useUserStore} from '@/store/user';
-import {type SidebarLink} from '@/types/sidebar';
-import {UserRole} from '@/types/user';
+import { useSidebarStore } from '@/store/sidebar';
+import { useUserStore } from '@/store/user';
+import { type SidebarLink } from '@/types/sidebar';
+import { UserRole } from '@/types/user';
 
 const i18n = useI18n();
 const display = useDisplay();
 const sidebarStore = useSidebarStore();
 const userStore = useUserStore();
-const {isLoggedIn} = storeToRefs(userStore);
+const { isLoggedIn } = storeToRefs(userStore);
 
-const {isMinimized, isVisible} = storeToRefs(sidebarStore);
+const { isMinimized, isVisible } = storeToRefs(sidebarStore);
 
 sidebarStore.setVisibility(display.xlAndUp.value);
 

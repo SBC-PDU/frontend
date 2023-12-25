@@ -73,11 +73,11 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiKey, mdiTrashCan} from '@mdi/js';
-import {type Ref, ref} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
-import {VForm} from 'vuetify/components';
+import { mdiKey, mdiTrashCan } from '@mdi/js';
+import { type Ref, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
+import { VForm } from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
@@ -85,8 +85,8 @@ import TotpField from '@/components/users/TotpField.vue';
 import FormValidator from '@/helpers/formValidator';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import AccountService from '@/services/AccountService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {type UserTotp, type UserTotpRemove} from '@/types/totp';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { type UserTotp, type UserTotpRemove } from '@/types/totp';
 
 /**
  * The component props
@@ -101,7 +101,7 @@ const loadingSpinner = useLoadingSpinnerStore();
 const service = new AccountService();
 
 const emit = defineEmits(['delete']);
-const props = defineProps<Props>();
+const componentProps = defineProps<Props>();
 const dialog = ref<boolean>(false);
 const modalWidth = ModalWindowHelper.getWidth();
 const form: Ref<typeof VForm | null> = ref(null);
@@ -124,21 +124,21 @@ async function deleteToken(): Promise<void> {
 	if (form.value === null) {
 		return;
 	}
-	const {valid} = await form.value.validate();
+	const { valid } = await form.value.validate();
 	if (!valid) {
 		return;
 	}
 	loadingSpinner.show();
-	await service.removeTotp(props.token.uuid, formData.value)
+	await service.removeTotp(componentProps.token.uuid, formData.value)
 		.then(() => {
 			close();
 			emit('delete');
 			loadingSpinner.hide();
-			toast.success(i18n.t('core.user.totp.delete.messages.success', {name: props.token.name}));
+			toast.success(i18n.t('core.user.totp.delete.messages.success', { name: componentProps.token.name }));
 		})
 		.catch(() => {
 			loadingSpinner.hide();
-			toast.error(i18n.t('core.user.totp.delete.messages.error', {name: props.token.name}));
+			toast.error(i18n.t('core.user.totp.delete.messages.error', { name: componentProps.token.name }));
 		});
 }
 

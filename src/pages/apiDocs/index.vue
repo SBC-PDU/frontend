@@ -36,22 +36,22 @@ meta:
 </route>
 
 <script lang='ts' setup>
-import {Head} from '@unhead/vue/components';
-import {storeToRefs} from 'pinia';
+import { Head } from '@unhead/vue/components';
+import { storeToRefs } from 'pinia';
 import SwaggerUI from 'swagger-ui';
 import 'swagger-ui/dist/swagger-ui.css';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
 
 import Card from '@/components/Card.vue';
-import {OpenApiService} from '@/services/OpenApiService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {useUserStore} from '@/store/user';
+import { OpenApiService } from '@/services/OpenApiService';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { useUserStore } from '@/store/user';
 
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
 const userStore = useUserStore();
-const {token} = storeToRefs(userStore);
+const { token } = storeToRefs(userStore);
 const service = new OpenApiService();
 
 loadingSpinner.show();

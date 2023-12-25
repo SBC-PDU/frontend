@@ -43,9 +43,9 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiChevronDown} from '@mdi/js';
+import { mdiChevronDown } from '@mdi/js';
 
-import {useLocaleStore} from '@/store/locale';
+import { useLocaleStore } from '@/store/locale';
 
 const store = useLocaleStore();
 

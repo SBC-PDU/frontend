@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {type AxiosResponse} from 'axios';
+import { type AxiosResponse } from 'axios';
 import * as punycode from 'punycode/';
 
 import BaseUrlHelper from '@/helpers/baseUrlHelper';
-import {ApiClient} from '@/services/ApiClient';
-import {type Credentials, type PasswordRecovery, type PasswordSet, type SignedInUser} from '@/types/auth';
+import { ApiClient } from '@/services/ApiClient';
+import { type Credentials, type PasswordRecovery, type PasswordSet, type SignedInUser } from '@/types/auth';
 
 /**
  * Authentication service

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {type App} from 'vue';
+import { type App } from 'vue';
 // @ts-ignore
 import matomo from 'vue-matomo';
-import {type Router} from 'vue-router';
+import { type Router } from 'vue-router';
 
 /**
  * Registers Matomo integration

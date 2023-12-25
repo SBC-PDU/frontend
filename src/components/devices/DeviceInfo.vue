@@ -56,11 +56,11 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiInformationVariant} from '@mdi/js';
+import { mdiInformationVariant } from '@mdi/js';
 
 import Card from '@/components/Card.vue';
 import DeviceForm from '@/components/devices/DeviceForm.vue';
-import {type DeviceDetail} from '@/types/device';
+import { type DeviceDetail } from '@/types/device';
 
 /**
  * Device information props

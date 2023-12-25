@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {defineStore} from 'pinia';
-import {preferredLocale} from 'preferred-locale';
+import { defineStore } from 'pinia';
+import { preferredLocale } from 'preferred-locale';
 
 import LocaleHelper from '@/helpers/localeHelper';
 import i18n from '@/plugins/i18n';
@@ -38,7 +38,7 @@ interface Locale {
 
 export const useLocaleStore = defineStore('locale', {
 	state: (): LocaleState => ({
-		locale: preferredLocale('en', ['cs', 'en'], {languageOnly: true}),
+		locale: preferredLocale('en', ['cs', 'en'], { languageOnly: true }),
 	}),
 	actions: {
 		/**
@@ -58,8 +58,8 @@ export const useLocaleStore = defineStore('locale', {
 		 */
 		getAvailableLocales(): Locale[] {
 			return [
-				{code: 'cs', flag: '🇨🇿'},
-				{code: 'en', flag: '🇬🇧'},
+				{ code: 'cs', flag: '🇨🇿' },
+				{ code: 'en', flag: '🇬🇧' },
 			];
 		},
 		/**

@@ -25,13 +25,13 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiSend} from '@mdi/js';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
+import { mdiSend } from '@mdi/js';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
 
 import UserService from '@/services/UserService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {AccountState, type UserInfo} from '@/types/user';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { AccountState, type UserInfo } from '@/types/user';
 
 interface Props {
 	/// User

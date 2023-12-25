@@ -59,25 +59,25 @@ limitations under the License.
 
 <script lang='ts' setup>
 import VueCountdown from '@chenfengyuan/vue-countdown';
-import {storeToRefs} from 'pinia';
-import {ref} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {useRouter} from 'vue-router';
-import {toast} from 'vue3-toastify';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
 
 import Card from '@/components/Card.vue';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import AuthenticationService from '@/services/AuthenticationService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {useUserStore} from '@/store/user';
-import {type SignedInUser} from '@/types/auth';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { useUserStore } from '@/store/user';
+import { type SignedInUser } from '@/types/auth';
 
 const authenticationService = new AuthenticationService();
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
 const router = useRouter();
 const userStore = useUserStore();
-const {getExpiration: expiration} = storeToRefs(userStore);
+const { getExpiration: expiration } = storeToRefs(userStore);
 
 const dialog = ref<boolean>(false);
 const modalWidth = ModalWindowHelper.getWidth();
@@ -140,6 +140,6 @@ async function extendSession() {
 function signOut() {
 	toast.warning(i18n.t('core.session.expiration.messages.signOut'));
 	userStore.signOut();
-	router.push({name: 'SignIn'});
+	router.push({ name: 'SignIn' });
 }
 </script>

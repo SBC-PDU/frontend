@@ -25,14 +25,14 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiEye, mdiEyeOff} from '@mdi/js';
-import {ref, type Ref} from 'vue';
+import { mdiEye, mdiEyeOff } from '@mdi/js';
+import { type PropType, ref, type Ref } from 'vue';
 
 const showPassword: Ref<boolean> = ref(false);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
 	modelValue: {
-		type: String,
+		type: [String, null] as PropType<string | null>,
 		required: true,
 	},
 });

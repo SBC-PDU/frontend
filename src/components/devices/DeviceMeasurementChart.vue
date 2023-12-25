@@ -55,9 +55,9 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiChartTimelineVariant, mdiRefresh} from '@mdi/js';
-import {type EChartsOption, type SeriesOption} from 'echarts';
-import {LineChart} from 'echarts/charts';
+import { mdiChartTimelineVariant, mdiRefresh } from '@mdi/js';
+import { type EChartsOption, type SeriesOption } from 'echarts';
+import { LineChart } from 'echarts/charts';
 import {
 	DataZoomComponent,
 	GridComponent,
@@ -66,18 +66,18 @@ import {
 	ToolboxComponent,
 	TooltipComponent,
 } from 'echarts/components';
-import {use} from 'echarts/core';
-import {CanvasRenderer} from 'echarts/renderers';
-import {reactive, type Ref, ref, watchEffect} from 'vue';
+import { use } from 'echarts/core';
+import { CanvasRenderer } from 'echarts/renderers';
+import { reactive, type Ref, ref, watchEffect } from 'vue';
 import VChart from 'vue-echarts';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
-import {useDisplay} from 'vuetify';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
+import { useDisplay } from 'vuetify';
 
 import Card from '@/components/Card.vue';
 import TimeRangeSelector from '@/components/devices/TimeRangeSelector.vue';
 import DeviceService from '@/services/DeviceService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
 import {
 	type DeviceDetail,
 	type DeviceOutputWithMeasurements,

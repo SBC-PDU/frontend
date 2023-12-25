@@ -32,13 +32,13 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiLock, mdiLockOff} from '@mdi/js';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
+import { mdiLock, mdiLockOff } from '@mdi/js';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
 
 import UserService from '@/services/UserService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {AccountState, type UserInfo} from '@/types/user';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { AccountState, type UserInfo } from '@/types/user';
 
 interface Props {
 	/// User
@@ -62,10 +62,10 @@ function blockUser(): void {
 			loadingSpinner.hide();
 			close();
 			emit('change');
-			toast.success(i18n.t('admin.users.block.messages.success', {name: props.user.name, email: props.user.email}));
+			toast.success(i18n.t('admin.users.block.messages.success', { name: props.user.name, email: props.user.email }));
 		})
 		.catch(() => {
-			toast.error(i18n.t('admin.users.block.messages.error', {name: props.user.name, email: props.user.email}));
+			toast.error(i18n.t('admin.users.block.messages.error', { name: props.user.name, email: props.user.email }));
 		});
 }
 
@@ -79,10 +79,10 @@ function unblockUser(): void {
 			loadingSpinner.hide();
 			close();
 			emit('change');
-			toast.success(i18n.t('admin.users.unblock.messages.success', {name: props.user.name, email: props.user.email}));
+			toast.success(i18n.t('admin.users.unblock.messages.success', { name: props.user.name, email: props.user.email }));
 		})
 		.catch(() => {
-			toast.error(i18n.t('admin.users.unblock.messages.error', {name: props.user.name, email: props.user.email}));
+			toast.error(i18n.t('admin.users.unblock.messages.error', { name: props.user.name, email: props.user.email }));
 		});
 }
 </script>

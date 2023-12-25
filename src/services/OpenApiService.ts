@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {type AxiosResponse} from 'axios';
+import { type AxiosResponse } from 'axios';
 
-import {ApiClient} from '@/services/ApiClient';
+import { ApiClient } from '@/services/ApiClient';
 
 /**
  * OpenAPI service
@@ -32,7 +32,7 @@ export class OpenApiService extends ApiClient {
 				const regEx = /https:\/\/sbc-pdu\.romanondracek\.cz\/apiSchemas\/(requests|responses)\/(\w*)\.json/g;
 				const replacement: string = import.meta.env.VITE_API_BASE_URL + '/openapi/schemas/$1/$2';
 				const spec = JSON.parse(JSON.stringify(response.data).replaceAll(regEx, replacement));
-				spec.servers[0] = {url: import.meta.env.VITE_API_BASE_URL};
+				spec.servers[0] = { url: import.meta.env.VITE_API_BASE_URL };
 				return spec;
 			});
 	}

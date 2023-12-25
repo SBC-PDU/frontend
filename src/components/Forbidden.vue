@@ -27,7 +27,7 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {Head} from '@unhead/vue/components';
+import { Head } from '@unhead/vue/components';
 
 import Card from '@/components/Card.vue';
 </script>

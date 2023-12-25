@@ -37,10 +37,10 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiCheck, mdiEmail, mdiHelp, mdiLock} from '@mdi/js';
-import {useDisplay} from 'vuetify';
+import { mdiCheck, mdiEmail, mdiHelp, mdiLock } from '@mdi/js';
+import { useDisplay } from 'vuetify';
 
-import {AccountState} from '@/types/user';
+import { AccountState } from '@/types/user';
 
 interface Props {
   /// Account state
@@ -49,7 +49,7 @@ interface Props {
 
 const display = useDisplay();
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const props = defineProps<Props>();
+const componentProps = defineProps<Props>();
 
 /**
  * Returns the color for the given state

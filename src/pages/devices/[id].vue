@@ -53,19 +53,19 @@ name: DeviceDetail
 </route>
 
 <script lang='ts' setup>
-import {Head} from '@unhead/vue/components';
-import {type AxiosError} from 'axios';
-import {type Ref, ref, toRaw, watchEffect} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
+import { Head } from '@unhead/vue/components';
+import { type AxiosError } from 'axios';
+import { type Ref, ref, toRaw, watchEffect } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
 
 import DeviceInfo from '@/components/devices/DeviceInfo.vue';
 import DeviceMeasurementChart from '@/components/devices/DeviceMeasurementChart.vue';
 import DeviceOutputs from '@/components/devices/DeviceOutputs.vue';
 import DeviceService from '@/services/DeviceService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {type DeviceDetail} from '@/types/device';
-import {PageState} from '@/types/page.js';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { type DeviceDetail } from '@/types/device';
+import { PageState } from '@/types/page.js';
 
 /**
  * Device detail props

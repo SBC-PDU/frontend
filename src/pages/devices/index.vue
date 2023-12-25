@@ -43,25 +43,25 @@ limitations under the License.
 			</v-toolbar>
 		</template>
 		<template #item.name='{ item }'>
-			<router-link :to='"/devices/" + item.raw.id'>
-				{{ item.raw.name }}
+			<router-link :to='"/devices/" + item.id'>
+				{{ item.name }}
 			</router-link>
 		</template>
 		<template #item.lastSeen='{ item }'>
-			<span v-if='item.raw.lastSeen !== null'>{{ $d(item.raw.lastSeen, 'long') }}</span>
+			<span v-if='item.lastSeen !== null'>{{ $d(item.lastSeen, 'long') }}</span>
 		</template>
 		<template #item.outputs='{ item }'>
-			{{ item.raw.outputs.length }}
+			{{ item.outputs.length }}
 		</template>
 		<template #item.actions='{ item }'>
 			<DeviceForm
-				:id='item.raw.id'
+				:id='item.id'
 				action='editTable'
 				@save='loadDevices()'
 			/>
 			<DeviceDeleteConfirmation
 				v-if='userStore.getRole === UserRole.Admin'
-				:device='item.raw'
+				:device='item'
 				@delete='loadDevices()'
 			/>
 		</template>
@@ -79,29 +79,29 @@ name: DeviceList
 </route>
 
 <script lang='ts' setup>
-import {mdiPower} from '@mdi/js';
-import {Head} from '@unhead/vue/components';
-import {type Ref, ref} from 'vue';
-import {useI18n} from 'vue-i18n';
+import { mdiPower } from '@mdi/js';
+import { Head } from '@unhead/vue/components';
+import { type Ref, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import DeviceDeleteConfirmation from '@/components/devices/DeviceDeleteConfirmation.vue';
 import DeviceForm from '@/components/devices/DeviceForm.vue';
 import DeviceService from '@/services/DeviceService';
-import {useUserStore} from '@/store/user';
-import {type Device} from '@/types/device';
-import {PageState} from '@/types/page';
-import {UserRole} from '@/types/user';
+import { useUserStore } from '@/store/user';
+import { type Device } from '@/types/device';
+import { PageState } from '@/types/page';
+import { UserRole } from '@/types/user';
 
 const i18n = useI18n();
 const deviceService = new DeviceService();
 const userStore = useUserStore();
 
 const headers = [
-	{title: i18n.t('core.devices.fields.name'), key: 'name'},
-	{title: i18n.t('core.devices.fields.macAddress'), key: 'macAddress'},
-	{title: i18n.t('core.devices.fields.lastSeen'), key: 'lastSeen'},
-	{title: i18n.t('core.devices.fields.outputs.title'), key: 'outputs'},
-	{title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false},
+	{ title: i18n.t('core.devices.fields.name'), key: 'name' },
+	{ title: i18n.t('core.devices.fields.macAddress'), key: 'macAddress' },
+	{ title: i18n.t('core.devices.fields.lastSeen'), key: 'lastSeen' },
+	{ title: i18n.t('core.devices.fields.outputs.title'), key: 'outputs' },
+	{ title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false },
 ];
 const devices = ref<Device[]>([]);
 const state: Ref<PageState> = ref(PageState.Loading);

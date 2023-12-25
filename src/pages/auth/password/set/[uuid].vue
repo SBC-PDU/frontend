@@ -54,23 +54,23 @@ meta:
 </route>
 
 <script lang='ts' setup>
-import {mdiAccountKey, mdiKey} from '@mdi/js';
-import {Head} from '@unhead/vue/components';
-import {type AxiosError} from 'axios';
-import {validate as uuidValidate, version as uuidVersion} from 'uuid';
-import {ref, type Ref} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {useRouter} from 'vue-router';
-import {toast} from 'vue3-toastify';
-import {VForm} from 'vuetify/components';
+import { mdiAccountKey, mdiKey } from '@mdi/js';
+import { Head } from '@unhead/vue/components';
+import { type AxiosError } from 'axios';
+import { validate as uuidValidate, version as uuidVersion } from 'uuid';
+import { ref, type Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
+import { VForm } from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
 import FormValidator from '@/helpers/formValidator';
 import AuthenticationService from '@/services/AuthenticationService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {useUserStore} from '@/store/user';
-import {type PasswordSet, type SignedInUser} from '@/types/auth';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { useUserStore } from '@/store/user';
+import { type PasswordSet, type SignedInUser } from '@/types/auth';
 
 const props = defineProps({
 	uuid: {
@@ -100,7 +100,7 @@ async function submit(): Promise<void> {
 	if (form.value === null) {
 		return;
 	}
-	const {valid} = await form.value.validate();
+	const { valid } = await form.value.validate();
 	if (!valid) {
 		return;
 	}

@@ -58,15 +58,15 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiTrashCan} from '@mdi/js';
-import {ref} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
+import { mdiTrashCan } from '@mdi/js';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
 
 import Card from '@/components/Card.vue';
 import ModalWindowHelper from '@/helpers/modalWindowHelper';
 import UserService from '@/services/UserService';
-import {type UserInfo} from '@/types/user';
+import { type UserInfo } from '@/types/user';
 
 /**
  * The component props
@@ -80,7 +80,7 @@ const i18n = useI18n();
 const userService = new UserService();
 
 const emit = defineEmits(['submit']);
-const props = defineProps<Props>();
+const componentProps = defineProps<Props>();
 const dialog = ref<boolean>(false);
 const modalWidth = ModalWindowHelper.getWidth();
 
@@ -95,14 +95,14 @@ function close(): void {
  * Delete the user
  */
 function deleteUser(): void {
-	userService.delete(props.user.id)
+	userService.delete(componentProps.user.id)
 		.then(() => {
 			close();
 			emit('submit');
-			toast.success(i18n.t('admin.users.delete.messages.success', {name: props.user.name, email: props.user.email}));
+			toast.success(i18n.t('admin.users.delete.messages.success', { name: componentProps.user.name, email: componentProps.user.email }));
 		})
 		.catch(() => {
-			toast.error(i18n.t('admin.users.delete.messages.error', {name: props.user.name, email: props.user.email}));
+			toast.error(i18n.t('admin.users.delete.messages.error', { name: componentProps.user.name, email: componentProps.user.email }));
 		});
 }
 

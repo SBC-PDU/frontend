@@ -46,9 +46,9 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiMenuDown, mdiTimelapse} from '@mdi/js';
-import {useI18n} from 'vue-i18n';
-import {useDisplay} from 'vuetify';
+import { mdiMenuDown, mdiTimelapse } from '@mdi/js';
+import { useI18n } from 'vue-i18n';
+import { useDisplay } from 'vuetify';
 
 /**
  * Time range selector component props
@@ -71,16 +71,16 @@ const display = useDisplay();
 const i18n = useI18n();
 
 const emit = defineEmits(['update:model-value']);
-const props = defineProps<Props>();
+const componentProps = defineProps<Props>();
 const timeRanges: TimeRange[] = [
-	{value: '5m', title: i18n.t('core.devices.detail.measurements.timeRanges.5m').toString()},
-	{value: '15m', title: i18n.t('core.devices.detail.measurements.timeRanges.15m').toString()},
-	{value: '1h', title: i18n.t('core.devices.detail.measurements.timeRanges.1h').toString()},
-	{value: '6h', title: i18n.t('core.devices.detail.measurements.timeRanges.6h').toString()},
-	{value: '12h', title: i18n.t('core.devices.detail.measurements.timeRanges.12h').toString()},
-	{value: '1d', title: i18n.t('core.devices.detail.measurements.timeRanges.1d').toString()},
-	{value: '1w', title: i18n.t('core.devices.detail.measurements.timeRanges.1w').toString()},
-	{value: '1mo', title: i18n.t('core.devices.detail.measurements.timeRanges.1mo').toString()},
+	{ value: '5m', title: i18n.t('core.devices.detail.measurements.timeRanges.5m').toString() },
+	{ value: '15m', title: i18n.t('core.devices.detail.measurements.timeRanges.15m').toString() },
+	{ value: '1h', title: i18n.t('core.devices.detail.measurements.timeRanges.1h').toString() },
+	{ value: '6h', title: i18n.t('core.devices.detail.measurements.timeRanges.6h').toString() },
+	{ value: '12h', title: i18n.t('core.devices.detail.measurements.timeRanges.12h').toString() },
+	{ value: '1d', title: i18n.t('core.devices.detail.measurements.timeRanges.1d').toString() },
+	{ value: '1w', title: i18n.t('core.devices.detail.measurements.timeRanges.1w').toString() },
+	{ value: '1mo', title: i18n.t('core.devices.detail.measurements.timeRanges.1mo').toString() },
 ];
 
 /**
@@ -88,7 +88,7 @@ const timeRanges: TimeRange[] = [
  * @param timeRange The time range to set
  */
 function click(timeRange: string) {
-	if (props.modelValue === timeRange) {
+	if (componentProps.modelValue === timeRange) {
 		return;
 	}
 	emit('update:model-value', timeRange);

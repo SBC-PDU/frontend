@@ -21,18 +21,18 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {storeToRefs} from 'pinia';
-import {getActiveHead} from 'unhead';
-import {type Ref, ref, watch} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
+import { storeToRefs } from 'pinia';
+import { getActiveHead } from 'unhead';
+import { type Ref, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
 
 import LoadingSpinner from '@/components/layout/LoadingSpinner.vue';
 import SessionExpirationModal from '@/components/layout/SessionExpirationModal.vue';
-import {useLocaleStore} from '@/store/locale';
+import { useLocaleStore } from '@/store/locale';
 
 const localeStore = useLocaleStore();
-const {locale} = storeToRefs(localeStore);
+const { locale } = storeToRefs(localeStore);
 const i18n = useI18n();
 
 const siteName: Ref<string> = ref(i18n.t('core.title').toString());
@@ -53,7 +53,7 @@ function setLocale(newLocale: string | null = null): void {
 	i18n.locale.value = localeToSet;
 	siteName.value = i18n.t('core.title').toString();
 	getActiveHead()?.push(headOptions);
-	toast.success(i18n.t('core.messages.localeChanged', {lang: i18n.t(`core.locales.${localeToSet}`)}));
+	toast.success(i18n.t('core.messages.localeChanged', { lang: i18n.t(`core.locales.${localeToSet}`) }));
 }
 
 watch(locale, setLocale);

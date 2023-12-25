@@ -38,14 +38,14 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiEmailFast} from '@mdi/js';
-import {useI18n} from 'vue-i18n';
-import {toast} from 'vue3-toastify';
+import { mdiEmailFast } from '@mdi/js';
+import { useI18n } from 'vue-i18n';
+import { toast } from 'vue3-toastify';
 
 import AccountService from '@/services/AccountService';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {useUserStore} from '@/store/user';
-import {AccountState} from '@/types/user';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { useUserStore } from '@/store/user';
+import { AccountState } from '@/types/user';
 
 const accountService = new AccountService();
 const i18n = useI18n();

@@ -17,7 +17,7 @@ limitations under the License.
 <template>
 	<v-overlay
 		:model-value='isEnabled'
-		persistent
+		:persistent='true'
 		class='align-center justify-center text-center'
 	>
 		<v-progress-circular
@@ -39,10 +39,10 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {storeToRefs} from 'pinia';
+import { storeToRefs } from 'pinia';
 
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
 
 const store = useLoadingSpinnerStore();
-const {isEnabled, getText: text} = storeToRefs(store);
+const { isEnabled, getText: text } = storeToRefs(store);
 </script>

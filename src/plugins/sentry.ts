@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {BrowserTracing} from '@sentry/browser';
+import { BrowserTracing } from '@sentry/browser';
 import * as Sentry from '@sentry/vue';
-import {type App} from 'vue';
-import {type Router} from 'vue-router';
+import { type App } from 'vue';
+import { type Router } from 'vue-router';
 
 /**
  * Registers Sentry integration

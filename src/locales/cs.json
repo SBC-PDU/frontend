@@ -12,6 +12,10 @@
 			"prev": "Předchozí obrázek"
 		},
 		"close": "Zavřít",
+		"confirmEdit": {
+			"cancel": "Zrušit",
+			"ok": "OK"
+		},
 		"dataFooter": {
 			"firstPage": "První strana",
 			"itemsPerPageAll": "Vše",
@@ -38,27 +42,42 @@
 			"sortBy": "Řadit dle"
 		},
 		"datePicker": {
-			"itemsSelected": "{0} vybráno",
-			"nextMonthAriaLabel": "Příští měsíc",
-			"nextYearAriaLabel": "Příští rok",
-			"prevMonthAriaLabel": "Předchozí měsíc",
-			"prevYearAriaLabel": "Předchozí rok"
+			"header": "Zadejte datum",
+			"input": {
+				"placeholder": "Zadejte datum"
+			},
+			"itemsSelected": "{0} vybrán",
+			"range": {
+				"header": "Zadejte datumy",
+				"title": "Vyberte datumy"
+			},
+			"title": "Vyberte datum"
+		},
+		"dateRangeInput": {
+			"divider": "do"
 		},
 		"fileInput": {
 			"counter": "{0} souborů",
 			"counterSize": "{0} souborů ({1} celkem)"
 		},
+		"infiniteScroll": {
+			"empty": "Žádné další",
+			"loadMore": "Načíst více"
+		},
 		"input": {
 			"appendAction": "{0} appended action",
-			"clear": "Clear {0}",
+			"clear": "Vymazat {0}",
+			"otp": "Vložte výhradně OTP znaky {0}",
 			"prependAction": "{0} prepended action"
 		},
+		"loading": "Načítám...",
 		"noDataText": "Nejsou dostupná žádná data",
+		"open": "Otevřit",
 		"pagination": {
 			"ariaLabel": {
 				"currentPage": "Aktuální stránka, stránka {0}",
-				"first": "První strana",
-				"last": "Poslední strana",
+				"first": "První stránka",
+				"last": "Poslední stránka",
 				"next": "Další strana",
 				"page": "Přejít na stránku {0}",
 				"previous": "Předchozí strana",
@@ -70,6 +89,10 @@
 				"item": "Hodnocení {0} z {1}"
 			}
 		},
+		"stepper": {
+			"next": "Další",
+			"prev": "Předchozí"
+		},
 		"timePicker": {
 			"am": "odp.",
 			"pm": "dop."
@@ -79,60 +102,60 @@
 		"title": "Administrace",
 		"users": {
 			"add": {
-				"title": "Přidání nového uživatele",
 				"activator": "Přidat uživatele",
 				"messages": {
-					"success": "Uživatel {name} ({email}) byl úspěšně přidán.",
-					"error": "Uživatele {name} ({email}) se nepodařilo přidat."
-				}
+					"error": "Uživatele {name} ({email}) se nepodařilo přidat.",
+					"success": "Uživatel {name} ({email}) byl úspěšně přidán."
+				},
+				"title": "Přidání nového uživatele"
 			},
 			"block": {
 				"messages": {
-					"success": "Uživatel {name} ({email}) byl úspěšně zablokován.",
-					"error": "Uživatele {name} ({email}) se nepodařilo zablokovat."
+					"error": "Uživatele {name} ({email}) se nepodařilo zablokovat.",
+					"success": "Uživatel {name} ({email}) byl úspěšně zablokován."
 				}
 			},
 			"delete": {
-				"title": "Odstranění uživatele",
+				"confirm": "Smazat uživatele",
 				"message": "Chcete opravdu odstranit uživatele {name} ({email})?",
 				"messages": {
-					"success": "Uživatel {name} ({email}) byl úspěšně odstraněn.",
-					"error": "Uživatele {name} ({email}) se nepodařilo odstranit."
+					"error": "Uživatele {name} ({email}) se nepodařilo odstranit.",
+					"success": "Uživatel {name} ({email}) byl úspěšně odstraněn."
 				},
-				"confirm": "Smazat uživatele"
+				"title": "Odstranění uživatele"
 			},
 			"edit": {
-				"title": "Úprava uživatele",
 				"messages": {
-					"success": "Uživatel {name} ({email}) byl úspěšně upraven.",
-					"error": "Uživatele {name} ({email}) se nepodařilo upravit."
-				}
+					"error": "Uživatele {name} ({email}) se nepodařilo upravit.",
+					"success": "Uživatel {name} ({email}) byl úspěšně upraven."
+				},
+				"title": "Úprava uživatele"
 			},
 			"invite": {
-				"title": "Pozvání nového uživatele",
 				"activator": "Pozvat uživatele",
 				"messages": {
-					"success": "Uživatel {name} ({email}) byl úspěšně pozván.",
-					"error": "Uživatele {name} ({email}) se nepodařilo pozvat."
-				}
+					"error": "Uživatele {name} ({email}) se nepodařilo pozvat.",
+					"success": "Uživatel {name} ({email}) byl úspěšně pozván."
+				},
+				"title": "Pozvání nového uživatele"
 			},
 			"list": {
 				"title": "Správa uživatelů"
 			},
 			"resend": {
 				"invitation": {
-					"success": "Pozvánka pro uživatele {name} ({email}) byla úspěšně odeslána.",
-					"error": "Pozvánku pro uživatele {name} ({email}) se nepodařilo odeslat."
+					"error": "Pozvánku pro uživatele {name} ({email}) se nepodařilo odeslat.",
+					"success": "Pozvánka pro uživatele {name} ({email}) byla úspěšně odeslána."
 				},
 				"verification": {
-					"success": "Ověřovací email pro uživatele {name} ({email}) byl úspěšně odeslán.",
-					"error": "Ověřovací email pro uživatele {name} ({email}) se nepodařilo odeslat."
+					"error": "Ověřovací email pro uživatele {name} ({email}) se nepodařilo odeslat.",
+					"success": "Ověřovací email pro uživatele {name} ({email}) byl úspěšně odeslán."
 				}
 			},
 			"unblock": {
 				"messages": {
-					"success": "Uživatel {name} ({email}) byl úspěšně odblokován.",
-					"error": "Uživatele {name} ({email}) se nepodařilo odblokovat."
+					"error": "Uživatele {name} ({email}) se nepodařilo odblokovat.",
+					"success": "Uživatel {name} ({email}) byl úspěšně odblokován."
 				}
 			}
 		}
@@ -140,74 +163,64 @@
 	"core": {
 		"account": {
 			"verification": {
-				"title": "Oveření uživatelského účtu",
-				"redirect": "Za {countdown} sekund budete přesměrováni na úvodní stránku.",
 				"messages": {
-					"success": "Váš účet byl úspěšně ověřen.",
 					"alreadyVerified": "Váš účet již byl ověřen.",
 					"banned": "Váš účet byl zablokován.",
-					"expired": "Ověřovací kód již vypršel. Nový kód Vám byl odeslán na Váši e-mailovou adresu.",
 					"error": "Ověření Vašeho účtu se nezdařilo.",
-					"notFound": "Ověřovací kód nebyl nalezen."
-				}
+					"expired": "Ověřovací kód již vypršel. Nový kód Vám byl odeslán na Váši e-mailovou adresu.",
+					"notFound": "Ověřovací kód nebyl nalezen.",
+					"success": "Váš účet byl úspěšně ověřen."
+				},
+				"redirect": "Za {countdown} sekund budete přesměrováni na úvodní stránku.",
+				"title": "Oveření uživatelského účtu"
 			}
 		},
 		"actions": {
 			"add": "Přidat",
 			"cancel": "Zrušit",
-			"invite": "Pozvat",
-			"edit": "Upravit"
+			"edit": "Upravit",
+			"invite": "Pozvat"
 		},
 		"devices": {
-			"title": "Napájecí jednotky",
 			"add": {
-				"title": "Přidání nové napájecí jednotky",
 				"activator": "Přidat jednotku",
 				"messages": {
-					"success": "Napájecí jednotka {name} byla úspěšně přidána.",
-					"error": "Napájecí jednotku {name} se nepodařilo přidat."
-				}
-			},
-			"edit": {
-				"title": "Úprava napájecí jednotky",
-				"activator": "Upravit jednotku",
-				"messages": {
-					"success": "Napájecí jednotka {name} byla úspěšně upravena.",
-					"error": "Napájecí jednotku {name} se nepodařilo upravit."
-				}
+					"error": "Napájecí jednotku {name} se nepodařilo přidat.",
+					"success": "Napájecí jednotka {name} byla úspěšně přidána."
+				},
+				"title": "Přidání nové napájecí jednotky"
 			},
 			"delete": {
-				"title": "Odstranění napájecí jednotky",
+				"confirm": "Smazat napájecí jednotku",
 				"message": "Chcete opravdu odstranit napájecí jednotku {name} (MAC adresa {macAddress})?",
 				"messages": {
-					"success": "Napájecí jednotka {name} (MAC adresa {macAddress}) byla úspěšně odstraněna.",
-					"error": "Napájecí jednotku {name} (MAC adresa {macAddress}) se nepodařilo odstranit."
+					"error": "Napájecí jednotku {name} (MAC adresa {macAddress}) se nepodařilo odstranit.",
+					"success": "Napájecí jednotka {name} (MAC adresa {macAddress}) byla úspěšně odstraněna."
 				},
-				"confirm": "Smazat napájecí jednotku"
+				"title": "Odstranění napájecí jednotky"
 			},
 			"detail": {
-				"title": "Detail napájecí jednotky - {name}",
 				"info": {
 					"title": "Informace o napájecí jednotce"
 				},
 				"measurements": {
-					"title": "Grafy měřených veličin",
 					"current": "Elektrický proud",
-					"reload": "Obnovit",
-					"voltage": "Elektrické napětí",
-					"timeRanges": {
-						"5m": "Posledních 5 minut",
-						"15m": "Posledních 15 minut",
-						"1h": "Poslední hodina",
-						"6h": "Poslední 6 hodin",
-						"12h": "Posledních 12 hodin",
-						"1d": "Poslední den",
-						"1w": "Poslední týden",
-						"1mo": "Poslední měsíc"
-					},
-					"messages" : {
+					"messages": {
 						"error": "Nepodařilo se načíst měřené veličiny."
-					}
+					},
+					"reload": "Obnovit",
+					"timeRanges": {
+						"12h": "Posledních 12 hodin",
+						"15m": "Posledních 15 minut",
+						"1d": "Poslední den",
+						"1h": "Poslední hodina",
+						"1mo": "Poslední měsíc",
+						"1w": "Poslední týden",
+						"5m": "Posledních 5 minut",
+						"6h": "Poslední 6 hodin"
+					},
+					"title": "Grafy měřených veličin",
+					"voltage": "Elektrické napětí"
 				},
 				"messages": {
 					"fetchFailed": "Nepodařilo se načíst informace o napájecí jednotce {name}.",
@@ -215,66 +228,76 @@
 				},
 				"outputs": {
 					"messages": {
-						"success": {
-							"switchedOn": "Výstup #{index} ({name}) byl zapnut.",
-							"switchedOff": "Výstup #{index} ({name}) byl vypnut."
-						},
 						"error": {
-							"switchedOn": "Výstup #{index} ({name}) se nepodařilo zapnout.",
-							"switchedOff": "Výstup #{index} ({name}) se nepodařilo vypnout."
+							"switchedOff": "Výstup #{index} ({name}) se nepodařilo vypnout.",
+							"switchedOn": "Výstup #{index} ({name}) se nepodařilo zapnout."
+						},
+						"success": {
+							"switchedOff": "Výstup #{index} ({name}) byl vypnut.",
+							"switchedOn": "Výstup #{index} ({name}) byl zapnut."
 						}
 					},
 					"reload": "Obnovit",
 					"title": "Výstupy napájecí jednotky"
-				}
+				},
+				"title": "Detail napájecí jednotky - {name}"
+			},
+			"edit": {
+				"activator": "Upravit jednotku",
+				"messages": {
+					"error": "Napájecí jednotku {name} se nepodařilo upravit.",
+					"success": "Napájecí jednotka {name} byla úspěšně upravena."
+				},
+				"title": "Úprava napájecí jednotky"
 			},
 			"fields": {
-				"name": "Název",
-				"macAddress": "MAC adresa",
 				"lastSeen": "Naposledy viděno",
-				"outputs": {
-					"title": "Výstupy",
-					"alert": "Alarm",
-					"alertValues": {
-						"true": "Ano",
-						"false": "Ne"
-					},
-					"index": "Index",
-					"name": "Název",
-					"state": "Stav"
-				},
+				"macAddress": "MAC adresa",
 				"measurements": {
 					"current": "El. proud",
 					"voltage": "El. napětí"
+				},
+				"name": "Název",
+				"outputs": {
+					"alert": "Alarm",
+					"alertValues": {
+						"false": "Ne",
+						"true": "Ano"
+					},
+					"index": "Index",
+					"name": "Název",
+					"state": "Stav",
+					"title": "Výstupy"
 				}
 			},
 			"form": {
+				"messages": {
+					"emptyMacAddress": "Prosím zadejte MAC adresu napájecí jednotky.",
+					"emptyName": "Prosím zadejte jméno napájecí jednotky.",
+					"outputs": {
+						"emptyIndex": "Prosím zadejte index výstupu.",
+						"emptyName": "Prosím zadejte jméno výstupu."
+					}
+				},
 				"outputs": {
 					"title": "Výstupy"
-				},
-				"messages": {
-					"emptyName": "Prosím zadejte jméno napájecí jednotky.",
-					"emptyMacAddress": "Prosím zadejte MAC adresu napájecí jednotky.",
-					"outputs": {
-						"emptyName": "Prosím zadejte jméno výstupu.",
-						"emptyIndex": "Prosím zadejte index výstupu."
-					}
 				}
 			},
 			"list": {
 				"title": "Seznam napájecích jednotek"
-			}
+			},
+			"title": "Napájecí jednotky"
 		},
 		"error": {
 			"403": {
-				"title": "Přístup zamítnut",
 				"header": "Chyba 403",
-				"message": "K zobrazení této stránky nemáte oprávnění. Pokud se domníváte, že byste měli mít možnost tuto stránku zobrazit, zkuste prosím kontaktovat správce webu."
+				"message": "K zobrazení této stránky nemáte oprávnění. Pokud se domníváte, že byste měli mít možnost tuto stránku zobrazit, zkuste prosím kontaktovat správce webu.",
+				"title": "Přístup zamítnut"
 			},
 			"404": {
-				"title": "Stránka nenalezena",
 				"header": "Chyba 404",
-				"message": "Požadovanou stránku se nepodařilo najít. Je možné, že adresa je nesprávná nebo že stránka již neexistuje. K nalezení hledané stránky použijte vyhledávač."
+				"message": "Požadovanou stránku se nepodařilo najít. Je možné, že adresa je nesprávná nebo že stránka již neexistuje. K nalezení hledané stránky použijte vyhledávač.",
+				"title": "Stránka nenalezena"
 			}
 		},
 		"locales": {
@@ -285,77 +308,110 @@
 			"localeChanged": "Jazyk byl úspěšně změněn na {lang}."
 		},
 		"openApi": {
-			"title": "API dokumentace",
 			"messages": {
 				"error": "Při načítání dokumentace API nastala chyba."
-			}
+			},
+			"title": "API dokumentace"
 		},
 		"password": {
 			"recovery": {
-				"title": "Obnova hesla",
-				"text": "Pro obnovu zapomenutého hesla zadejte Vaši e-mailovou adresu, na kterou zašleme potvrzovací e-mail s odkazem pro nastavení nového hesla.",
 				"button": "Obnovit heslo",
 				"messages": {
-					"success": "Požadavek pro obnovu hesla byl úspěšně odeslán",
-					"error": "Při odeslání požadavku pro obnovu hesla nastala chyba."
-				}
+					"error": "Při odeslání požadavku pro obnovu hesla nastala chyba.",
+					"success": "Požadavek pro obnovu hesla byl úspěšně odeslán"
+				},
+				"text": "Pro obnovu zapomenutého hesla zadejte Vaši e-mailovou adresu, na kterou zašleme potvrzovací e-mail s odkazem pro nastavení nového hesla.",
+				"title": "Obnova hesla"
 			},
 			"reset": {
-				"title": "Nastavení nového hesla",
-				"text": "Zadejte prosím nové heslo pro Váš účet.",
 				"button": "Nastavit nové heslo",
 				"messages": {
-					"success": "Heslo bylo úspěšně nastaveno.",
 					"banned": "Váš účet byl zablokován.",
-					"notFound": "Požadavek pro obnovu hesla nebyl nalezen.",
+					"error": "Při nastavování hesla nastala chyba.",
 					"expired": "Požadavek pro obnovu hesla již vypršel.",
-					"error": "Při nastavování hesla nastala chyba."
-				}
+					"notFound": "Požadavek pro obnovu hesla nebyl nalezen.",
+					"success": "Heslo bylo úspěšně nastaveno."
+				},
+				"text": "Zadejte prosím nové heslo pro Váš účet.",
+				"title": "Nastavení nového hesla"
 			},
 			"set": {
-				"title": "Nastavení hesla",
-				"text": "Zadejte prosím heslo pro Váš účet.",
 				"button": "Nastavit heslo",
 				"messages": {
-					"success": "Heslo bylo úspěšně nastaveno.",
 					"banned": "Váš účet byl zablokován.",
-					"notFound": "Požadavek pro nastavení hesla nebyl nalezen.",
+					"error": "Při nastavování hesla nastala chyba.",
 					"expired": "Požadavek pro nastavení hesla již vypršel.",
-					"error": "Při nastavování hesla nastala chyba."
-				}
+					"notFound": "Požadavek pro nastavení hesla nebyl nalezen.",
+					"success": "Heslo bylo úspěšně nastaveno."
+				},
+				"text": "Zadejte prosím heslo pro Váš účet.",
+				"title": "Nastavení hesla"
 			}
 		},
 		"profile": {
-			"title": "Uživatelský profil",
 			"fields": {
 				"passwordChange": "Chcete změnit vaše heslo?"
 			},
 			"messages": {
-				"incorrectCurrentPassword": "Stávající heslo není správné.",
 				"error": "Uživatelský profil se nepodařilo aktualizovat.",
+				"incorrectCurrentPassword": "Stávající heslo není správné.",
 				"success": "Uživatelský profil byl úspěšně aktualizován."
+			},
+			"title": "Uživatelský profil"
+		},
+		"session": {
+			"expiration": {
+				"countdown": "Vaše relace vypršela. | Vaše relace vyprší za {countdown} sekundu. | Vaše relace vyprší za {countdown} sekundy. | Vaše relace vyprší za {countdown} sekund.",
+				"extend": "Prodloužit relaci",
+				"message": "Chcete-li pokračovat v práci v aplikaci, klikněte na tlačítko „Prodloužit relaci“.",
+				"messages": {
+					"error": "Při prodlužování Vaší relace nastala chyba.",
+					"signOut": "Vaše relace vypršela. Byl jste odhlášen.",
+					"success": "Vaše relace byla prodloužena."
+				},
+				"title": "Brzy vyprší platnost Vaší relace"
 			}
 		},
+		"sign": {
+			"in": {
+				"button": "Přihlásit se",
+				"messages": {
+					"accountBlocked": "Váš účet je zablokovaný.",
+					"error": "Přihlášení se nezdařilo.",
+					"invalidCredentials": "Neplatné přihlašovací údaje.",
+					"success": "Byl jste úspěšně přihlášen."
+				},
+				"title": "Přihlášení"
+			},
+			"out": {
+				"message": "Byl jste úspěšně odhlášen.",
+				"title": "Odhlásit se"
+			}
+		},
+		"tables": {
+			"actions": "Akce"
+		},
+		"title": "Správce napájecích jednotek",
 		"user": {
 			"fields": {
 				"avatar": "Avatar",
-				"name": "Jméno",
 				"email": "E-mailová adresa",
-				"password": "Heslo",
-				"oldPassword": "Stávající heslo",
-				"newPassword": "Nové heslo",
-				"role": "Role",
 				"language": "Jazyk",
+				"name": "Jméno",
+				"newPassword": "Nové heslo",
+				"oldPassword": "Stávající heslo",
+				"password": "Heslo",
+				"role": "Role",
 				"state": "Stav"
 			},
 			"messages": {
-				"emptyName": "Zadejte prosím jméno.",
 				"emptyEmail": "Zadejte prosím e-mailovou adresu.",
-				"emptyPassword": "Zadejte prosím heslo.",
-				"emptyOldPassword": "Zadejte prosím stávající heslo.",
-				"emptyNewPassword": "Zadejte prosím nové heslo.",
-				"emptyRole": "Vyberte prosím roli.",
 				"emptyLanguage": "Vyberte prosím jazyk.",
+				"emptyName": "Zadejte prosím jméno.",
+				"emptyNewPassword": "Zadejte prosím nové heslo.",
+				"emptyOldPassword": "Zadejte prosím stávající heslo.",
+				"emptyPassword": "Zadejte prosím heslo.",
+				"emptyRole": "Vyberte prosím roli.",
 				"invalidEmail": "Zadejte prosím platnou e-mailovou adresu."
 			},
 			"roles": {
@@ -364,30 +420,28 @@
 			},
 			"states": {
 				"blocked": "Zablokovaný",
+				"invited": "Pozvaný",
 				"unverified": "Neověřený",
-				"verified": "Ověřený",
-				"invited": "Pozvaný"
+				"verified": "Ověřený"
 			},
 			"totp": {
-				"title": "Dvoufaktorová autentikace",
 				"add": {
-					"title": "Přidání TOTP authentikátoru",
 					"activator": "Přidat TOTP authentikátor",
 					"confirm": "Přidat TOTP authentikátor",
 					"messages": {
-						"success": "TOTP authenticator {name} byl úspěšně přidán.",
-						"error": "TOTP authenticator {name} se nepodařilo přidat."
-					}
-
+						"error": "TOTP authenticator {name} se nepodařilo přidat.",
+						"success": "TOTP authenticator {name} byl úspěšně přidán."
+					},
+					"title": "Přidání TOTP authentikátoru"
 				},
 				"delete": {
-					"title": "Odstranění TOTP authentikátoru",
 					"confirm": "Odstranit authentikátor",
 					"message": "Opravdu chcete odstranit TOTP authenticator {name}?",
 					"messages": {
-						"success": "TOTP authenticator {name} byl úspěšně odstraněn.",
-						"error": "TOTP authenticator {name} se nepodařilo odstranit."
-					}
+						"error": "TOTP authenticator {name} se nepodařilo odstranit.",
+						"success": "TOTP authenticator {name} byl úspěšně odstraněn."
+					},
+					"title": "Odstranění TOTP authentikátoru"
 				},
 				"fields": {
 					"code": "Kód",
@@ -402,67 +456,36 @@
 					"loadFailed": "Nepodařilo se načíst seznam TOTP authentikátorů."
 				},
 				"messages": {
-					"emptyName": "Zadejte prosím název authentikátoru.",
 					"emptyCode": "Zadejte prosím kód.",
+					"emptyName": "Zadejte prosím název authentikátoru.",
 					"incorrectCode": "Zadaný kód není správný.",
-					"invalidCode": "Zadejte prosím platný kód."
+					"invalidCode": "Zadejte prosím platný kód.",
+					"prompt": "Prosím zadejte kód z authentizační aplikace."
 				},
 				"secret": {
+					"copy": {
+						"error": "Při kopírování soukromého klíče nastala chyba.",
+						"success": "Soukromý klíč byl úspěšně zkopírován do schránky."
+					},
 					"formats": {
 						"qrCode": "QR kód",
 						"text": "Text"
 					},
 					"label": "Soukromý klíč",
-					"copy": {
-						"success": "Soukromý klíč byl úspěšně zkopírován do schránky.",
-						"error": "Při kopírování soukromého klíče nastala chyba."
-					},
 					"openApp": "Otevřít aplikaci authentikátoru"
-				}
+				},
+				"title": "Dvoufaktorová autentikace"
 			},
 			"verification": {
 				"resend": {
-					"text": "Vaše e-mailová adresa není oveřena, některé akce (např. obnova hesla) proto nemusí být dostupné.",
 					"button": "Znovu odeslat ověřovací e-mail",
 					"messages": {
-						"success": "Ověřovací e-mail byl úspěšně odeslán.",
-						"error": "Při odesílání ověřovacího e-mailu nastala chyba."
-					}
+						"error": "Při odesílání ověřovacího e-mailu nastala chyba.",
+						"success": "Ověřovací e-mail byl úspěšně odeslán."
+					},
+					"text": "Vaše e-mailová adresa není oveřena, některé akce (např. obnova hesla) proto nemusí být dostupné."
 				}
 			}
-		},
-		"session": {
-			"expiration": {
-				"title": "Brzy vyprší platnost Vaší relace",
-				"countdown": "Vaše relace vypršela. | Vaše relace vyprší za {countdown} sekundu. | Vaše relace vyprší za {countdown} sekundy. | Vaše relace vyprší za {countdown} sekund.",
-				"message": "Chcete-li pokračovat v práci v aplikaci, klikněte na tlačítko „Prodloužit relaci“.",
-				"extend": "Prodloužit relaci",
-				"messages": {
-					"success": "Vaše relace byla prodloužena.",
-					"error": "Při prodlužování Vaší relace nastala chyba.",
-					"signOut": "Vaše relace vypršela. Byl jste odhlášen."
-				}
-			}
-		},
-		"sign": {
-			"in": {
-				"title": "Přihlášení",
-				"button": "Přihlásit se",
-				"messages": {
-					"accountBlocked": "Váš účet je zablokovaný.",
-					"success": "Byl jste úspěšně přihlášen.",
-					"invalidCredentials": "Neplatné přihlašovací údaje.",
-					"error": "Přihlášení se nezdařilo."
-				}
-			},
-			"out": {
-				"title": "Odhlásit se",
-				"message": "Byl jste úspěšně odhlášen."
-			}
-		},
-		"tables": {
-			"actions": "Akce"
-		},
-		"title": "Správce napájecích jednotek"
+		}
 	}
 }

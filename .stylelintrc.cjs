@@ -20,8 +20,6 @@ module.exports = {
 		"stylelint-config-standard-vue"
 	],
 	"rules": {
-		"indentation": "tab",
 		"selector-class-pattern": "^[a-z][a-z0-9_-]+$",
-		"string-quotes": "single"
 	}
 };

@@ -25,7 +25,7 @@ export enum AccountState {
 	/// Unverified e-mail address
 	Unverified = 'unverified',
 	/// Verified e-mail address
-	Verified = 'verified'
+	Verified = 'verified',
 }
 
 /**

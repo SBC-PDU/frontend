@@ -30,22 +30,22 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {storeToRefs} from 'pinia';
-import {computed, type Ref} from 'vue';
-import {useRoute} from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { computed, type Ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 import Forbidden from '@/components/Forbidden.vue';
 import TheFooter from '@/components/layout/TheFooter.vue';
 import TheHeader from '@/components/layout/TheHeader.vue';
 import TheSidebar from '@/components/layout/TheSidebar.vue';
 import UnverifiedAccountAlert from '@/components/UnverifiedAccountAlert.vue';
-import {useUserStore} from '@/store/user';
-import {type UserRole} from '@/types/user';
+import { useUserStore } from '@/store/user';
+import { type UserRole } from '@/types/user';
 
 const route = useRoute();
 const userStore = useUserStore();
 
-const {getRole: role} = storeToRefs(userStore);
+const { getRole: role } = storeToRefs(userStore);
 const requiredRoles: Ref<UserRole[]> = computed((): UserRole[] => (route.meta.requiredRoles ?? []) as UserRole[]);
 const isAllowed: Ref<boolean> = computed((): boolean => requiredRoles.value.length === 0 || role.value !== null && requiredRoles.value.includes(role.value));
 </script>

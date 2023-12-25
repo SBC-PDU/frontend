@@ -48,7 +48,17 @@ limitations under the License.
 				/>
 			</div>
 			<div v-else-if='state === SignInState.RequiredSecondFactor'>
-				<TotpField v-model='credentials.code' />
+				<p class='text-center'>
+					{{ $t('core.user.totp.messages.prompt') }}
+				</p>
+				<v-otp-input
+					v-model='credentials.code'
+					:label='$t("core.user.totp.fields.code")'
+					:rules='[
+						(v: any) => FormValidator.isRequired(v, $t("core.user.totp.messages.emptyCode")),
+						(v: string) => FormValidator.isTotpCode(v, $t("core.user.totp.messages.invalidCode")),
+					]'
+				/>
 			</div>
 			<v-btn
 				color='primary'
@@ -68,23 +78,23 @@ meta:
 </route>
 
 <script lang='ts' setup>
-import {mdiEmail, mdiKey, mdiLogin} from '@mdi/js';
-import {Head} from '@unhead/vue/components';
-import {type AxiosError} from 'axios';
-import {ref, type Ref} from 'vue';
-import {useI18n} from 'vue-i18n';
-import {useRoute, useRouter} from 'vue-router';
-import {toast} from 'vue3-toastify';
-import {VForm} from 'vuetify/components';
+import { mdiEmail, mdiKey, mdiLogin } from '@mdi/js';
+import { Head } from '@unhead/vue/components';
+import { type AxiosError } from 'axios';
+import { ref, type Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
+import { VForm } from 'vuetify/components';
 
 import Card from '@/components/Card.vue';
 import PasswordField from '@/components/PasswordField.vue';
 import TotpField from '@/components/users/TotpField.vue';
 import FormValidator from '@/helpers/formValidator';
-import {useLoadingSpinnerStore} from '@/store/loadingSpinner';
-import {useUserStore} from '@/store/user';
-import {type Credentials} from '@/types/auth';
-import {type ErrorMessage} from '@/types/error';
+import { useLoadingSpinnerStore } from '@/store/loadingSpinner';
+import { useUserStore } from '@/store/user';
+import { type Credentials } from '@/types/auth';
+import { type ErrorMessage } from '@/types/error';
 
 /**
  * Sign in state
@@ -116,7 +126,7 @@ async function onSubmit(): Promise<void> {
 	if (form.value === null) {
 		return;
 	}
-	const {valid} = await form.value.validate();
+	const { valid } = await form.value.validate();
 	if (!valid) {
 		return;
 	}

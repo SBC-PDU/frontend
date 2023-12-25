@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as punycode from 'punycode/';
-import {z} from 'zod';
+import { z } from 'zod';
 
 /**
  * Form validators
@@ -26,7 +26,6 @@ export default class FormValidator {
 	 * @param value Value to check
 	 * @param errorMessage Error message to return if the value is not valid
 	 * @return True if the value is valid, error message otherwise
-	 * @eslint-disable-next-line @typescript-eslint/no-explicit-any
 	 */
 	public static isRequired(value: unknown, errorMessage: string): boolean | string {
 		return !!value || errorMessage;

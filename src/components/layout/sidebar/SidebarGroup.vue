@@ -16,8 +16,8 @@ limitations under the License.
 
 <template>
 	<v-list-group
-		:prepend-icon='props.subGroup ? "" : item.icon'
-		:subgroup='props.subGroup'
+		:prepend-icon='componentProps.subGroup ? "" : item.icon'
+		:subgroup='componentProps.subGroup'
 		:value='item.title'
 	>
 		<template #activator='{props}'>
@@ -46,7 +46,7 @@ limitations under the License.
 
 <script lang='ts' setup>
 import SidebarItem from '@/components/layout/sidebar/SidebarItem.vue';
-import {type SidebarLink} from '@/types/sidebar';
+import { type SidebarLink } from '@/types/sidebar';
 
 interface Props {
 	/// Sidebar items to render
@@ -55,5 +55,5 @@ interface Props {
 	subGroup?: boolean;
 }
 
-const props = defineProps<Props>();
+const componentProps = defineProps<Props>();
 </script>

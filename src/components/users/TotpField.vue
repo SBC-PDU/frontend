@@ -30,7 +30,7 @@ limitations under the License.
 </template>
 
 <script lang='ts' setup>
-import {mdiTwoFactorAuthentication} from '@mdi/js';
+import { mdiTwoFactorAuthentication } from '@mdi/js';
 
 import FormValidator from '@/helpers/formValidator';
 

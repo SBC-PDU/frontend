@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {createI18n} from 'vue-i18n';
+import { createI18n } from 'vue-i18n';
 
 import cs from '@/locales/cs.json';
 import en from '@/locales/en.json';
