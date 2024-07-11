@@ -1,5 +1,5 @@
 /**
- * Copyright 2022-2023 Roman Ondráček
+ * Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ const router: Router = createRouter({
 	routes,
 });
 
-router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): Promise<void> => {
+router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): void => {
 	const userStore = useUserStore();
 	const requiresAuth: boolean = (to.meta.requiresAuth ?? true) === true;
 	if (!userStore.isLoggedIn && requiresAuth) {
@@ -48,10 +48,10 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
 		if (to.path !== '/' && to.name !== 'SignIn') {
 			query = { ...query, redirect: to.path };
 		}
-		return next({ name: 'SignIn', query });
+		next({ name: 'SignIn', query }); return;
 	}
 	if (to.name === 'SignIn' && userStore.isLoggedIn) {
-		return next((to.query.redirect as string | undefined) ?? '/');
+		next((to.query.redirect as string | undefined) ?? '/'); return;
 	}
 	next();
 });

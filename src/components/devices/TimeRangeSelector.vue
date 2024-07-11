@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ limitations under the License.
 
 <template>
 	<v-menu>
-		<template #activator='{props}'>
+		<template #activator='{ props }'>
 			<v-btn
 				color='primary'
 				:prepend-icon='display.smAndUp.value ? mdiTimelapse : undefined'
@@ -73,19 +73,19 @@ const i18n = useI18n();
 const emit = defineEmits(['update:model-value']);
 const componentProps = defineProps<Props>();
 const timeRanges: TimeRange[] = [
-	{ value: '5m', title: i18n.t('core.devices.detail.measurements.timeRanges.5m').toString() },
-	{ value: '15m', title: i18n.t('core.devices.detail.measurements.timeRanges.15m').toString() },
-	{ value: '1h', title: i18n.t('core.devices.detail.measurements.timeRanges.1h').toString() },
-	{ value: '6h', title: i18n.t('core.devices.detail.measurements.timeRanges.6h').toString() },
-	{ value: '12h', title: i18n.t('core.devices.detail.measurements.timeRanges.12h').toString() },
-	{ value: '1d', title: i18n.t('core.devices.detail.measurements.timeRanges.1d').toString() },
-	{ value: '1w', title: i18n.t('core.devices.detail.measurements.timeRanges.1w').toString() },
-	{ value: '1mo', title: i18n.t('core.devices.detail.measurements.timeRanges.1mo').toString() },
+	{ value: '5m', title: i18n.t('core.devices.detail.measurements.timeRanges.5m') },
+	{ value: '15m', title: i18n.t('core.devices.detail.measurements.timeRanges.15m') },
+	{ value: '1h', title: i18n.t('core.devices.detail.measurements.timeRanges.1h') },
+	{ value: '6h', title: i18n.t('core.devices.detail.measurements.timeRanges.6h') },
+	{ value: '12h', title: i18n.t('core.devices.detail.measurements.timeRanges.12h') },
+	{ value: '1d', title: i18n.t('core.devices.detail.measurements.timeRanges.1d') },
+	{ value: '1w', title: i18n.t('core.devices.detail.measurements.timeRanges.1w') },
+	{ value: '1mo', title: i18n.t('core.devices.detail.measurements.timeRanges.1mo') },
 ];
 
 /**
  * Handle time range change
- * @param timeRange The time range to set
+ * @param {string} timeRange The time range to set
  */
 function click(timeRange: string) {
 	if (componentProps.modelValue === timeRange) {

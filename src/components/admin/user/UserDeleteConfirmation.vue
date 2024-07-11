@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ limitations under the License.
 			<template #title>
 				{{ $t('admin.users.delete.title') }}
 			</template>
-			{{ $t('admin.users.delete.message', {name: user.name, email: user.email}) }}
+			{{ $t('admin.users.delete.message', { name: user.name, email: user.email }) }}
 			<template #actions>
 				<v-btn
 					color='error'
@@ -94,16 +94,19 @@ function close(): void {
 /**
  * Delete the user
  */
-function deleteUser(): void {
-	userService.delete(componentProps.user.id)
-		.then(() => {
-			close();
-			emit('submit');
-			toast.success(i18n.t('admin.users.delete.messages.success', { name: componentProps.user.name, email: componentProps.user.email }));
-		})
-		.catch(() => {
-			toast.error(i18n.t('admin.users.delete.messages.error', { name: componentProps.user.name, email: componentProps.user.email }));
-		});
+async function deleteUser(): Promise<void> {
+	const translationParams = {
+		name: componentProps.user.name,
+		email: componentProps.user.email,
+	};
+	try {
+		await userService.delete(componentProps.user.id);
+		close();
+		emit('submit');
+		toast.success(i18n.t('admin.users.delete.messages.success', translationParams));
+	} catch {
+		toast.error(i18n.t('admin.users.delete.messages.error', translationParams));
+	}
 }
 
 </script>

@@ -1,103 +1,4 @@
 {
-	"$vuetify": {
-		"badge": "Badge",
-		"calendar": {
-			"moreEvents": "{0} more"
-		},
-		"carousel": {
-			"ariaLabel": {
-				"delimiter": "Carousel slide {0} of {1}"
-			},
-			"next": "Next visual",
-			"prev": "Previous visual"
-		},
-		"close": "Close",
-		"confirmEdit": {
-			"cancel": "Cancel",
-			"ok": "OK"
-		},
-		"dataFooter": {
-			"firstPage": "First page",
-			"itemsPerPageAll": "All",
-			"itemsPerPageText": "Items per page:",
-			"lastPage": "Last page",
-			"nextPage": "Next page",
-			"pageText": "{0}-{1} of {2}",
-			"prevPage": "Previous page"
-		},
-		"dataIterator": {
-			"loadingText": "Loading items...",
-			"noResultsText": "No matching records found"
-		},
-		"dataTable": {
-			"ariaLabel": {
-				"activateAscending": "Activate to sort ascending.",
-				"activateDescending": "Activate to sort descending.",
-				"activateNone": "Activate to remove sorting.",
-				"sortAscending": "Sorted ascending.",
-				"sortDescending": "Sorted descending.",
-				"sortNone": "Not sorted."
-			},
-			"itemsPerPageText": "Rows per page:",
-			"sortBy": "Sort by"
-		},
-		"datePicker": {
-			"header": "Enter date",
-			"input": {
-				"placeholder": "Enter date"
-			},
-			"itemsSelected": "{0} selected",
-			"range": {
-				"header": "Enter dates",
-				"title": "Select dates"
-			},
-			"title": "Select date"
-		},
-		"dateRangeInput": {
-			"divider": "to"
-		},
-		"fileInput": {
-			"counter": "{0} files",
-			"counterSize": "{0} files ({1} in total)"
-		},
-		"infiniteScroll": {
-			"empty": "No more",
-			"loadMore": "Load more"
-		},
-		"input": {
-			"appendAction": "{0} appended action",
-			"clear": "Clear {0}",
-			"otp": "Please enter OTP character {0}",
-			"prependAction": "{0} prepended action"
-		},
-		"loading": "Loading...",
-		"noDataText": "No data available",
-		"open": "Open",
-		"pagination": {
-			"ariaLabel": {
-				"currentPage": "Page {0}, Current page",
-				"first": "First page",
-				"last": "Last page",
-				"next": "Next page",
-				"page": "Go to page {0}",
-				"previous": "Previous page",
-				"root": "Pagination Navigation"
-			}
-		},
-		"rating": {
-			"ariaLabel": {
-				"item": "Rating {0} of {1}"
-			}
-		},
-		"stepper": {
-			"next": "Next",
-			"prev": "Previous"
-		},
-		"timePicker": {
-			"am": "AM",
-			"pm": "PM"
-		}
-	},
 	"admin": {
 		"title": "Administration",
 		"users": {
@@ -140,6 +41,9 @@
 				"title": "Invite a new user"
 			},
 			"list": {
+				"messages": {
+					"fetchFailed": "Users could not be fetched."
+				},
 				"title": "User management"
 			},
 			"resend": {
@@ -206,7 +110,8 @@
 				"measurements": {
 					"current": "Current",
 					"messages": {
-						"error": "Measurements could not be fetched."
+						"error": "Measurements could not be fetched.",
+						"noData": "No measurements available for specific time range."
 					},
 					"reload": "Reload",
 					"timeRanges": {
@@ -274,6 +179,7 @@
 				"messages": {
 					"emptyMacAddress": "Please enter a MAC address for the PDU.",
 					"emptyName": "Please enter a name for the PDU.",
+					"notFound": "PDU with ID {id} could not be found.",
 					"outputs": {
 						"emptyIndex": "Please enter an index for the output.",
 						"emptyName": "Please enter a name for the output."
@@ -284,6 +190,9 @@
 				}
 			},
 			"list": {
+				"messages": {
+					"fetchFailed": "PDUs could not be fetched."
+				},
 				"title": "PDU list"
 			},
 			"title": "Power distribution units"
@@ -354,6 +263,7 @@
 			},
 			"messages": {
 				"error": "User profile could not be edited.",
+				"fetchFailed": "User profile could not be fetched.",
 				"incorrectCurrentPassword": "Current password is incorrect.",
 				"success": "User profile has been successfully edited."
 			},
@@ -451,6 +361,11 @@
 				},
 				"lastUsedAts": {
 					"never": "Never"
+				},
+				"list": {
+					"messages": {
+						"fetchFailed": "Authenticators could not be fetched."
+					}
 				},
 				"messages": {
 					"emptyCode": "Please enter code.",

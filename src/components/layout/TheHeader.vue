@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ limitations under the License.
 		</v-app-bar-title>
 		<v-spacer />
 		<LocaleSwitcher />
+		<ThemeSwitcher />
 		<ProfileDropdown v-if='userStore.isLoggedIn' />
 	</v-app-bar>
 </template>
@@ -37,6 +38,7 @@ limitations under the License.
 import Logo from '@/assets/icon.svg?url';
 import LocaleSwitcher from '@/components/layout/header/LocaleSwitcher.vue';
 import ProfileDropdown from '@/components/layout/header/ProfileDropdown.vue';
+import ThemeSwitcher from '@/components/layout/header/ThemeSwitcher.vue';
 import { useSidebarStore } from '@/store/sidebar';
 import { useUserStore } from '@/store/user';
 

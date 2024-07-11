@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ limitations under the License.
 				v-else
 				v-bind='props'
 				:color='action === Action.Add ? "green" : "info"'
-				:prepend-icon='display.smAndUp.value ? (action === Action.Add ? mdiPlus : mdiSend) : undefined'
+				:prepend-icon='display.smAndUp.value ? action === Action.Add ? mdiPlus : mdiSend : undefined'
 				variant='elevated'
 			>
 				<span v-if='action === Action.Add'>
@@ -82,7 +82,7 @@ limitations under the License.
 					v-model='user.name'
 					:label='$t("core.user.fields.name")'
 					:rules='[
-						v => FormValidator.isRequired(v, $t("core.user.messages.emptyName")),
+						(v: unknown) => FormValidator.isRequired(v, $t("core.user.messages.emptyName")),
 					]'
 					required
 					:prepend-inner-icon='mdiAccount'
@@ -91,15 +91,15 @@ limitations under the License.
 					v-model='user.email'
 					:label='$t("core.user.fields.email")'
 					:rules='[
-						v => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
-						v => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
+						(v: unknown) => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
+						(v: string) => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
 					]'
 					required
 					:prepend-inner-icon='mdiEmail'
 				/>
 				<PasswordField
 					v-if='action === Action.Add'
-					v-model='user.password'
+					v-model='(user as UserAdd).password'
 					:label='$t("core.user.fields.password")'
 					:rules='[
 						(v: string|null) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
@@ -110,12 +110,12 @@ limitations under the License.
 				<v-select
 					v-model='user.role'
 					:items='[
-						{title: $t("core.user.roles.admin"), value: UserRole.Admin},
-						{title: $t("core.user.roles.normal"), value: UserRole.Normal},
+						{ title: $t("core.user.roles.admin"), value: UserRole.Admin },
+						{ title: $t("core.user.roles.normal"), value: UserRole.Normal },
 					]'
 					:label='$t("core.user.fields.role")'
 					:rules='[
-						v => FormValidator.isRequired(v, $t("core.user.messages.emptyRole")),
+						(v: unknown) => FormValidator.isRequired(v, $t("core.user.messages.emptyRole")),
 					]'
 					required
 					:prepend-inner-icon='mdiAccountGroup'
@@ -170,7 +170,7 @@ import {
 	mdiPlus,
 	mdiSend,
 } from '@mdi/js';
-import { type Ref, ref, watchEffect } from 'vue';
+import { PropType, type Ref, ref, watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { toast } from 'vue3-toastify';
 import { useDisplay } from 'vuetify';
@@ -194,25 +194,26 @@ enum Action {
 	Invite = 'invite',
 }
 
-/**
- * Props
- */
-interface Props {
-	/// Action to perform
-	action: Action;
-	/// User to edit
-	initUser?: UserInfo;
-}
-
 const display = useDisplay();
 const i18n = useI18n();
 const loadingSpinner = useLoadingSpinnerStore();
 const service = new UserService();
 
 const emit = defineEmits(['reload']);
-const componentProps = defineProps<Props>();
+const componentProps = defineProps({
+	action: {
+		type: String as PropType<Action | 'add' | 'edit' | 'invite'>,
+		required: true,
+		validator: (value: Action | string) => ['add', 'edit', 'invite'].includes(value.toString()),
+	},
+	initUser: {
+		type: Object as PropType<UserInfo>,
+		required: false,
+		default: undefined,
+	},
+});
 const dialog = ref(false);
-const form: Ref<typeof VForm | null> = ref(null);
+const form: Ref<VForm | null> = ref(null);
 const defaultUser: UserModify = {
 	name: '',
 	email: '',
@@ -260,16 +261,15 @@ async function add(): Promise<void> {
 		name: user.value.name,
 		email: user.value.email,
 	};
-	await service.create(user.value as UserAdd)
-		.then(() => {
-			loadingSpinner.hide();
-			close();
-			toast.success(i18n.t('admin.users.add.messages.success', translationParams));
-		})
-		.catch(() => {
-			loadingSpinner.hide();
-			toast.error(i18n.t('admin.users.add.messages.error', translationParams));
-		});
+	try {
+		await service.create(user.value as UserAdd);
+		loadingSpinner.hide();
+		close();
+		toast.success(i18n.t('admin.users.add.messages.success', translationParams));
+	} catch {
+		loadingSpinner.hide();
+		toast.error(i18n.t('admin.users.add.messages.error', translationParams));
+	}
 }
 
 /**
@@ -280,21 +280,19 @@ async function invite(): Promise<void> {
 		name: user.value.name,
 		email: user.value.email,
 	};
-	await service.create(user.value)
-		.then(() => {
-			loadingSpinner.hide();
-			close();
-			toast.success(i18n.t('admin.users.invite.messages.success', translationParams));
-		})
-		.catch(() => {
-			loadingSpinner.hide();
-			toast.error(i18n.t('admin.users.invite.messages.error', translationParams));
-		});
+	try {
+		await service.create(user.value);
+		loadingSpinner.hide();
+		close();
+		toast.success(i18n.t('admin.users.invite.messages.success', translationParams));
+	} catch {
+		loadingSpinner.hide();
+		toast.error(i18n.t('admin.users.invite.messages.error', translationParams));
+	}
 }
 
 /**
  * Edits the user
- * @return Empty promise
  */
 async function edit(): Promise<void> {
 	const translationParams = {
@@ -304,16 +302,15 @@ async function edit(): Promise<void> {
 	if (componentProps.initUser?.id === undefined) {
 		return;
 	}
-	return await service.edit(componentProps.initUser.id, user.value)
-		.then(() => {
-			loadingSpinner.hide();
-			close();
-			toast.success(i18n.t('admin.users.edit.messages.success', translationParams));
-		})
-		.catch(() => {
-			loadingSpinner.hide();
-			toast.error(i18n.t('admin.users.edit.messages.error', translationParams));
-		});
+	try {
+		await service.edit(componentProps.initUser.id, user.value);
+		loadingSpinner.hide();
+		close();
+		toast.success(i18n.t('admin.users.edit.messages.success', translationParams));
+	} catch {
+		loadingSpinner.hide();
+		toast.error(i18n.t('admin.users.edit.messages.error', translationParams));
+	}
 }
 
 /**

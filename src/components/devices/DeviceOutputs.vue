@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -113,43 +113,33 @@ function reload() {
 
 /**
  * Switches the output of a device
- * @param output Output to switch
- * @return Empty promise
+ * @param {DeviceOutputWithMeasurements} output Output to switch
  */
-function switchOutput(output: DeviceOutputWithMeasurements): Promise<void> {
+async function switchOutput(output: DeviceOutputWithMeasurements): Promise<void> {
 	loadingSpinner.show();
-	return service.switchOutput(props.device.id, output.index, output.enabled)
-		.then(() => {
-			loadingSpinner.hide();
-			setTimeout((): void => {
-				emit('reload');
-			}, 3_000);
-			if (output.enabled) {
-				toast.success(i18n.t('core.devices.detail.outputs.messages.success.switchedOn', {
-					index: output.index,
-					name: output.name,
-				}).toString());
-			} else {
-				toast.success(i18n.t('core.devices.detail.outputs.messages.success.switchedOff', {
-					index: output.index,
-					name: output.name,
-				}).toString());
-			}
-		})
-		.catch(() => {
-			loadingSpinner.hide();
-			if (output.enabled) {
-				toast.error(i18n.t('core.devices.detail.outputs.messages.error.switchedOn', {
-					index: output.index,
-					name: output.name,
-				}).toString());
-			} else {
-				toast.error(i18n.t('core.devices.detail.outputs.messages.error.switchedOff', {
-					index: output.index,
-					name: output.name,
-				}).toString());
-			}
-		});
+	const translationParams = {
+		index: output.index,
+		name: output.name,
+	};
+	try {
+		await service.switchOutput(props.device.id, output.index, output.enabled);
+		loadingSpinner.hide();
+		setTimeout((): void => {
+			emit('reload');
+		}, 3_000);
+		if (output.enabled) {
+			toast.success(i18n.t('core.devices.detail.outputs.messages.success.switchedOn', translationParams));
+		} else {
+			toast.success(i18n.t('core.devices.detail.outputs.messages.success.switchedOff', translationParams));
+		}
+	} catch {
+		loadingSpinner.hide();
+		if (output.enabled) {
+			toast.error(i18n.t('core.devices.detail.outputs.messages.error.switchedOn', translationParams));
+		} else {
+			toast.error(i18n.t('core.devices.detail.outputs.messages.error.switchedOff', translationParams));
+		}
+	}
 }
 
 </script>

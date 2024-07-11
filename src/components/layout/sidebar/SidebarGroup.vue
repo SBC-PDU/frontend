@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ limitations under the License.
 		:subgroup='componentProps.subGroup'
 		:value='item.title'
 	>
-		<template #activator='{props}'>
+		<template #activator='{ props }'>
 			<v-list-item
 				:title='item.title'
 				density='compact'

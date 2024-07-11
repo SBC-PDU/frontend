@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ limitations under the License.
 			</v-toolbar>
 		</template>
 		<template #item.name='{ item }'>
-			<router-link :to='"/devices/" + item.id'>
+			<router-link :to='`/devices/${ item.id}`'>
 				{{ item.name }}
 			</router-link>
 		</template>
@@ -70,18 +70,20 @@ limitations under the License.
 		v-else-if='state === PageState.LoadFailed'
 		type='error'
 	>
-		{{ $t('core.devices.list.loadFailed') }}
+		{{ $t('core.devices.list.messages.fetchFailed') }}
 	</v-alert>
 </template>
 
-<route lang='yaml'>
-name: DeviceList
+<route>
+{
+	"name": "DeviceList",
+}
 </route>
 
 <script lang='ts' setup>
 import { mdiPower } from '@mdi/js';
 import { Head } from '@unhead/vue/components';
-import { type Ref, ref } from 'vue';
+import { computed, onBeforeMount, type Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import DeviceDeleteConfirmation from '@/components/devices/DeviceDeleteConfirmation.vue';
@@ -96,31 +98,28 @@ const i18n = useI18n();
 const deviceService = new DeviceService();
 const userStore = useUserStore();
 
-const headers = [
+const headers = computed(() => [
 	{ title: i18n.t('core.devices.fields.name'), key: 'name' },
 	{ title: i18n.t('core.devices.fields.macAddress'), key: 'macAddress' },
 	{ title: i18n.t('core.devices.fields.lastSeen'), key: 'lastSeen' },
 	{ title: i18n.t('core.devices.fields.outputs.title'), key: 'outputs' },
 	{ title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false },
-];
+]);
 const devices = ref<Device[]>([]);
 const state: Ref<PageState> = ref(PageState.Loading);
 
 /**
  * Load devices
  */
-function loadDevices() {
+async function loadDevices() {
 	state.value = PageState.Loading;
-	deviceService.list()
-		.then((response: Device[]) => {
-			state.value = PageState.Loaded;
-			devices.value = response;
-		})
-		.catch(() => {
-			state.value = PageState.LoadFailed;
-		});
+	try {
+		devices.value = await deviceService.list();
+		state.value = PageState.Loaded;
+	} catch {
+		state.value = PageState.LoadFailed;
+	}
 }
 
-loadDevices();
-
+onBeforeMount(async () => await loadDevices());
 </script>

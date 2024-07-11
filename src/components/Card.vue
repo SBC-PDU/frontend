@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,46 +15,77 @@ limitations under the License.
 -->
 
 <template>
-	<v-card class='mb-4'>
-		<v-card-title
-			v-if='$slots.title'
+	<v-card :class='bottomMargin ? "mb-4" : null'>
+		<v-toolbar
+			v-if='$slots.title || $slots.actions'
 			:class='headerClass'
+			density='comfortable'
 		>
-			<slot name='title' />
-		</v-card-title>
+			<v-toolbar-title v-if='$slots.title'>
+				<slot name='title' />
+			</v-toolbar-title>
+			<v-toolbar-items v-if='$slots.titleActions'>
+				<slot name='titleActions' />
+			</v-toolbar-items>
+			<template v-if='$slots.extension' #extension>
+				<slot name='extension' />
+			</template>
+		</v-toolbar>
 		<v-card-text class='card-text'>
 			<slot />
 		</v-card-text>
-		<v-card-actions
-			v-if='$slots.actions'
-			:class='actionsClass'
-		>
+		<v-card-actions v-if='$slots.actions' :class='actionsClass'>
 			<slot name='actions' />
 		</v-card-actions>
 	</v-card>
 </template>
 
 <script lang='ts' setup>
+import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
+import { useThemeStore } from '@/store/theme';
+import {Theme} from "@/types/theme";
+
+const themeStore = useThemeStore();
+const { getTheme: theme } = storeToRefs(themeStore);
 
 const props = defineProps({
-	actionsColor: {
-		type: String,
-		default: 'grey-lighten-2',
-		required: false,
-	},
 	headerColor: {
 		type: String,
-		default: 'primary',
+		default: 'default',
+		required: false,
+	},
+	actionsColor: {
+		type: String,
+		default: 'default',
+		required: false,
+	},
+	bottomMargin: {
+		type: Boolean,
+		default: false,
 		required: false,
 	},
 });
-const actionsClass = computed(() => `bg-${props.actionsColor}`);
-const headerClass = computed(() => `bg-${props.headerColor}`);
+
+/// Card actions class
+const actionsClass = computed(() => {
+	let actionsColor = props.actionsColor;
+	const isLight = theme.value === Theme.Light;
+	if (actionsColor === 'default') {
+		actionsColor = isLight ? 'grey-lighten-2' : 'grey-darken-3';
+	}
+	return `bg-${actionsColor}`;
+});
+
+/// Card header class
+const headerClass = computed((): string => {
+	const color = props.headerColor;
+	return `bg-${color === 'default' ? 'primary' : color}`;
+});
 </script>
 
-<style>
+<style scoped>
 .card-text {
 	padding: 1rem !important;
 }

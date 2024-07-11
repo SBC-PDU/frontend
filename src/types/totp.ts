@@ -1,5 +1,5 @@
 /**
- * Copyright 2022-2023 Roman Ondráček
+ * Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,27 @@
  */
 
 /**
- * TOTP detail response
+ * TOTP detail response (base)
  */
-export interface UserTotp {
-	createdAt: Date;
-	lastUsedAt: Date|null;
+export interface UserTotpBase {
 	name: string;
 	uuid: string;
+}
+
+/**
+ * TOTP detail response
+ */
+export interface UserTotp extends UserTotpBase {
+	createdAt: Date;
+	lastUsedAt: Date|null;
+}
+
+/**
+ * TOTP detail response
+ */
+export interface UserTotpRaw extends UserTotpBase {
+	createdAt: string;
+	lastUsedAt: string|null;
 }
 
 /**
