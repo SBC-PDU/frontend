@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -48,13 +48,12 @@ interface Props {
 }
 
 const display = useDisplay();
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const componentProps = defineProps<Props>();
+defineProps<Props>();
 
 /**
  * Returns the color for the given role
- * @param role The role to get the color for
- * @return The color
+ * @param {UserRole} role The role to get the color for
+ * @return {string} The color
  */
 function getColor(role: UserRole): string {
 	switch (role) {
@@ -67,8 +66,8 @@ function getColor(role: UserRole): string {
 
 /**
  * Returns the icon for the given role
- * @param role The role to get the icon for
- * @return The icon
+ * @param {UserRole} role The role to get the icon for
+ * @return {string} The icon
  */
 function getIcon(role: UserRole): string {
 	switch (role) {

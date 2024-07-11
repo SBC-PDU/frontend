@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ limitations under the License.
 			/>
 		</template>
 		<template #item.email='{ item }'>
-			<a :href='"mailto:\"" + item.name + "<" + item.email + ">\""'>
+			<a :href='`mailto:"${ item.name }<${ item.email }>"`'>
 				{{ item.email }}
 			</a>
 		</template>
@@ -97,14 +97,18 @@ limitations under the License.
 		v-else-if='state === PageState.LoadFailed'
 		type='error'
 	>
-		{{ $t('admin.users.list.loadFailed') }}
+		{{ $t('admin.users.list.messages.fetchFailed') }}
 	</v-alert>
 </template>
 
-<route lang='yaml'>
-meta:
-  requiredRoles:
-    - admin
+<route>
+{
+	"meta": {
+		"requiredRoles": [
+			"admin"
+		]
+	}
+}
 </route>
 
 <script lang='ts' setup>
@@ -112,7 +116,7 @@ import { mdiAccountGroup } from '@mdi/js';
 import { Head } from '@unhead/vue/components';
 import md5 from 'md5';
 import { storeToRefs } from 'pinia';
-import { type Ref, ref, toRaw } from 'vue';
+import { computed, type Ref, ref, toRaw } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import AccountStateBadge from '@/components/admin/user/AccountStateBadge.vue';
@@ -131,7 +135,7 @@ const userService = new UserService();
 const userStore = useUserStore();
 const { getId: userId } = storeToRefs(userStore);
 
-const headers = [
+const headers = computed(() => [
 	{ title: i18n.t('core.user.fields.avatar'), key: 'avatar' },
 	{ title: i18n.t('core.user.fields.name'), key: 'name' },
 	{ title: i18n.t('core.user.fields.email'), key: 'email' },
@@ -139,14 +143,14 @@ const headers = [
 	{ title: i18n.t('core.user.fields.language'), key: 'language' },
 	{ title: i18n.t('core.user.fields.state'), key: 'state' },
 	{ title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false },
-];
+]);
 const state: Ref<PageState> = ref(PageState.Loading);
 const users: Ref<UserInfo[]> = ref([]);
 
 /**
  * Returns Gravatar URL for the given email
- * @param email User email
- * @return Gravatar URL
+ * @param {string} email User email
+ * @return {string} Gravatar URL
  */
 function getGravatarUrl(email: string): string {
 	const hash = md5(email.trim().toLowerCase());
@@ -155,8 +159,8 @@ function getGravatarUrl(email: string): string {
 
 /**
  * Returns language flag
- * @param language Language
- * @return Unicode flag symbol
+ * @param {UserLanguage} language Language
+ * @return {string} Unicode flag symbol
  */
 function getLanguageFlag(language: UserLanguage): string {
 	switch (language) {
@@ -170,16 +174,14 @@ function getLanguageFlag(language: UserLanguage): string {
 /**
  * Loads all users
  */
-function loadUsers() {
+async function loadUsers(): Promise<void> {
 	state.value = PageState.Loading;
-	userService.list()
-		.then((response: UserInfo[]) => {
-			state.value = PageState.Loaded;
-			users.value = response;
-		})
-		.catch(() => {
-			state.value = PageState.LoadFailed;
-		});
+	try {
+		users.value = await userService.list();
+		state.value = PageState.Loaded;
+	} catch {
+		state.value = PageState.LoadFailed;
+	}
 }
 
 loadUsers();

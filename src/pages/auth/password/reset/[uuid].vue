@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ limitations under the License.
 				v-model='reset.password'
 				:label='$t("core.user.fields.newPassword")'
 				:rules='[
-					(v: any) => FormValidator.isRequired(v, $t("core.user.messages.emptyNewPassword")),
+					(v: unknown) => FormValidator.isRequired(v, $t("core.user.messages.emptyNewPassword")),
 				]'
 				required
 				:prepend-inner-icon='mdiKey'
@@ -91,7 +91,7 @@ const userStore = useUserStore();
 const reset: Ref<PasswordSet> = ref({
 	password: '',
 });
-const form: Ref<typeof VForm | null> = ref(null);
+const form: Ref<VForm | null> = ref(null);
 
 /**
  * Submit the form
@@ -105,30 +105,29 @@ async function submit(): Promise<void> {
 		return;
 	}
 	loadingSpinner.show();
-	await service.passwordReset(props.uuid, reset.value)
-		.then((response: SignedInUser) => {
-			loadingSpinner.hide();
-			userStore.setUserInfo(response);
-			toast.success(i18n.t('core.password.reset.messages.success'));
-			router.push('/');
-		})
-		.catch((error: AxiosError) => {
-			loadingSpinner.hide();
-			switch (error.response?.status) {
-				case 403:
-					toast.error(i18n.t('core.password.reset.messages.banned'));
-					return;
-				case 404:
-					toast.error(i18n.t('core.password.reset.messages.notFound'));
-					return;
-				case 410:
-					toast.error(i18n.t('core.password.reset.messages.expired'));
-					return;
-				default:
-					toast.error(i18n.t('core.password.reset.messages.error'));
-					return;
-			}
-		});
+	try {
+		const response: SignedInUser = await service.passwordReset(props.uuid, reset.value);
+		loadingSpinner.hide();
+		userStore.setUserInfo(response);
+		toast.success(i18n.t('core.password.reset.messages.success'));
+		router.push('/');
+	} catch (error) {
+		loadingSpinner.hide();
+		switch (error?.response?.status) {
+			case 403:
+				toast.error(i18n.t('core.password.reset.messages.banned'));
+				return;
+			case 404:
+				toast.error(i18n.t('core.password.reset.messages.notFound'));
+				return;
+			case 410:
+				toast.error(i18n.t('core.password.reset.messages.expired'));
+				return;
+			default:
+				toast.error(i18n.t('core.password.reset.messages.error'));
+				return;
+		}
+	}
 }
 
 </script>

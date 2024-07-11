@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ limitations under the License.
 			<template #title>
 				{{ $t('core.devices.delete.title') }}
 			</template>
-			{{ $t('core.devices.delete.message', {name: device.name, macAddress: device.macAddress}) }}
+			{{ $t('core.devices.delete.message', { name: device.name, macAddress: device.macAddress }) }}
 			<template #actions>
 				<v-btn
 					color='error'
@@ -96,19 +96,22 @@ function close(): void {
 /**
  * Delete the device
  */
-function deleteUser(): void {
+async function deleteUser(): Promise<void> {
 	loadingSpinner.show();
-	service.delete(componentProps.device.id)
-		.then(() => {
-			close();
-			emit('delete');
-			loadingSpinner.hide();
-			toast.success(i18n.t('core.devices.delete.messages.success', { name: componentProps.device.name, macAddress: componentProps.device.macAddress }));
-		})
-		.catch(() => {
-			loadingSpinner.hide();
-			toast.error(i18n.t('core.devices.delete.messages.error', { name: componentProps.device.name, macAddress: componentProps.device.macAddress }));
-		});
+	const translationParams = {
+		name: componentProps.device.name,
+		macAddress: componentProps.device.macAddress,
+	};
+	try {
+		await service.delete(componentProps.device.id);
+		close();
+		emit('delete');
+		loadingSpinner.hide();
+		toast.success(i18n.t('core.devices.delete.messages.success', translationParams));
+	} catch {
+		loadingSpinner.hide();
+		toast.error(i18n.t('core.devices.delete.messages.error', translationParams));
+	}
 }
 
 </script>

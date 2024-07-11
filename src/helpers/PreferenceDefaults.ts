@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    https://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,28 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { type RouteLocationRaw } from 'vue-router';
 
-import { type UserRole } from '@/types/user';
+import { Theme } from '@/types/theme';
 
 /**
- * Sidebar item
+ * Preference defaults utility
  */
-export interface SidebarLink {
-	/// Children
-	children?: SidebarLink[];
-	/// Group
-	group?: string | RegExp;
-	/// Href
-	href?: string;
-	/// Icon
-	icon?: string;
-	/// User roles
-	roles?: UserRole[];
-	/// Target
-	target?: string;
-	/// Title
-	title: string;
-	/// Route
-	to?: RouteLocationRaw;
+export class PreferenceDefaults {
+
+	/**
+	 * Returns the default theme based on the system settings
+	 * @return {Theme} Default theme
+	 */
+	public static getSystemTheme(): Theme {
+		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			return Theme.Dark;
+		}
+		return Theme.Light;
+	}
+
 }

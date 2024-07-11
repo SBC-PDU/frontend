@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,12 +18,12 @@ limitations under the License.
 	<v-select
 		:model-value='modelValue'
 		:items='[
-			{title: "🇬🇧 " + $t("core.locales.en"), value: UserLanguage.English},
-			{title: "🇨🇿 " + $t("core.locales.cs"), value: UserLanguage.Czech},
+			{ title: `🇬🇧 ${ $t("core.locales.en")}`, value: UserLanguage.English },
+			{ title: `🇨🇿 ${ $t("core.locales.cs")}`, value: UserLanguage.Czech },
 		]'
 		:label='$t("core.user.fields.language")'
 		:rules='[
-			v => FormValidator.isRequired(v, $t("core.user.messages.emptyLanguage")),
+			(v: unknown) => FormValidator.isRequired(v, $t("core.user.messages.emptyLanguage")),
 		]'
 		required
 		:prepend-inner-icon='mdiTranslate'
@@ -44,8 +44,6 @@ interface Props {
   modelValue: UserLanguage;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits(['update:modelValue']);
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const props = defineProps<Props>();
+defineProps<Props>();
 </script>

@@ -1,103 +1,4 @@
 {
-	"$vuetify": {
-		"badge": "Odznak",
-		"calendar": {
-			"moreEvents": "{0} dalších"
-		},
-		"carousel": {
-			"ariaLabel": {
-				"delimiter": "Obrázek {0} z {1}"
-			},
-			"next": "Další obrázek",
-			"prev": "Předchozí obrázek"
-		},
-		"close": "Zavřít",
-		"confirmEdit": {
-			"cancel": "Zrušit",
-			"ok": "OK"
-		},
-		"dataFooter": {
-			"firstPage": "První strana",
-			"itemsPerPageAll": "Vše",
-			"itemsPerPageText": "Položek na stránku:",
-			"lastPage": "Poslední strana",
-			"nextPage": "Další strana",
-			"pageText": "{0}-{1} z {2}",
-			"prevPage": "Předchozí strana"
-		},
-		"dataIterator": {
-			"loadingText": "Načítám položky...",
-			"noResultsText": "Nenalezeny žádné záznamy"
-		},
-		"dataTable": {
-			"ariaLabel": {
-				"activateAscending": "Aktivováním se bude řadit vzestupně.",
-				"activateDescending": "Aktivováním se bude řadit sestupně.",
-				"activateNone": "Aktivováním vypnete řazení.",
-				"sortAscending": "Řazeno vzestupně.",
-				"sortDescending": "Řazeno sestupně.",
-				"sortNone": "Neseřazeno."
-			},
-			"itemsPerPageText": "Řádků na stránku:",
-			"sortBy": "Řadit dle"
-		},
-		"datePicker": {
-			"header": "Zadejte datum",
-			"input": {
-				"placeholder": "Zadejte datum"
-			},
-			"itemsSelected": "{0} vybrán",
-			"range": {
-				"header": "Zadejte datumy",
-				"title": "Vyberte datumy"
-			},
-			"title": "Vyberte datum"
-		},
-		"dateRangeInput": {
-			"divider": "do"
-		},
-		"fileInput": {
-			"counter": "{0} souborů",
-			"counterSize": "{0} souborů ({1} celkem)"
-		},
-		"infiniteScroll": {
-			"empty": "Žádné další",
-			"loadMore": "Načíst více"
-		},
-		"input": {
-			"appendAction": "{0} appended action",
-			"clear": "Vymazat {0}",
-			"otp": "Vložte výhradně OTP znaky {0}",
-			"prependAction": "{0} prepended action"
-		},
-		"loading": "Načítám...",
-		"noDataText": "Nejsou dostupná žádná data",
-		"open": "Otevřit",
-		"pagination": {
-			"ariaLabel": {
-				"currentPage": "Aktuální stránka, stránka {0}",
-				"first": "První stránka",
-				"last": "Poslední stránka",
-				"next": "Další strana",
-				"page": "Přejít na stránku {0}",
-				"previous": "Předchozí strana",
-				"root": "Navigace po stránkách"
-			}
-		},
-		"rating": {
-			"ariaLabel": {
-				"item": "Hodnocení {0} z {1}"
-			}
-		},
-		"stepper": {
-			"next": "Další",
-			"prev": "Předchozí"
-		},
-		"timePicker": {
-			"am": "odp.",
-			"pm": "dop."
-		}
-	},
 	"admin": {
 		"title": "Administrace",
 		"users": {
@@ -140,6 +41,9 @@
 				"title": "Pozvání nového uživatele"
 			},
 			"list": {
+				"messages": {
+					"fetchFailed": "Nepodařilo se načíst seznam uživatelů."
+				},
 				"title": "Správa uživatelů"
 			},
 			"resend": {
@@ -206,7 +110,8 @@
 				"measurements": {
 					"current": "Elektrický proud",
 					"messages": {
-						"error": "Nepodařilo se načíst měřené veličiny."
+						"error": "Nepodařilo se načíst měřené veličiny.",
+						"noData": "Pro zvolený časový úsek nebyly nalezeny žádné změřené veličiny."
 					},
 					"reload": "Obnovit",
 					"timeRanges": {
@@ -274,6 +179,7 @@
 				"messages": {
 					"emptyMacAddress": "Prosím zadejte MAC adresu napájecí jednotky.",
 					"emptyName": "Prosím zadejte jméno napájecí jednotky.",
+					"notFound": "Napájecí jednotka s ID {id} nebyla nalezena.",
 					"outputs": {
 						"emptyIndex": "Prosím zadejte index výstupu.",
 						"emptyName": "Prosím zadejte jméno výstupu."
@@ -284,6 +190,9 @@
 				}
 			},
 			"list": {
+				"messages": {
+					"fetchFailed": "Nepodařilo se načíst seznam napájecích jednotek."
+				},
 				"title": "Seznam napájecích jednotek"
 			},
 			"title": "Napájecí jednotky"
@@ -354,6 +263,7 @@
 			},
 			"messages": {
 				"error": "Uživatelský profil se nepodařilo aktualizovat.",
+				"fetchFailed": "Uživatelský profil se nepodařilo načíst.",
 				"incorrectCurrentPassword": "Stávající heslo není správné.",
 				"success": "Uživatelský profil byl úspěšně aktualizován."
 			},
@@ -453,7 +363,9 @@
 					"never": "Nikdy"
 				},
 				"list": {
-					"loadFailed": "Nepodařilo se načíst seznam TOTP authentikátorů."
+					"messages": {
+						"fetchFailed": "Nepodařilo se načíst seznam TOTP authentikátorů."
+					}
 				},
 				"messages": {
 					"emptyCode": "Zadejte prosím kód.",

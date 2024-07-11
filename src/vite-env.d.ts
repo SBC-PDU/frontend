@@ -2,7 +2,7 @@
 /// <reference types="vite-plugin-vue-layouts/client" />
 /// <reference types="vite-plugin-pages/client" />
 /**
- * Copyright 2022-2023 Roman Ondráček
+ * Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,7 @@
 
 declare module '*.vue' {
 	import { type DefineComponent } from 'vue';
-	// eslint-disable-next-line @typescript-eslint/ban-types,@typescript-eslint/no-explicit-any
-	const component: DefineComponent<{}, {}, any>;
+	const component: DefineComponent<Record<string, unknown>, Record<string, unknown>, unknown>;
 	export default component;
 }
 

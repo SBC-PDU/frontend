@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ limitations under the License.
 				v-model='value.password'
 				:label='$t("core.user.fields.newPassword")'
 				:rules='[
-					(v: any) => FormValidator.isRequired(v, $t("core.user.messages.emptyNewPassword")),
+					(v: unknown) => FormValidator.isRequired(v, $t("core.user.messages.emptyNewPassword")),
 				]'
 				required
 				:prepend-inner-icon='mdiKey'
@@ -56,7 +56,7 @@ meta:
 <script lang='ts' setup>
 import { mdiAccountKey, mdiKey } from '@mdi/js';
 import { Head } from '@unhead/vue/components';
-import { type AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { validate as uuidValidate, version as uuidVersion } from 'uuid';
 import { ref, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -91,7 +91,7 @@ const userStore = useUserStore();
 const value: Ref<PasswordSet> = ref({
 	password: '',
 });
-const form: Ref<typeof VForm | null> = ref(null);
+const form: Ref<VForm | null> = ref(null);
 
 /**
  * Submit the form
@@ -105,15 +105,15 @@ async function submit(): Promise<void> {
 		return;
 	}
 	loadingSpinner.show();
-	await service.passwordSet(props.uuid, value.value)
-		.then((response: SignedInUser) => {
-			loadingSpinner.hide();
-			userStore.setUserInfo(response);
-			toast.success(i18n.t('core.password.set.messages.success'));
-			router.push('/');
-		})
-		.catch((error: AxiosError) => {
-			loadingSpinner.hide();
+	try {
+		const response: SignedInUser = await service.passwordSet(props.uuid, value.value);
+		userStore.setUserInfo(response);
+		toast.success(i18n.t('core.password.set.messages.success'));
+		loadingSpinner.hide();
+		await router.push('/');
+	} catch (error) {
+		loadingSpinner.hide();
+		if (error instanceof AxiosError) {
 			switch (error.response?.status) {
 				case 403:
 					toast.error(i18n.t('core.password.set.messages.banned'));
@@ -128,7 +128,8 @@ async function submit(): Promise<void> {
 					toast.error(i18n.t('core.password.set.messages.error'));
 					return;
 			}
-		});
+		}
+	}
 }
 
 </script>

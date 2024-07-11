@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -40,13 +40,13 @@ limitations under the License.
 				<template #title>
 					{{ $t('core.user.totp.delete.title') }}
 				</template>
-				{{ $t('core.user.totp.delete.message', {name: token.name}) }}
+				{{ $t('core.user.totp.delete.message', { name: token.name }) }}
 				<TotpField v-model='formData.code' />
 				<PasswordField
 					v-model='formData.password'
 					:label='$t("core.user.fields.password")'
 					:rules='[
-						(v: any) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
+						(v: unknown) => FormValidator.isRequired(v, $t("core.user.messages.emptyPassword")),
 					]'
 					required
 					:prepend-inner-icon='mdiKey'
@@ -104,7 +104,7 @@ const emit = defineEmits(['delete']);
 const componentProps = defineProps<Props>();
 const dialog = ref<boolean>(false);
 const modalWidth = ModalWindowHelper.getWidth();
-const form: Ref<typeof VForm | null> = ref(null);
+const form: Ref<VForm | null> = ref(null);
 const formData = ref<UserTotpRemove>({
 	code: '',
 	password: '',
@@ -129,17 +129,19 @@ async function deleteToken(): Promise<void> {
 		return;
 	}
 	loadingSpinner.show();
-	await service.removeTotp(componentProps.token.uuid, formData.value)
-		.then(() => {
-			close();
-			emit('delete');
-			loadingSpinner.hide();
-			toast.success(i18n.t('core.user.totp.delete.messages.success', { name: componentProps.token.name }));
-		})
-		.catch(() => {
-			loadingSpinner.hide();
-			toast.error(i18n.t('core.user.totp.delete.messages.error', { name: componentProps.token.name }));
-		});
+	const translationParams = {
+		name: componentProps.token.name,
+	};
+	try {
+		await service.removeTotp(componentProps.token.uuid, formData.value);
+		close();
+		emit('delete');
+		loadingSpinner.hide();
+		toast.success(i18n.t('core.user.totp.delete.messages.success', translationParams));
+	} catch {
+		loadingSpinner.hide();
+		toast.error(i18n.t('core.user.totp.delete.messages.error', translationParams));
+	}
 }
 
 </script>

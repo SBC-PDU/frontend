@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -61,8 +61,8 @@ sidebarStore.setVisibility(display.xlAndUp.value);
 
 /**
  * Filter sidebar items based on user role
- * @param item Sidebar item to filter
- * @return True if the item should be displayed, false otherwise
+ * @param {SidebarLink} item Sidebar item to filter
+ * @return {boolean} True if the item should be displayed, false otherwise
  */
 function filter(item: SidebarLink): boolean {
 	const role: UserRole | null = userStore.getRole;
@@ -74,7 +74,7 @@ function filter(item: SidebarLink): boolean {
 
 /**
  * Returns sidebar items
- * @return Sidebar items
+ * @return {SidebarLink[]} Sidebar items
  */
 function items(): SidebarLink[] {
 	let links: SidebarLink[];
@@ -82,30 +82,30 @@ function items(): SidebarLink[] {
 		links = [
 			{
 				icon: mdiPower,
-				title: i18n.t('core.devices.title').toString(),
+				title: i18n.t('core.devices.title'),
 				group: /^\/devices(\/.*)?$/,
 				to: '/devices',
 			},
 			{
 				icon: mdiAccount,
-				title: i18n.t('core.profile.title').toString(),
+				title: i18n.t('core.profile.title'),
 				to: '/profile',
 			},
 			{
 				icon: mdiCog,
-				title: i18n.t('admin.title').toString(),
+				title: i18n.t('admin.title'),
 				to: '/admin',
 				roles: [UserRole.Admin],
 				children: [
 					{
-						title: i18n.t('admin.users.list.title').toString(),
+						title: i18n.t('admin.users.list.title'),
 						to: '/admin/users',
 					},
 				],
 			},
 			{
 				icon: mdiBook,
-				title: i18n.t('core.openApi.title').toString(),
+				title: i18n.t('core.openApi.title'),
 				to: '/apiDocs',
 			},
 		];
@@ -113,17 +113,17 @@ function items(): SidebarLink[] {
 		links = [
 			{
 				icon: mdiLogin,
-				title: i18n.t('core.sign.in.title').toString(),
+				title: i18n.t('core.sign.in.title'),
 				to: '/auth/sign/in',
 			},
 			{
 				icon: mdiAccountKey,
-				title: i18n.t('core.password.recovery.title').toString(),
+				title: i18n.t('core.password.recovery.title'),
 				to: '/auth/password/recovery',
 			},
 			{
 				icon: mdiBook,
-				title: i18n.t('core.openApi.title').toString(),
+				title: i18n.t('core.openApi.title'),
 				to: '/apiDocs',
 			},
 		];

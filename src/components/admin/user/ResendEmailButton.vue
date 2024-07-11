@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ const userService = new UserService();
 
 /**
  * Returns the color of the icon
- * @return Icon color
+ * @return {string} Icon color
  */
 function color(): string {
 	if (props.user.state === AccountState.Invited) {
@@ -67,21 +67,20 @@ async function resend(): Promise<void> {
 		name: props.user.name,
 		email: props.user.email,
 	};
-	await userService.resend(props.user.id)
-		.then(() => {
-			if (props.user.state === AccountState.Invited) {
-				toast.success(i18n.t('admin.users.resend.invitation.success', translationParams));
-			} else if (props.user.state === AccountState.Unverified) {
-				toast.success(i18n.t('admin.users.resend.verification.success', translationParams));
-			}
-		})
-		.catch(() => {
-			if (props.user.state === AccountState.Invited) {
-				toast.error(i18n.t('admin.users.resend.invitation.error', translationParams));
-			} else if (props.user.state === AccountState.Unverified) {
-				toast.error(i18n.t('admin.users.resend.verification.error', translationParams));
-			}
-		});
+	try {
+		await userService.resend(props.user.id);
+		if (props.user.state === AccountState.Invited) {
+			toast.success(i18n.t('admin.users.resend.invitation.success', translationParams));
+		} else if (props.user.state === AccountState.Unverified) {
+			toast.success(i18n.t('admin.users.resend.verification.success', translationParams));
+		}
+	} catch {
+		if (props.user.state === AccountState.Invited) {
+			toast.error(i18n.t('admin.users.resend.invitation.error', translationParams));
+		} else if (props.user.state === AccountState.Unverified) {
+			toast.error(i18n.t('admin.users.resend.verification.error', translationParams));
+		}
+	}
 	loadingSpinner.hide();
 	close();
 	emit('change');

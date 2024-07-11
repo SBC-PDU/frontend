@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ limitations under the License.
 				v-model='user.name'
 				:label='$t("core.user.fields.name")'
 				:rules='[
-					v => FormValidator.isRequired(v, $t("core.user.messages.emptyName")),
+					(v: unknown) => FormValidator.isRequired(v, $t("core.user.messages.emptyName")),
 				]'
 				required
 				:prepend-inner-icon='mdiAccount'
@@ -39,8 +39,8 @@ limitations under the License.
 				v-model='user.email'
 				:label='$t("core.user.fields.email")'
 				:rules='[
-					v => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
-					v => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
+					(v: unknown) => FormValidator.isRequired(v, $t("core.user.messages.emptyEmail")),
+					(v: string) => FormValidator.isEmail(v, $t("core.user.messages.invalidEmail")),
 				]'
 				required
 				:prepend-inner-icon='mdiEmail'
@@ -84,7 +84,7 @@ limitations under the License.
 			v-else-if='state === PageState.LoadFailed'
 			type='error'
 		>
-			{{ $t('core.profile.messages.loadFailed') }}
+			{{ $t('core.profile.messages.fetchFailed') }}
 		</v-alert>
 	</Card>
 </template>
@@ -115,7 +115,7 @@ const loadingSpinner = useLoadingSpinnerStore();
 const localeStore = useLocaleStore();
 const userStore = useUserStore();
 const service = new AccountService();
-const form: Ref<typeof VForm | null> = ref(null);
+const form: Ref<VForm | null> = ref(null);
 const state: Ref<PageState> = ref<PageState>(PageState.Loading);
 const user: Ref<AccountModify> = ref<AccountModify>({
 	name: '',
@@ -129,26 +129,25 @@ const user: Ref<AccountModify> = ref<AccountModify>({
 /**
  * Loads data from backend
  */
-function loadData(): void {
+async function loadData(): Promise<void> {
 	loadingSpinner.show();
 	state.value = PageState.Loading;
-	service.get()
-		.then((info: UserInfo) => {
-			state.value = PageState.Loaded;
-			user.value = {
-				name: info.name,
-				email: info.email,
-				language: info.language,
-				changePassword: false,
-				oldPassword: null,
-				newPassword: null,
-			};
-			loadingSpinner.hide();
-		})
-		.catch(() => {
-			loadingSpinner.hide();
-			state.value = PageState.LoadFailed;
-		});
+	try {
+		const info: UserInfo = await service.get();
+		state.value = PageState.Loaded;
+		user.value = {
+			name: info.name,
+			email: info.email,
+			language: info.language,
+			changePassword: false,
+			oldPassword: null,
+			newPassword: null,
+		};
+		loadingSpinner.hide();
+	} catch {
+		loadingSpinner.hide();
+		state.value = PageState.LoadFailed;
+	}
 }
 
 loadData();
@@ -165,24 +164,23 @@ async function onSubmit(): Promise<void> {
 		return;
 	}
 	loadingSpinner.show();
-	service.edit(user.value)
-		.then((response: SignedInUser) => {
-			userStore.setUserInfo(response);
-			localeStore.setLocale(user.value.language);
-			loadData();
-			loadingSpinner.hide();
-			toast.success(i18n.t('core.profile.messages.success').toString());
-		})
-		.catch((error: AxiosError) => {
-			loadingSpinner.hide();
-			if (error.response?.status === 400) {
-				const errorResponse: Error = error.response.data as Error;
-				if (errorResponse.message === 'Incorrect current password.') {
-					toast.error(i18n.t('core.profile.messages.incorrectCurrentPassword').toString());
-					return;
-				}
+	try {
+		const response: SignedInUser = await service.edit(user.value);
+		userStore.setUserInfo(response);
+		localeStore.setLocale(user.value.language);
+		loadData();
+		loadingSpinner.hide();
+		toast.success(i18n.t('core.profile.messages.success'));
+	} catch (error) {
+		loadingSpinner.hide();
+		if (error?.response?.status === 400) {
+			const errorResponse: Error = error.response.data as Error;
+			if (errorResponse.message === 'Incorrect current password.') {
+				toast.error(i18n.t('core.profile.messages.incorrectCurrentPassword'));
+				return;
 			}
-			toast.error(i18n.t('core.profile.messages.error').toString());
-		});
+		}
+		toast.error(i18n.t('core.profile.messages.error'));
+	}
 }
 </script>

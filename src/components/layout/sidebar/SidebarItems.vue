@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ limitations under the License.
 		<template v-for='(navItem, idx) in props.items'>
 			<SidebarGroup
 				v-if='navItem.children !== undefined && navItem.children.length > 0'
-				:key='"sidebarGroup" + idx'
+				:key='`sidebarGroup${ idx}`'
 				:item='navItem'
 			/>
 			<SidebarItem
 				v-else
-				:key='"sidebarItem" + idx'
+				:key='`sidebarItem${ idx}`'
 				:item='navItem'
 			/>
 		</template>

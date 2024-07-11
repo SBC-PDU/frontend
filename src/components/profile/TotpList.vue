@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -60,13 +60,13 @@ limitations under the License.
 		v-else
 		type='error'
 	>
-		{{ $t('core.user.totp.list.loadFailed') }}
+		{{ $t('core.user.totp.list.messages.fetchFailed') }}
 	</v-alert>
 </template>
 
 <script lang='ts' setup>
 import { mdiTwoFactorAuthentication } from '@mdi/js';
-import { type Ref, ref } from 'vue';
+import { computed, onBeforeMount, type Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import TotpAdd from '@/components/profile/TotpAdd.vue';
@@ -78,30 +78,27 @@ import { type UserTotp } from '@/types/totp';
 const i18n = useI18n();
 const accountService = new AccountService();
 
-const headers = [
+const headers = computed(() => [
 	{ title: i18n.t('core.user.totp.fields.name'), key: 'name' },
 	{ title: i18n.t('core.user.totp.fields.createdAt'), key: 'createdAt' },
 	{ title: i18n.t('core.user.totp.fields.lastUsedAt'), key: 'lastUsedAt' },
 	{ title: i18n.t('core.tables.actions'), key: 'actions', align: 'end', sortable: false },
-];
+]);
 const state: Ref<PageState> = ref(PageState.Loading);
 const data = ref<UserTotp[]>([]);
 
 /**
  * Loads all users
  */
-function loadData() {
+async function loadData(): Promise<void> {
 	state.value = PageState.Loading;
-	accountService.listTotp()
-		.then((response: UserTotp[]) => {
-			data.value = response;
-			state.value = PageState.Loaded;
-		})
-		.catch(() => {
-			state.value = PageState.LoadFailed;
-		});
+	try {
+		data.value = await accountService.listTotp();
+		state.value = PageState.Loaded;
+	} catch {
+		state.value = PageState.LoadFailed;
+	}
 }
 
-loadData();
-
+onBeforeMount(async () => await loadData());
 </script>

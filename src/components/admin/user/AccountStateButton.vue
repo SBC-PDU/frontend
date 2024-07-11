@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -55,34 +55,34 @@ const userService = new UserService();
 /**
  * Blocks the user
  */
-function blockUser(): void {
+async function blockUser(): Promise<void> {
 	loadingSpinner.show();
-	userService.block(props.user.id)
-		.then(() => {
-			loadingSpinner.hide();
-			close();
-			emit('change');
-			toast.success(i18n.t('admin.users.block.messages.success', { name: props.user.name, email: props.user.email }));
-		})
-		.catch(() => {
-			toast.error(i18n.t('admin.users.block.messages.error', { name: props.user.name, email: props.user.email }));
-		});
+	try{
+		await userService.block(props.user.id);
+		close();
+		emit('change');
+		toast.success(i18n.t('admin.users.block.messages.success', { name: props.user.name, email: props.user.email }));
+	} catch {
+		toast.error(i18n.t('admin.users.block.messages.error', { name: props.user.name, email: props.user.email }));
+	} finally {
+		loadingSpinner.hide();
+	}
 }
 
 /**
  * Unblocks the user
  */
-function unblockUser(): void {
+async function unblockUser(): Promise<void> {
 	loadingSpinner.show();
-	userService.unblock(props.user.id)
-		.then(() => {
-			loadingSpinner.hide();
-			close();
-			emit('change');
-			toast.success(i18n.t('admin.users.unblock.messages.success', { name: props.user.name, email: props.user.email }));
-		})
-		.catch(() => {
-			toast.error(i18n.t('admin.users.unblock.messages.error', { name: props.user.name, email: props.user.email }));
-		});
+	try {
+		await userService.unblock(props.user.id);
+		close();
+		emit('change');
+		toast.success(i18n.t('admin.users.unblock.messages.success', { name: props.user.name, email: props.user.email }));
+	} catch {
+		toast.error(i18n.t('admin.users.unblock.messages.error', { name: props.user.name, email: props.user.email }));
+	} finally {
+		loadingSpinner.hide();
+	}
 }
 </script>

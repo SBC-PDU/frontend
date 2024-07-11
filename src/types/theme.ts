@@ -1,11 +1,11 @@
 /**
- * Copyright 2022-2023 Roman Ondráček
+ * Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *    https://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,24 +15,23 @@
  */
 
 /**
- * Locale helper
+ * Theme preference
  */
-export default class LocaleHelper {
+export enum ThemePreference {
+	/// Automatic theme detection based on system settings
+	Auto = 'auto',
+	/// Light theme
+	Light = 'light',
+	/// Dark theme
+	Dark = 'dark',
+}
 
-	/**
-	 * Returns locale flag
-	 * @param locale Locale
-	 * @return Unicode flag
-	 */
-	public static getFlag(locale: string): string {
-		switch (locale) {
-			case 'cs':
-				return '🇨🇿';
-			case 'en':
-				return '🇬🇧';
-			default:
-				return '🏴‍☠️';
-		}
-	}
-
+/**
+ * Theme
+ */
+export enum Theme {
+	/// Light theme
+	Light = 'light',
+	/// Dark theme
+	Dark = 'dark',
 }

@@ -1,5 +1,5 @@
 <!--
-Copyright 2022-2023 Roman Ondráček
+Copyright 2022-2024 Roman Ondráček <mail@romanondracek.cz>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ limitations under the License.
 				:time='timer'
 				@end='signOut()'
 			>
-				{{ $t('core.session.expiration.countdown', {countdown: seconds}, {plural: seconds}) }}
+				{{ $t('core.session.expiration.countdown', { countdown: seconds }, { plural: seconds }) }}
 				{{ $t('core.session.expiration.message') }}
 			</vue-countdown>
 			<template #actions>
@@ -103,7 +103,7 @@ setInterval(() => {
 		return;
 	}
 	const now = new Date();
-	const epoch = Math.round(now.getTime() / 1000);
+	const epoch = Math.round(now.getTime() / 1_000);
 	const seconds = expiration.value - epoch;
 	isExpiring.value = seconds < 60;
 	if (isExpiring.value !== lastValue.value) {
@@ -120,18 +120,17 @@ setInterval(() => {
  */
 async function extendSession() {
 	loadingSpinner.show();
-	await authenticationService.extendSession()
-		.then((response: SignedInUser) => {
-			userStore.setUserInfo(response);
-			loadingSpinner.hide();
-			isExpiring.value = false;
-			toast.success(i18n.t('core.session.expiration.messages.success'));
-			close();
-		})
-		.catch(() => {
-			loadingSpinner.hide();
-			toast.error(i18n.t('core.session.expiration.messages.error'));
-		});
+	try {
+		const response: SignedInUser = await authenticationService.extendSession();
+		userStore.setUserInfo(response);
+		loadingSpinner.hide();
+		isExpiring.value = false;
+		toast.success(i18n.t('core.session.expiration.messages.success'));
+		close();
+	} catch {
+		loadingSpinner.hide();
+		toast.error(i18n.t('core.session.expiration.messages.error'));
+	}
 }
 
 /**
