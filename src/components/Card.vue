@@ -45,7 +45,7 @@ import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 
 import { useThemeStore } from '@/store/theme';
-import {Theme} from "@/types/theme";
+import { Theme } from '@/types/theme';
 
 const themeStore = useThemeStore();
 const { getTheme: theme } = storeToRefs(themeStore);
