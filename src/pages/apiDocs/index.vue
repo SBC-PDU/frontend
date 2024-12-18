@@ -26,18 +26,23 @@ limitations under the License.
 	</Card>
 </template>
 
-<route lang='yaml'>
-name: ApiDocs
-meta:
-  requiresAuth: false
+<route>
+{
+	"name": "ApiDocs",
+	"meta": {
+		"requiresAuth": false
+	}
+}
 </route>
 
 <script lang='ts' setup>
 import { Head } from '@unhead/vue/components';
 import { OpenAPI3 } from 'openapi-typescript';
 import { storeToRefs } from 'pinia';
-import SwaggerUI from 'swagger-ui';
-import 'swagger-ui/dist/swagger-ui.css';
+import {
+	type SwaggerRequest,
+	SwaggerUIBundle,
+} from 'swagger-ui-dist';
 import { onBeforeMount } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { toast } from 'vue3-toastify';
@@ -54,21 +59,39 @@ const { token } = storeToRefs(userStore);
 const service = new OpenApiService();
 
 /**
+ * Extended Swagger request interface
+ */
+interface Request extends SwaggerRequest {
+	headers: {
+		Authorization?: string;
+	};
+}
+/**
  * Fetches the OpenAPI specification from the server and renders it
  */
 async function getSpecification(): Promise<void> {
 	loadingSpinner.show();
 	try {
 		const specification: OpenAPI3 = await service.getSpecification();
-		SwaggerUI({
+		SwaggerUIBundle({
 			spec: specification,
 			dom_id: '#swagger',
-			requestInterceptor: (request: SwaggerUI.Request) => {
+			deepLinking: true,
+			plugins: [
+				SwaggerUIBundle.plugins.DownloadUrl,
+			],
+			presets: [
+				SwaggerUIBundle.presets.apis,
+			],
+			requestInterceptor: (swaggerRequest: SwaggerRequest): SwaggerRequest => {
+				const request = swaggerRequest as Request;
 				if (token.value && !request.headers.Authorization) {
 					request.headers.Authorization = `Bearer ${token.value}`;
 				}
 				return request;
 			},
+			operationsSorter: 'alpha',
+			tagsSorter: 'alpha',
 		});
 		loadingSpinner.hide();
 	} catch {
@@ -80,3 +103,22 @@ async function getSpecification(): Promise<void> {
 
 onBeforeMount(async () => await getSpecification());
 </script>
+
+<!-- eslint-disable-next-line vue-scoped-css/enforce-style-type -->
+<style lang='scss'>
+@import url('swagger-ui-dist/swagger-ui.css');
+
+.v-theme--dark {
+	.swagger-ui {
+		filter: invert(88%) hue-rotate(180deg);
+
+		.highlight-code {
+			filter: invert(100%) hue-rotate(180deg) contrast(150%);
+		}
+
+		input, select, textarea {
+			color: #000000 !important;
+		}
+	}
+}
+</style>
