@@ -29,10 +29,7 @@ export default class FormValidator {
 	 * @return {boolean | T} True if the value is valid, error message otherwise
 	 */
 	public static isRequired<T extends string>(value: unknown, errorMessage: T): boolean | T {
-		if (value === null || value === undefined || (Array.isArray(value) && value.length === 0) || value === false) {
-			return errorMessage;
-		}
-		return String(value).trim().length > 0 || errorMessage;
+		return (FormValidator.isEmpty(value) || value === false) ? errorMessage : true;
 	}
 
 	/**
@@ -57,6 +54,22 @@ export default class FormValidator {
 	public static isTotpCode<T extends string>(value: string, errorMessage: T): boolean | T {
 		const validator: z.ZodString = z.string().regex(/^\d{6}$/);
 		return validator.safeParse(value).success || errorMessage;
+	}
+
+	/**
+	 * Checks if the value is empty
+	 * @param {unknown} value Field value
+	 * @return {boolean} Value emptiness
+	 */
+	private static isEmpty(value: unknown): boolean {
+		return (
+			value === null ||
+			value === undefined ||
+			value === false ||
+			(Array.isArray(value) && value.length === 0) ||
+			(typeof value === 'object' && Object.keys(value).length === 0) ||
+			(typeof value === 'string' && value.trim().length === 0)
+		);
 	}
 
 }

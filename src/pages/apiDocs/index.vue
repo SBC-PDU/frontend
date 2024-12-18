@@ -117,7 +117,7 @@ onBeforeMount(async () => await getSpecification());
 		}
 
 		input, select, textarea {
-			color: #000000 !important;
+			color: #000 !important;
 		}
 	}
 }
